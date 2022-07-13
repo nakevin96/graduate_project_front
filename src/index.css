@@ -13,12 +13,20 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.gradient-bg-nav {
+.bg-nav {
     background-color: #27262C;
 }
 
+.bg-footer {
+    background-color: #27262C;
+}
+
+.bg-no-page {
+    background-color: #131315;
+}
+
 .gradient-bg-welcome {
-    background-color: #1C0935;
+    background-color: #191326;
     background-image: radial-gradient(at 35% 27%, hsla(240, 51%, 18%, 1) 0px, transparent 50%),
     radial-gradient(at 72% 2%, hsla(240, 60%, 26%, 0.7) 0px, transparent 50%),
     radial-gradient(at 0% 50%, hsla(258, 60%, 27%, 0.73) 0px, transparent 50%),
@@ -38,10 +46,6 @@ body {
     background-color: #1C0935;
     background-image: radial-gradient(at 0% 100%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
     radial-gradient(at 50% 0%, hsla(225, 39%, 25%, 1) 0, transparent 50%);
-}
-
-.gradient-bg-footer {
-    background-color: #27262C;
 }
 
 .blue-glassmorphism {

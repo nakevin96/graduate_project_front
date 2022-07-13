@@ -8,6 +8,7 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import projectLogo from '../../assets/images/logo.png';
 
 const MENU_LIST = ['스왑', '스테이지'];
+const MENU_LINK = { 스왑: '/swap', 스테이지: '/stage' };
 
 const NavbarItem = ({ title, classProps }) => {
   return <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>;
@@ -17,7 +18,7 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
 
   return (
-    <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4">
+    <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4 bg-nav border-b-2 border-[#383241]">
       <div className="md:flex-[0.6] flex-initial justify-center items-center">
         <Link to="/">
           <img src={projectLogo} alt="logo" className="w-32 cursor-pointer" />
@@ -25,12 +26,14 @@ const Navbar = () => {
       </div>
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {MENU_LIST.map((item, index) => (
-          <NavbarItem key={item + index} title={item} />
+          <Link to={MENU_LINK[item]}>
+            <NavbarItem key={item + index} title={item} />
+          </Link>
         ))}
       </ul>
       <span className="ml-auto md:ml-0">
         <button
-          className={`text-white  bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-full 
+          className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-full 
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
         >
           지갑 연결
@@ -62,11 +65,13 @@ const Navbar = () => {
               />
             </li>
             {MENU_LIST.map((item, index) => (
-              <NavbarItem
-                key={item + index}
-                title={item}
-                classProps="my-2 text-lg"
-              />
+              <Link to={MENU_LINK[item]}>
+                <NavbarItem
+                  key={item + index}
+                  title={item}
+                  classProps="my-2 text-lg"
+                />
+              </Link>
             ))}
           </ul>
         )}
@@ -74,6 +79,6 @@ const Navbar = () => {
     </nav>
   );
 };
-;
+
 
 export default Navbar;

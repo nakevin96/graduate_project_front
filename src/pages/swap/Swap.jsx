@@ -1,15 +1,13 @@
 import { Navbar } from '../../components/navbar';
 import { Footer } from '../../components/footer';
-import { NoPage } from '../../components/no-page';
 
-const NotFound = () => {
+const Swap = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <NoPage />
       <Footer />
     </div>
   );
 };
 
-export default NotFound;
+export default Swap;
