@@ -7,7 +7,7 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
 import projectLogo from '../../assets/images/logo.png';
 
-const MENU_LIST = ['Menu1', 'Menu2', 'Menu3'];
+const MENU_LIST = ['스왑', '스테이지'];
 
 const NavbarItem = ({ title, classProps }) => {
   return <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>;
@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4">
-      <div className="md:flex-[0.5] flex-initial justify-center items-center">
+      <div className="md:flex-[0.6] flex-initial justify-center items-center">
         <Link to="/">
           <img src={projectLogo} alt="logo" className="w-32 cursor-pointer" />
         </Link>
@@ -33,7 +33,7 @@ const Navbar = () => {
           className={`text-white  bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-full 
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
         >
-          Connect Wallet
+          지갑 연결
         </button>
       </span>
       <div className="flex relative">

@@ -10,18 +10,12 @@ const Footer = () => (
         <p className="text-white text-base text-center mx-2 cursor-pointer">
           Menu2
         </p>
-        <p className="text-white text-base text-center mx-2 cursor-pointer">
-          Menu3
-        </p>
       </div>
     </div>
 
     <div className="flex justify-center items-center flex-col mt-5">
       <p className="text-white text-sm text-center">
         Come join us and hear for the unexpected miracle
-      </p>
-      <p className="text-white text-sm text-center font-medium mt-2">
-        email_address or Github address
       </p>
     </div>
 

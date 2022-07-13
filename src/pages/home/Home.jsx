@@ -7,12 +7,12 @@ import { Footer } from '../../components/footer';
 const Home = () => {
   return (
     <div className="min-h-screen">
-      <div className="gradient-bg-welcome">
+      <div className="gradient-bg-nav border-b-2 border-[#383241]">
         <Navbar />
+      </div>
+      <div className="gradient-bg-welcome">
         <Welcome />
       </div>
-      <Services />
-      <Transactions />
       <Footer />
     </div>
   );

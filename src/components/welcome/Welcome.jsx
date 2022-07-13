@@ -27,8 +27,8 @@ const Welcome = () => {
     <div className="flex w-full justify-center items-center">
       <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
         <div className="flex flex-1 justify-start flex-col mf:mr-10">
-          <h1 className="text-3xl sm:text-5xl text-white py-1">
-            Save up money <br /> using cryptocurrency
+          <h1 className="text-3xl sm:text-4xl text-white py-1">
+            암호화폐와 함께 <br /> 돈을 모아보세요!
           </h1>
           <p className="text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base">
             A big money raising platform, CREDIT UNION
@@ -40,7 +40,7 @@ const Welcome = () => {
             className="flex flex-row justify-center items-center
                     my-5 bg-[#0ea5e9] p-3 rounded-full cursor-pointer hover:bg-[#0284c7]"
           >
-            <p className="text-white text-base font-semibold">Let's start</p>
+            <p className="text-white text-base font-semibold">스테이지 시작하기</p>
           </button>
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Ethereum</div>

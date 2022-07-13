@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
 
 * html {
     padding: 0;
@@ -8,20 +8,24 @@
 
 body {
     margin: 0;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Nanum Gothic", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
+.gradient-bg-nav {
+    background-color: #27262C;
+}
+
 .gradient-bg-welcome {
     background-color: #1C0935;
-    background-image:radial-gradient(at 35% 27%, hsla(240,51%,18%,1) 0px, transparent 50%),
-    radial-gradient(at 72% 2%, hsla(240,60%,26%,0.7) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(258,60%,27%,0.73) 0px, transparent 50%),
-    radial-gradient(at 76% 69%, hsla(229,70%,31%,0.75) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, hsla(260,53%,33%,0.86) 0px, transparent 50%),
-    radial-gradient(at 90% 5%, hsla(22,73%,70%,0.48) 0px, transparent 50%),
-    radial-gradient(at 95% 92%, hsla(335,49%,30%,0.55) 0px, transparent 50%);
+    background-image: radial-gradient(at 35% 27%, hsla(240, 51%, 18%, 1) 0px, transparent 50%),
+    radial-gradient(at 72% 2%, hsla(240, 60%, 26%, 0.7) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(258, 60%, 27%, 0.73) 0px, transparent 50%),
+    radial-gradient(at 76% 69%, hsla(229, 70%, 31%, 0.75) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(260, 53%, 33%, 0.86) 0px, transparent 50%),
+    radial-gradient(at 90% 5%, hsla(22, 73%, 70%, 0.48) 0px, transparent 50%),
+    radial-gradient(at 95% 92%, hsla(335, 49%, 30%, 0.55) 0px, transparent 50%);
 }
 
 .gradient-bg-services {
@@ -37,9 +41,7 @@ body {
 }
 
 .gradient-bg-footer {
-    background-color: #1C0935;
-    background-image: radial-gradient(at 0% 100%, hsla(253, 16%, 7%, 1) 0, transparent 53%),
-    radial-gradient(at 50% 150%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+    background-color: #27262C;
 }
 
 .blue-glassmorphism {

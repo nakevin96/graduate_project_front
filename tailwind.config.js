@@ -4,8 +4,8 @@ module.exports = {
   darkMode: 'media',
   theme: {
     fontFamily: {
-      display: ['Open Sans', 'sans-serif'],
-      body: ['Open Sans', 'sans-serif'],
+      display: ['Nanum Gothic', 'sans-serif'],
+      body: ['Nanum Gothic', 'sans-serif'],
     },
     extend: {
       screens: {
