@@ -26,7 +26,7 @@ const Navbar = () => {
       </div>
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {MENU_LIST.map((item, index) => (
-          <Link to={MENU_LINK[item]}>
+          <Link key={item + index + 'link'} to={MENU_LINK[item]}>
             <NavbarItem key={item + index} title={item} />
           </Link>
         ))}
@@ -65,7 +65,7 @@ const Navbar = () => {
               />
             </li>
             {MENU_LIST.map((item, index) => (
-              <Link to={MENU_LINK[item]}>
+              <Link key={item + index + 'link'} to={MENU_LINK[item]}>
                 <NavbarItem
                   key={item + index}
                   title={item}
