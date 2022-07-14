@@ -25,15 +25,20 @@ body {
     background-color: #131315;
 }
 
+.bg-swap {
+    background-color: #383056;
+}
+
 .gradient-bg-welcome {
-    background-color: #191326;
-    background-image: radial-gradient(at 35% 27%, hsla(240, 51%, 18%, 1) 0px, transparent 50%),
-    radial-gradient(at 72% 2%, hsla(240, 60%, 26%, 0.7) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(258, 60%, 27%, 0.73) 0px, transparent 50%),
-    radial-gradient(at 76% 69%, hsla(229, 70%, 31%, 0.75) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, hsla(260, 53%, 33%, 0.86) 0px, transparent 50%),
-    radial-gradient(at 90% 5%, hsla(22, 73%, 70%, 0.48) 0px, transparent 50%),
-    radial-gradient(at 95% 92%, hsla(335, 49%, 30%, 0.55) 0px, transparent 50%);
+    background-color: hsla(259, 32%, 12%, 1);
+    background-image: radial-gradient(at 77% 71%, hsla(255, 39%, 16%, 1) 0px, transparent 50%),
+    radial-gradient(at 34% 44%, hsla(255, 39%, 16%, 1) 0px, transparent 50%);
+}
+
+.gradient-bg-stage {
+    background-color: hsla(259, 32%, 12%, 1);
+    background-image: radial-gradient(at 77% 71%, hsla(255, 39%, 16%, 1) 0px, transparent 50%),
+    radial-gradient(at 34% 44%, hsla(255, 39%, 16%, 1) 0px, transparent 50%);
 }
 
 .gradient-bg-services {

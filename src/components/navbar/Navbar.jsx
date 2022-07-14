@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4 bg-nav border-b-2 border-[#383241]">
-      <div className="md:flex-[0.6] flex-initial justify-center items-center">
+      <div className="md:flex-[0.8] flex-initial justify-center items-center">
         <Link to="/">
           <img src={projectLogo} alt="logo" className="w-32 cursor-pointer" />
         </Link>
@@ -33,7 +33,7 @@ const Navbar = () => {
       </ul>
       <span className="ml-auto md:ml-0">
         <button
-          className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-full 
+          className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
         >
           지갑 연결
