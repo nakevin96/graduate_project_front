@@ -7,8 +7,23 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
 const SwapContent = () => {
   const [isSwapHover, setIsSwapHover] = useState(false);
-  const [ethInput, setEthInput] = useState(0.0);
-  const [cuInput, setCuInput] = useState(0.0);
+  const [ethInput, setEthInput] = useState('');
+  const [cuInput, setCuInput] = useState('');
+  const Coins = {
+    ETH: {
+      name: 'eth_amount',
+      id: 'eth_amount',
+      value: ethInput,
+      onChange: e => setEthInput(String(parseFloat(e.target.value))),
+    },
+    CU: {
+      name: 'cu_amount',
+      id: 'cu_amount',
+      value: ethInput,
+      onChange: e => setCuInput(String(parseFloat(e.target.value))),
+    },
+  };
+
   return (
     <div className="overflow-hidden flex w-full h-screen justify-center items-start content-center bg-swap">
       <div className="flex p-8">
@@ -19,7 +34,15 @@ const SwapContent = () => {
                 <p className="pr-16 text-white text-right text-xl font-bold basis-4/5">
                   Swap
                 </p>
-                <RefreshIcon className="fill-white basis-1/5 hover:fill-[#E6E6E6] cursor-pointer" />
+                <div
+                  className="basis-1/5 cursor-pointer mt-1.5"
+                  onClick={() => {
+                    setEthInput('');
+                    setCuInput('');
+                  }}
+                >
+                  <RefreshIcon className="fill-white hover:fill-[#E6E6E6]" />
+                </div>
               </div>
               <p className="text-white text-center text-[12px] font-light">
                 Trade tokens in an instant
@@ -38,7 +61,7 @@ const SwapContent = () => {
                 placeholder="0.0"
                 value={ethInput}
                 className="w-full border-0 bg-[#372F47] text-white text-sm text-end py-4 mb-2 rounded-lg focus:ring-blue-500"
-                onChange={e => setEthInput(parseFloat(e.target.value))}
+                onChange={e => setEthInput(String(parseFloat(e.target.value)))}
               />
               <div
                 className="w-8 h-8 my-2 ml-32 cursor-pointer flex justify-center items-center rounded-full bg-[#D8D2E1] hover:bg-[#8C7AA7]"
@@ -57,7 +80,7 @@ const SwapContent = () => {
                 placeholder="0.0"
                 value={cuInput}
                 className="w-full border-0 bg-[#372F47] text-white text-sm text-end py-4 mb-2 rounded-lg focus:ring-blue-500"
-                onChange={e => setCuInput(parseFloat(e.target.value))}
+                onChange={e => setCuInput(String(parseFloat(e.target.value)))}
               />
             </div>
             <div className="mt-16">
