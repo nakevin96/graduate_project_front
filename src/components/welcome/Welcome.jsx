@@ -38,10 +38,10 @@ const Welcome = () => {
           <button
             type="button"
             className="flex flex-row justify-center items-center
-                    my-5 bg-[#0ea5e9] p-3 rounded-full cursor-pointer hover:bg-[#0284c7]"
+                    my-5 bg-[#0ea5e9] rounded-full cursor-pointer hover:bg-[#0284c7]"
           >
             <Link to="/stage">
-              <p className="text-white text-base font-semibold">
+              <p className="px-24 py-3 text-white text-base font-semibold">
                 스테이지 시작하기
               </p>
             </Link>

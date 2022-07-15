@@ -11,7 +11,13 @@ const MENU_LIST = ['스왑', '스테이지'];
 const MENU_LINK = { 스왑: '/swap', 스테이지: '/stage' };
 
 const NavbarItem = ({ title, classProps }) => {
-  return <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>;
+  return (
+    <li
+      className={`py-2 px-4 cursor-pointer rounded-lg ${classProps} hover:bg-[#353547]`}
+    >
+      {title}
+    </li>
+  );
 };
 
 const Navbar = () => {
@@ -20,9 +26,11 @@ const Navbar = () => {
   return (
     <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4 bg-nav border-b-2 border-[#383241]">
       <div className="md:flex-[0.8] flex-initial justify-center items-center">
-        <Link to="/">
-          <img src={projectLogo} alt="logo" className="w-32 cursor-pointer" />
-        </Link>
+        <div className="w-32">
+          <Link to="/">
+            <img src={projectLogo} alt="logo" className="h-8 cursor-pointer" />
+          </Link>
+        </div>
       </div>
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
         {MENU_LIST.map((item, index) => (
