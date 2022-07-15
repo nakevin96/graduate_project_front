@@ -7,8 +7,10 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
 const SwapContent = () => {
   const [isSwapHover, setIsSwapHover] = useState(false);
+  const [ethInput, setEthInput] = useState(0.0);
+  const [cuInput, setCuInput] = useState(0.0);
   return (
-    <div className="flex w-full h-screen justify-center items-start content-center bg-swap">
+    <div className="overflow-hidden flex w-full h-screen justify-center items-start content-center bg-swap">
       <div className="flex p-8">
         <div className="w-80 bg-[#27262C] rounded-[24px] shadow-md">
           <div className="border-b border-b-gray-700">
@@ -34,7 +36,9 @@ const SwapContent = () => {
                 name="cu_amount"
                 id="cu_amount"
                 placeholder="0.0"
+                value={ethInput}
                 className="w-full border-0 bg-[#372F47] text-white text-sm text-end py-4 mb-2 rounded-lg focus:ring-blue-500"
+                onChange={e => setEthInput(parseFloat(e.target.value))}
               />
               <div
                 className="w-8 h-8 my-2 ml-32 cursor-pointer flex justify-center items-center rounded-full bg-[#D8D2E1] hover:bg-[#8C7AA7]"
@@ -51,11 +55,17 @@ const SwapContent = () => {
                 name="eth_amount"
                 id="eth_amount"
                 placeholder="0.0"
+                value={cuInput}
                 className="w-full border-0 bg-[#372F47] text-white text-sm text-end py-4 mb-2 rounded-lg focus:ring-blue-500"
+                onChange={e => setCuInput(parseFloat(e.target.value))}
               />
             </div>
             <div className="mt-16">
               <button
+                onClick={() => {
+                  console.log('CU: ' + cuInput);
+                  console.log('ETH: ' + ethInput);
+                }}
                 className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
               >
