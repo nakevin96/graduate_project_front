@@ -3,6 +3,7 @@ import { useState } from 'react';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
+
 import { CustomInput } from '../custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 

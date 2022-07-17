@@ -1,7 +1,8 @@
+import { useState, useContext } from 'react';
+import { TransactionContext } from '../../context/TransactionContext';
 import { Link } from 'react-router-dom';
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/all';
-import { useState } from 'react';
 
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
@@ -22,6 +23,8 @@ const NavbarItem = ({ title, classProps }) => {
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const { connectWallet, connectedAccount, disconnectWallet } =
+    useContext(TransactionContext);
 
   return (
     <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4 bg-nav border-b-2 border-[#383241]">
@@ -40,12 +43,23 @@ const Navbar = () => {
         ))}
       </ul>
       <span className="ml-auto md:ml-0">
-        <button
-          className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
+        {connectedAccount ? (
+          <button
+            onClick={disconnectWallet}
+            className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
-        >
-          지갑 연결
-        </button>
+          >
+            {connectedAccount}
+          </button>
+        ) : (
+          <button
+            onClick={connectWallet}
+            className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
+          cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
+          >
+            지갑 연결
+          </button>
+        )}
       </span>
       <div className="flex relative">
         {toggleMenu ? (

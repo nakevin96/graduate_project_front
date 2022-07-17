@@ -1,11 +1,18 @@
 import React from 'react';
+import CUIcon from '../../assets/images/coin_logo.svg?component';
+import EthIcon from '../../assets/images/eth_logo.svg?component';
+
+const CoinName = ['CU', 'EHT'];
 
 const CustomInput = props => {
   return (
     <div>
-      <p className="text-white text-start text-base font-bold mb-1 ml-2">
-        {props.coinName}
-      </p>
+      <div className="mb-1 flex items-center">
+        {props.coinName == 'CU' ? <CUIcon /> : <EthIcon />}
+        <p className="text-white text-start text-base font-bold ml-1">
+          {props.coinName}
+        </p>
+      </div>
       <input
         type={props.coinType}
         name={props.coinName}
