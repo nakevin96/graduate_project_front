@@ -3,6 +3,8 @@ import { useState } from 'react';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
+import CUIcon from '../../assets/images/coin_logo.svg?component';
+import EthIcon from '../../assets/images/eth_logo.svg?component';
 
 import { CustomInput } from '../custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
@@ -17,14 +19,15 @@ const SwapContent = () => {
       id: 'eth_amount',
       value: ethInput,
       onChange: e => setEthInput(String(parseFloat(e.target.value))),
+      icon: <EthIcon />,
     },
     CU: {
       id: 'cu_amount',
       value: cuInput,
       onChange: e => setCuInput(String(parseFloat(e.target.value))),
+      icon: <CUIcon />,
     },
   };
-
   return (
     <div className="overflow-auto scrollbar-hide flex w-full h-screen justify-center items-start content-center bg-swap">
       <div className="flex p-8">
@@ -57,6 +60,7 @@ const SwapContent = () => {
                 coinName={swapList[0]}
                 coinId={Coins[swapList[0]].id}
                 coinValue={Coins[swapList[0]].value}
+                coinIcon={Coins[swapList[0]].icon}
                 onChange={Coins[swapList[0]].onChange}
               />
               <div
@@ -80,6 +84,7 @@ const SwapContent = () => {
                 coinName={swapList[1]}
                 coinId={Coins[swapList[1]].id}
                 coinValue={Coins[swapList[1]].value}
+                coinIcon={Coins[swapList[0]].icon}
                 onChange={Coins[swapList[1]].onChange}
               />
             </div>
@@ -101,5 +106,6 @@ const SwapContent = () => {
     </div>
   );
 };
+;
 
 export default SwapContent;
