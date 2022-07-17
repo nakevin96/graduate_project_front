@@ -84,7 +84,7 @@ const SwapContent = () => {
                 coinName={swapList[1]}
                 coinId={Coins[swapList[1]].id}
                 coinValue={Coins[swapList[1]].value}
-                coinIcon={Coins[swapList[0]].icon}
+                coinIcon={Coins[swapList[1]].icon}
                 onChange={Coins[swapList[1]].onChange}
               />
             </div>
@@ -106,6 +106,6 @@ const SwapContent = () => {
     </div>
   );
 };
-;
+
 
 export default SwapContent;
