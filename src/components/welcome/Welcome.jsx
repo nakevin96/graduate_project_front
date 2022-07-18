@@ -26,7 +26,7 @@ const Welcome = () => {
   // const handleSubmit = () => {};
   return (
     <div className="flex w-full justify-center items-center">
-      <div className="flex mf:flex-row items-start justify-between md:p-20 py-12 px-4">
+      <div className="flex flex-col wf:flex-row items-center justify-between md:p-20 py-12 px-4">
         <div className="flex flex-1 justify-start flex-col mf:mr-10">
           <h1 className="text-3xl sm:text-4xl text-white py-1">
             암호화폐와 함께 <br /> 돈을 모아보세요!
@@ -47,15 +47,18 @@ const Welcome = () => {
               </p>
             </Link>
           </button>
-          <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
-            <div className={`rounded-tl-2xl ${commonStyles}`}>Ethereum</div>
-            <div className={commonStyles}>some</div>
-            <div className={`rounded-br-2xl ${commonStyles}`}>
-              characteristic
-            </div>
-          </div>
+          {/*<div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">*/}
+          {/*  <div className={`rounded-tl-2xl ${commonStyles}`}>Ethereum</div>*/}
+          {/*  <div className={commonStyles}>some</div>*/}
+          {/*  <div className={`rounded-br-2xl ${commonStyles}`}>*/}
+          {/*    characteristic*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
-        <PersonAnimation />
+        <div className="w-[28rem]">
+          <PersonAnimation />
+        </div>
+
         {/*<div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">*/}
         {/*  <div*/}
         {/*    className="p-3 justify-end items-start flex-col rounded-xl h-40*/}

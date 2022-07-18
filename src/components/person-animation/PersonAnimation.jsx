@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import lottie from 'lottie-web';
 import personAnimation from '../../assets/animations/main_people.json';
 
 const PersonAnimation = () => {
   const anime = useRef(null);
+  const [count, setCount] = useState(0);
   useEffect(() => {
     const instance = lottie.loadAnimation({
       container: anime.current,
@@ -13,8 +14,8 @@ const PersonAnimation = () => {
       animationData: personAnimation,
     });
     return () => instance.destroy();
-  }, []);
-  return <div className="w-[32rem] h-[32rem]" ref={anime} />;
+  }, [count]);
+  return <div onClick={() => setCount(count + 1)} ref={anime} />;
 };
 
 export default PersonAnimation;
