@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PersonAnimation from '../person-animation/PersonAnimation';
 // import { SiEthereum } from 'react-icons/si';
 // import { BsInfoCircle } from 'react-icons/bs';
 //
@@ -25,7 +26,7 @@ const Welcome = () => {
   // const handleSubmit = () => {};
   return (
     <div className="flex w-full justify-center items-center">
-      <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
+      <div className="flex mf:flex-row items-start justify-between md:p-20 py-12 px-4">
         <div className="flex flex-1 justify-start flex-col mf:mr-10">
           <h1 className="text-3xl sm:text-4xl text-white py-1">
             암호화폐와 함께 <br /> 돈을 모아보세요!
@@ -54,7 +55,7 @@ const Welcome = () => {
             </div>
           </div>
         </div>
-
+        <PersonAnimation />
         {/*<div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">*/}
         {/*  <div*/}
         {/*    className="p-3 justify-end items-start flex-col rounded-xl h-40*/}
