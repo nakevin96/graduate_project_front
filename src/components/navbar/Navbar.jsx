@@ -7,14 +7,17 @@ import { AiOutlineClose } from 'react-icons/all';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
 import projectLogo from '../../assets/images/logo.png';
+import { ConnectWalletButton } from './connect-wallet-button';
 
 const MENU_LIST = ['스왑', '스테이지'];
 const MENU_LINK = { 스왑: '/swap', 스테이지: '/stage' };
-
+const selectedStyle = `text-[#0ea5e9] font-bold underline underline-offset-4`;
 const NavbarItem = ({ title, classProps }) => {
   return (
     <li
-      className={`py-2 px-4 cursor-pointer rounded-lg ${classProps} hover:bg-[#353547]`}
+      className={`py-4 px-6 cursor-pointer rounded-lg ${classProps} ${
+        MENU_LINK[title] === window.location.pathname ? selectedStyle : null
+      } hover:bg-[#353547]`}
     >
       {title}
     </li>
@@ -23,11 +26,8 @@ const NavbarItem = ({ title, classProps }) => {
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
-  const { connectWallet, connectedAccount, disconnectWallet } =
-    useContext(TransactionContext);
-
   return (
-    <nav className="w-full flex px-12 md:justify-center justify-between items-center p-4 bg-nav border-b-2 border-[#383241]">
+    <nav className="w-full flex px-12 md:justify-center justify-between items-center p-2 bg-nav border-b-2 border-[#383241]">
       <div className="md:flex-[0.8] flex-initial justify-center items-center">
         <div className="w-32">
           <Link to="/">
@@ -42,25 +42,7 @@ const Navbar = () => {
           </Link>
         ))}
       </ul>
-      <span className="ml-auto md:ml-0">
-        {connectedAccount ? (
-          <button
-            onClick={disconnectWallet}
-            className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
-          cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
-          >
-            {connectedAccount}
-          </button>
-        ) : (
-          <button
-            onClick={connectWallet}
-            className={`text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 px-7 mx-4 rounded-lg
-          cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
-          >
-            지갑 연결
-          </button>
-        )}
-      </span>
+      <ConnectWalletButton />
       <div className="flex relative">
         {toggleMenu ? (
           <AiOutlineClose
