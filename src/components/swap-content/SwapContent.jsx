@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { TransactionContext } from '../../context/TransactionContext';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
@@ -8,12 +8,24 @@ import EthIcon from '../../assets/images/eth_logo.svg?component';
 
 import { CustomInput } from '../custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
+import { WalletSelectModal } from '../navbar/connect-wallet-button/wallet-select-modal';
 
 const SwapContent = () => {
+  const { connectedAccount } = useContext(TransactionContext);
   const [isSwapHover, setIsSwapHover] = useState(false);
   const [ethInput, setEthInput] = useState('');
   const [cuInput, setCuInput] = useState('');
   const [swapList, setSwapList] = useState(['ETH', 'CU']);
+  const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
+    useState(false);
+
+  const handleConnectWalletButtonClick = () => {
+    setIsConnectWalletModalOpen(true);
+  };
+  const handleConnectWalletModalClose = () => {
+    setIsConnectWalletModalOpen(false);
+  };
+
   const Coins = {
     ETH: {
       id: 'eth_amount',
@@ -89,16 +101,32 @@ const SwapContent = () => {
               />
             </div>
             <div className="mt-16">
-              <button
-                onClick={() => {
-                  console.log('CU: ' + cuInput);
-                  console.log('ETH: ' + ethInput);
-                }}
-                className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
+              {connectedAccount ? (
+                <button
+                  onClick={() => {
+                    console.log('CU: ' + cuInput);
+                    console.log('ETH: ' + ethInput);
+                  }}
+                  className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
-              >
-                지갑 연결
-              </button>
+                >
+                  스왑하기
+                </button>
+              ) : (
+                <div>
+                  <button
+                    onClick={handleConnectWalletButtonClick}
+                    className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
+          cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
+                  >
+                    지갑 연결
+                  </button>
+                  <WalletSelectModal
+                    isOpen={isConnectWalletModalOpen}
+                    handleModalClose={handleConnectWalletModalClose}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
