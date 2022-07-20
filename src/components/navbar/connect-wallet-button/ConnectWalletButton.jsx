@@ -64,7 +64,7 @@ const ConnectWalletButton = () => {
   return (
     <span className="ml-auto md:ml-0">
       {connectedAccount ? (
-        <div>
+        <div ref={wrapperRef}>
           <div
             onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
             className="px-6 py-3 cursor-pointer rounded-lg hover:bg-[#353547]"
@@ -72,13 +72,11 @@ const ConnectWalletButton = () => {
             <ProfileIcon className="fill-white w-7 " />
           </div>
           {isProfileDropdownOpen && (
-            <div ref={wrapperRef}>
-              <DropdownMenu
-                account={connectedAccount}
-                disconnect={disconnectWallet}
-                setDropdown={setIsProfileDropdownOpen}
-              />
-            </div>
+            <DropdownMenu
+              account={connectedAccount}
+              disconnect={disconnectWallet}
+              setDropdown={setIsProfileDropdownOpen}
+            />
           )}
         </div>
       ) : (
