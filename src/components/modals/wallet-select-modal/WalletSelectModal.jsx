@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useContext } from 'react';
-import { TransactionContext } from '../../../../context/TransactionContext';
-import CloseIcon from '../../../../assets/images/close.svg?component';
-import MetaMaskIcon from '../../../../assets/images/MetaMask_Fox.svg?component';
+import React, { useContext } from 'react';
+import { TransactionContext } from '../../../context/TransactionContext';
+import CloseIcon from '../../../assets/images/close.svg?component';
+import MetaMaskIcon from '../../../assets/images/MetaMask_Fox.svg?component';
 import { Dialog } from '@mui/material';
 
 const WalletSelectModal = ({ isOpen, handleModalClose }) => {

@@ -1,7 +1,9 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { TransactionContext } from '../../../context/TransactionContext';
-import { WalletSelectModal } from './wallet-select-modal';
+import { WalletSelectModal } from '../../modals/wallet-select-modal';
+import { MyInfoModal } from '../../modals/my-info-modal';
 import ProfileIcon from '../../../assets/images/profile.svg?component';
+import ExitIcon from '../../../assets/images/exit.svg?component';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
@@ -21,26 +23,31 @@ const useDetectOutsideClick = (ref, setDropdown) => {
   }, [ref]);
 };
 
-const DropdownMenu = ({ account, disconnect, setDropdown }) => {
+const DropdownMenu = ({ disconnect, setDropdown, handleInfoClick }) => {
   return (
-    <div className="absolute top-[4.5rem] w-32 bg-[#27262C] p-1 border-2 border-[#383241] translate-x-[-40%] rounded-lg overflow-hidden">
-      <div
-        onClick={() => {
-          console.log(account);
-          setDropdown(false);
-        }}
-        className="h-12 p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]"
-      >
-        내 정보
+    <div className="absolute top-[4.5rem] w-40 bg-[#27262C] p-1 border-2 border-[#383241] translate-x-[-50%] rounded-lg overflow-hidden">
+      <div className="border-b-2 border-[#383241]">
+        <div>
+          <button
+            onClick={() => {
+              setDropdown(false);
+              handleInfoClick();
+            }}
+            className="h-12 w-full p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]"
+          >
+            내 정보
+          </button>
+        </div>
       </div>
       <div
         onClick={() => {
           disconnect();
           setDropdown(false);
         }}
-        className="h-12 p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]"
+        className="h-12 p-2 flex justify-between items-center rounded-lg text-white cursor-pointer hover:bg-[#353547] "
       >
         지갑 해제
+        <ExitIcon className="w-6 fill-white" />
       </div>
     </div>
   );
@@ -52,11 +59,18 @@ const ConnectWalletButton = () => {
     useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const wrapperRef = useRef(null);
+  const [isMyInfoModalOpen, setIsMyInfoModalOpen] = useState(false);
   const handleConnectWalletButtonClick = () => {
     setIsConnectWalletModalOpen(true);
   };
   const handleConnectWalletModalClose = () => {
     setIsConnectWalletModalOpen(false);
+  };
+  const handleMyInfoButtonClick = () => {
+    setIsMyInfoModalOpen(true);
+  };
+  const handleMyInfoModalClose = () => {
+    setIsMyInfoModalOpen(false);
   };
 
   useDetectOutsideClick(wrapperRef, setIsProfileDropdownOpen);
@@ -73,11 +87,15 @@ const ConnectWalletButton = () => {
           </div>
           {isProfileDropdownOpen && (
             <DropdownMenu
-              account={connectedAccount}
               disconnect={disconnectWallet}
               setDropdown={setIsProfileDropdownOpen}
+              handleInfoClick={handleMyInfoButtonClick}
             />
           )}
+          <MyInfoModal
+            isOpen={isMyInfoModalOpen}
+            handleModalClose={handleMyInfoModalClose}
+          />
         </div>
       ) : (
         <div>

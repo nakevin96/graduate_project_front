@@ -8,7 +8,7 @@ import EthIcon from '../../assets/images/eth_logo.svg?component';
 
 import { CustomInput } from '../custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
-import { WalletSelectModal } from '../navbar/connect-wallet-button/wallet-select-modal';
+import { WalletSelectModal } from '../modals/wallet-select-modal';
 
 const SwapContent = () => {
   const { connectedAccount } = useContext(TransactionContext);
