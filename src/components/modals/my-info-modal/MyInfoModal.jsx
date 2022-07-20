@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import { TransactionContext } from '../../../context/TransactionContext';
 import { Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component';
@@ -6,7 +6,7 @@ import CopyIcon from '../../../assets/images/copy.svg?component';
 
 const MyInfoModal = ({ isOpen, handleModalClose }) => {
   const walletAddressRef = useRef(null);
-  const { connectedAccount, connectWallet, disconnectWallet } =
+  const { connectedAccount, getEthBalance, ethBalance } =
     useContext(TransactionContext);
 
   const copyToClipboard = () => {
@@ -15,6 +15,7 @@ const MyInfoModal = ({ isOpen, handleModalClose }) => {
     copiedWalletAddress.select();
     document.execCommand('copy');
   };
+
   return (
     <div>
       <Dialog open={isOpen} onClose={() => handleModalClose()}>
@@ -41,8 +42,15 @@ const MyInfoModal = ({ isOpen, handleModalClose }) => {
           </div>
           <div className="my-4">
             <div className="flex justify-between">
-              <p className="text-[#B6ABD0] text-base font-bold">ETH 잔액</p>
-              <p className="text-white text-end text-base font-bold">0.0</p>
+              <p
+                onClick={getEthBalance}
+                className="text-[#B6ABD0] text-base font-bold"
+              >
+                ETH 잔액
+              </p>
+              <p className="text-white text-end text-base font-bold">
+                {ethBalance}
+              </p>
             </div>
             <div className="flex justify-between">
               <p className="text-[#B6ABD0] text-base font-bold">CU 잔액</p>

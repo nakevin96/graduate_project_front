@@ -23,7 +23,12 @@ const useDetectOutsideClick = (ref, setDropdown) => {
   }, [ref]);
 };
 
-const DropdownMenu = ({ disconnect, setDropdown, handleInfoClick }) => {
+const DropdownMenu = ({
+  disconnect,
+  setDropdown,
+  handleInfoClick,
+  getBalance,
+}) => {
   return (
     <div className="absolute top-[4.5rem] w-40 bg-[#27262C] p-1 border-2 border-[#383241] translate-x-[-50%] rounded-lg overflow-hidden">
       <div className="border-b-2 border-[#383241]">
@@ -32,6 +37,7 @@ const DropdownMenu = ({ disconnect, setDropdown, handleInfoClick }) => {
             onClick={() => {
               setDropdown(false);
               handleInfoClick();
+              getBalance();
             }}
             className="h-12 w-full p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]"
           >
@@ -54,7 +60,8 @@ const DropdownMenu = ({ disconnect, setDropdown, handleInfoClick }) => {
 };
 
 const ConnectWalletButton = () => {
-  const { connectedAccount, disconnectWallet } = useContext(TransactionContext);
+  const { connectedAccount, disconnectWallet, getEthBalance } =
+    useContext(TransactionContext);
   const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
     useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -90,6 +97,7 @@ const ConnectWalletButton = () => {
               disconnect={disconnectWallet}
               setDropdown={setIsProfileDropdownOpen}
               handleInfoClick={handleMyInfoButtonClick}
+              getBalance={getEthBalance}
             />
           )}
           <MyInfoModal
