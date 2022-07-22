@@ -9,8 +9,8 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import projectLogo from '../../assets/images/logo.png';
 import { ConnectWalletButton } from './connect-wallet-button';
 
-const MENU_LIST = ['스왑', '스테이지'];
-const MENU_LINK = { 스왑: '/swap', 스테이지: '/stage' };
+const MENU_LIST = ['스왑', '유니온'];
+const MENU_LINK = { 스왑: '/swap', 유니온: '/union' };
 const selectedStyle = `text-[#0ea5e9] font-bold underline underline-offset-4`;
 const NavbarItem = ({ title, classProps }) => {
   return (

@@ -25,7 +25,7 @@ const Welcome = () => {
   // const [isLoading, setIsLoading] = useState(false);
   // const handleSubmit = () => {};
   return (
-    <div className="flex w-full justify-center items-center">
+    <div className="overflow-auto scrollbar-hide flex w-full justify-center items-center">
       <div className="flex flex-col wf:flex-row items-center justify-between md:p-20 py-12 px-4">
         <div className="flex flex-1 justify-start flex-col mf:mr-10">
           <h1 className="text-3xl sm:text-4xl text-white py-1">
@@ -41,9 +41,9 @@ const Welcome = () => {
             className="flex flex-row justify-center items-center
                     my-5 bg-[#0ea5e9] rounded-full cursor-pointer hover:bg-[#0284c7]"
           >
-            <Link to="/stage">
+            <Link to="/union">
               <p className="px-24 py-3 text-white text-base font-semibold">
-                스테이지 시작하기
+                유니온 시작하기
               </p>
             </Link>
           </button>

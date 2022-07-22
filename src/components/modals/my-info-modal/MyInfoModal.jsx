@@ -1,19 +1,24 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { TransactionContext } from '../../../context/TransactionContext';
 import { Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component';
 import CopyIcon from '../../../assets/images/copy.svg?component';
 
 const MyInfoModal = ({ isOpen, handleModalClose }) => {
+  const [isCopied, setIsCopied] = useState(false);
   const walletAddressRef = useRef(null);
   const { connectedAccount, getEthBalance, ethBalance } =
     useContext(TransactionContext);
 
   const copyToClipboard = () => {
     const copiedWalletAddress = document.getElementById('walletInfoInput');
-    copiedWalletAddress.focus();
     copiedWalletAddress.select();
     document.execCommand('copy');
+  };
+
+  const handleClickCopy = () => {
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1200);
   };
 
   return (
@@ -26,7 +31,14 @@ const MyInfoModal = ({ isOpen, handleModalClose }) => {
           </div>
         </div>
         <div className="p-6 flex flex-col bg-[#27262C]">
-          <p className="text-white text-xs">내 지갑 주소</p>
+          <div className="flex justify-between items-center">
+            <p className="py-1 text-white text-xs">내 지갑 주소</p>
+            {isCopied && (
+              <p className="text-white text-xs border border-white px-2 rounded-lg">
+                copied!!
+              </p>
+            )}
+          </div>
           <div className="w-80 px-2 py-3 mt-3 bg-[#1E1D20] rounded-lg flex justify-between items-center">
             <input
               className="ml-2 w-60 text-white text-ellipsis font-bold bg-[#1E1D20] outline-0"
@@ -36,7 +48,10 @@ const MyInfoModal = ({ isOpen, handleModalClose }) => {
               readOnly
             />
             <CopyIcon
-              onClick={copyToClipboard}
+              onClick={() => {
+                copyToClipboard();
+                handleClickCopy();
+              }}
               className="fill-white mr-2 w-4 h-6 cursor-pointer"
             />
           </div>
