@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CreateUnionIcon from '../../../assets/images/make_union_icon.svg?component';
+import { TransactionContext } from '../../../context/TransactionContext';
+import { Link } from 'react-router-dom';
 
 const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex justify-center items-center content-center text-center
 flex-col rounded-xl union-card border-2 border-neutral-300 transition ease-in-out delay-50 hover:-translate-y-1
 hover:scale-105 duration-300`;
 
-const makeUnionCard = (cardName, cardKey) => {
+const makeUnionCard = (cardName, setUnionDetail) => {
   return (
-    <div className={unionCardStyle} key={cardKey}>
+    <div
+      onClick={() => {
+        setUnionDetail(cardName);
+      }}
+      className={unionCardStyle}
+    >
       <span className="text-white text-lg font-bold">{cardName}</span>
     </div>
   );
@@ -46,6 +53,7 @@ const testArray = [
 const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
   const [renderCardList, setRenderCardList] = useState([]);
   const [cardEndIdx, setCardEndIdx] = useState(26);
+  const { setUnionID } = useContext(TransactionContext);
 
   useEffect(() => {
     const callList = testArray.slice(callStartIdx, callEndIdx);
@@ -64,7 +72,11 @@ const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
         <CreateUnionIcon className="mt-4" />
       </div>
       {renderCardList.map((testName, index) => {
-        return makeUnionCard(testName, testName + index);
+        return (
+          <Link to="/unionDetail" key={testName + index}>
+            {makeUnionCard(testName, setUnionID)}
+          </Link>
+        );
       })}
     </>
   );

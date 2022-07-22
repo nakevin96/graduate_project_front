@@ -8,6 +8,7 @@ const { ethereum } = window;
 export const TransactionProvider = ({ children }) => {
   const [connectedAccount, setConnectedAccount] = useState('');
   const [ethBalance, setEthBalance] = useState('0.0');
+  const [unionID, setUnionID] = useState(null);
   const connectWallet = async () => {
     try {
       if (!ethereum) {
@@ -56,6 +57,8 @@ export const TransactionProvider = ({ children }) => {
         disconnectWallet,
         getEthBalance,
         ethBalance,
+        unionID,
+        setUnionID,
       }}
     >
       {children}

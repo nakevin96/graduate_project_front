@@ -4,6 +4,7 @@ import { Home } from './pages/home';
 import { Swap } from './pages/swap';
 import { Union } from './pages/union';
 import { TransactionProvider } from './context/TransactionContext';
+import { UnionDetail } from './pages/union/union-detail';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/swap" element={<Swap />} />
         <Route path="/union" element={<Union />} />
+        <Route path="/unionDetail" element={<UnionDetail />} />
       </Routes>
     </TransactionProvider>
   );
