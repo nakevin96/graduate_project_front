@@ -1,10 +1,7 @@
-import { useState, useContext } from 'react';
-import { TransactionContext } from '../../context/TransactionContext';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/all';
-
-import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 
 import projectLogo from '../../assets/images/logo.png';
 import { ConnectWalletButton } from './connect-wallet-button';
@@ -17,7 +14,7 @@ const NavbarItem = ({ title, classProps }) => {
     <li
       className={`py-4 px-6 cursor-pointer rounded-lg ${classProps} ${
         MENU_LINK[title] === window.location.pathname ? selectedStyle : null
-      } hover:bg-[#353547]`}
+      } hover:bg-[#353547] transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
     >
       {title}
     </li>

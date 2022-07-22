@@ -1,7 +1,9 @@
+import { UnionCompactCard } from '../card/union-compact-card';
+
 const UnionContent = () => {
   return (
-    <div className="overflow-auto scrollbar-hide flex w-full h-screen justify-center items-center content-center bg-union">
-      hi
+    <div className="px-20 py-16 overflow-hidden flex w-full justify-center items-center flex-wrap content-center bg-union">
+      <UnionCompactCard />
     </div>
   );
 };
