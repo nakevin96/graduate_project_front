@@ -21,7 +21,7 @@ const UnionContent = () => {
             setStartCardIdx(endCardIdx);
             setEndCardIdx(endCardIdx + 6);
           }}
-          className="m-10 fill-[#0ea5e9] cursor-pointer hover:fill-[#0284c7]
+          className="m-10 fill-[#27262C] cursor-pointer hover:fill-[#0284c7]
       transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300"
         />
       )}

@@ -44,6 +44,11 @@ const DropdownMenu = ({
             내 정보
           </button>
         </div>
+        <div>
+          <button className="h-12 w-full p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]">
+            내 계약 확인
+          </button>
+        </div>
       </div>
       <div
         onClick={() => {
