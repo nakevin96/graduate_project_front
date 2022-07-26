@@ -7,14 +7,9 @@ const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex justify-cente
 flex-col rounded-xl union-card border-2 border-neutral-300 transition ease-in-out delay-50 hover:-translate-y-1
 hover:scale-105 duration-300`;
 
-const makeUnionCard = (cardName, setUnionDetail) => {
+const MakeUnionCard = ({ cardName }) => {
   return (
-    <div
-      onClick={() => {
-        setUnionDetail(cardName);
-      }}
-      className={unionCardStyle}
-    >
+    <div className={unionCardStyle}>
       <span className="text-white text-lg font-bold">{cardName}</span>
     </div>
   );
@@ -53,7 +48,7 @@ const testArray = [
 const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
   const [renderCardList, setRenderCardList] = useState([]);
   const [cardEndIdx, setCardEndIdx] = useState(26);
-  const { setUnionID } = useContext(TransactionContext);
+  const { connectedAccount, setUnionID } = useContext(TransactionContext);
 
   useEffect(() => {
     const callList = testArray.slice(callStartIdx, callEndIdx);
@@ -72,9 +67,20 @@ const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
         <CreateUnionIcon className="mt-4" />
       </div>
       {renderCardList.map((testName, index) => {
-        return (
-          <Link to="/unionDetail" key={testName + index}>
-            {makeUnionCard(testName, setUnionID)}
+        return connectedAccount === '' ? (
+          <div
+            onClick={() => alert('지갑을 먼저 연결해주세요')}
+            key={testName + index}
+          >
+            <MakeUnionCard cardName={testName} />
+          </div>
+        ) : (
+          <Link
+            onClick={() => setUnionID(testName)}
+            to="/unionDetail"
+            key={testName + index}
+          >
+            <MakeUnionCard cardName={testName} />
           </Link>
         );
       })}
