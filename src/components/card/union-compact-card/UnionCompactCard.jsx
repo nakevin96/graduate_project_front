@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateUnionIcon from '../../../assets/images/make_union_icon.svg?component';
-import { TransactionContext } from '../../../context/TransactionContext';
 import { Link } from 'react-router-dom';
+import { useUnion, useWallet } from '../../../context';
 
 const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex justify-center items-center content-center text-center
 flex-col rounded-xl union-card border-2 border-neutral-300 transition ease-in-out delay-50 hover:-translate-y-1
@@ -48,7 +48,8 @@ const testArray = [
 const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
   const [renderCardList, setRenderCardList] = useState([]);
   const [cardEndIdx, setCardEndIdx] = useState(26);
-  const { connectedAccount, setUnionID } = useContext(TransactionContext);
+  const { connectedAccount } = useWallet();
+  const { setUnionID } = useUnion();
 
   useEffect(() => {
     const callList = testArray.slice(callStartIdx, callEndIdx);

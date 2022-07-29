@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 import { ethers, utils } from 'ethers';
 import {
   CUTokenABI,
@@ -7,7 +7,26 @@ import {
   SwapAddress,
 } from '../utils/constants';
 
-export const TransactionContext = createContext();
+const WalletContext = createContext();
+const WalletBalanceContext = createContext();
+const UnionContext = createContext();
+const SwapContext = createContext();
+
+export function useWallet() {
+  return useContext(WalletContext);
+}
+
+export function useWalletBalance() {
+  return useContext(WalletBalanceContext);
+}
+
+export function useUnion() {
+  return useContext(UnionContext);
+}
+
+export function useSwap() {
+  return useContext(SwapContext);
+}
 
 const { ethereum } = window;
 
@@ -147,22 +166,18 @@ export const TransactionProvider = ({ children }) => {
   };
 
   return (
-    <TransactionContext.Provider
-      value={{
-        connectWallet,
-        connectedAccount,
-        disconnectWallet,
-        getEthBalance,
-        getCuBalance,
-        ethBalance,
-        cuBalance,
-        unionID,
-        setUnionID,
-        ethToCuSwap,
-        cuToEthSwap,
-      }}
+    <WalletContext.Provider
+      value={{ connectWallet, disconnectWallet, connectedAccount }}
     >
-      {children}
-    </TransactionContext.Provider>
+      <WalletBalanceContext.Provider
+        value={{ getEthBalance, getCuBalance, ethBalance, cuBalance }}
+      >
+        <UnionContext.Provider value={{ unionID, setUnionID }}>
+          <SwapContext.Provider value={{ ethToCuSwap, cuToEthSwap }}>
+            {children}
+          </SwapContext.Provider>
+        </UnionContext.Provider>
+      </WalletBalanceContext.Provider>
+    </WalletContext.Provider>
   );
 };

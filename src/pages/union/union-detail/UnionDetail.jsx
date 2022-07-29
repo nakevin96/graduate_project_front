@@ -1,12 +1,12 @@
-import { useContext, useEffect } from 'react';
-import { TransactionContext } from '../../../context/TransactionContext';
+import { useEffect } from 'react';
+import { useUnion, useWallet } from '../../../context';
 import { Navbar } from '../../../components/navbar';
 import { Footer } from '../../../components/footer';
 import { UnionDetailContent } from '../../../components/union-detail-content';
 
 const UnionDetail = () => {
-  const { unionID, connectedAccount, setUnionID } =
-    useContext(TransactionContext);
+  const { connectedAccount } = useWallet();
+  const { unionID, setUnionID } = useUnion();
   useEffect(() => {
     if (!connectedAccount) {
       const totalPath = window.location.href;

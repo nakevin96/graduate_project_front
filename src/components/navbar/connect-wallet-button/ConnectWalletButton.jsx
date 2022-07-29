@@ -1,5 +1,5 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
-import { TransactionContext } from '../../../context/TransactionContext';
+import React, { useState, useRef, useEffect } from 'react';
+import { useWallet, useWalletBalance } from '../../../context';
 import { WalletSelectModal } from '../../modals/wallet-select-modal';
 import { MyInfoModal } from '../../modals/my-info-modal';
 import ProfileIcon from '../../../assets/images/profile.svg?component';
@@ -65,8 +65,8 @@ const DropdownMenu = ({
 };
 
 const ConnectWalletButton = () => {
-  const { connectedAccount, disconnectWallet, getEthBalance, getCuBalance } =
-    useContext(TransactionContext);
+  const { connectedAccount, disconnectWallet } = useWallet();
+  const { getEthBalance, getCuBalance } = useWalletBalance();
   const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
     useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);

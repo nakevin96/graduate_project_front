@@ -1,14 +1,14 @@
-import React, { useContext, useRef, useState } from 'react';
-import { TransactionContext } from '../../../context/TransactionContext';
+import React, { useRef, useState } from 'react';
 import { Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component';
 import CopyIcon from '../../../assets/images/copy.svg?component';
+import { useWallet, useWalletBalance } from '../../../context';
 
 const MyInfoModal = ({ isOpen, handleModalClose }) => {
   const [isCopied, setIsCopied] = useState(false);
   const walletAddressRef = useRef(null);
-  const { connectedAccount, ethBalance, cuBalance } =
-    useContext(TransactionContext);
+  const { connectedAccount } = useWallet();
+  const { ethBalance, cuBalance } = useWalletBalance();
 
   const copyToClipboard = () => {
     const copiedWalletAddress = document.getElementById('walletInfoInput');

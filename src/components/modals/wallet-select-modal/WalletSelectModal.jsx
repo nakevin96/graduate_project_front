@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import { TransactionContext } from '../../../context/TransactionContext';
+import React from 'react';
 import CloseIcon from '../../../assets/images/close.svg?component';
 import MetaMaskIcon from '../../../assets/images/MetaMask_Fox.svg?component';
 import { Dialog } from '@mui/material';
+import { useWallet } from '../../../context';
 
 const WalletSelectModal = ({ isOpen, handleModalClose }) => {
-  const { connectWallet, connectedAccount, disconnectWallet } =
-    useContext(TransactionContext);
+  const { connectWallet } = useWallet();
   return (
     <div>
       <Dialog open={isOpen} onClose={() => handleModalClose()}>

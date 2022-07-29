@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { TransactionContext } from '../../context/TransactionContext';
+import React, { useState } from 'react';
+import { useSwap, useWallet } from '../../context';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
@@ -11,8 +11,8 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
 
 const SwapContent = () => {
-  const { connectedAccount, ethToCuSwap, cuToEthSwap, set } =
-    useContext(TransactionContext);
+  const { connectedAccount } = useWallet();
+  const { ethToCuSwap, cuToEthSwap } = useSwap();
   const [isSwapHover, setIsSwapHover] = useState(false);
   const [ethInput, setEthInput] = useState('');
   const [cuInput, setCuInput] = useState('');
