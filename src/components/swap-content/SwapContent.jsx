@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSwap, useWallet } from '../../context';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
@@ -34,17 +34,31 @@ const SwapContent = () => {
     }
   };
 
+  useEffect(() => {
+    if (swapList[0] === 'ETH') {
+      setCuInput(String(parseFloat(ethInput) * 10000));
+    } else {
+      setEthInput(String(parseFloat(cuInput) / 10000));
+    }
+  }, [cuInput, ethInput]);
+
   const Coins = {
     ETH: {
       id: 'eth_amount',
       value: ethInput,
-      onChange: e => setEthInput(String(e.target.value)),
+      onChange: e => {
+        const tmpValue = String(e.target.value).replace(/[^0-9.]/g, '');
+        setEthInput(tmpValue.trim());
+      },
       icon: <EthIcon />,
     },
     CU: {
       id: 'cu_amount',
       value: cuInput,
-      onChange: e => setCuInput(String(e.target.value)),
+      onChange: e => {
+        const tmpValue = String(e.target.value).replace(/[^0-9.]/g, '');
+        setCuInput(tmpValue.trim());
+      },
       icon: <CUIcon />,
     },
   };
@@ -82,6 +96,7 @@ const SwapContent = () => {
                 coinValue={Coins[swapList[0]].value}
                 coinIcon={Coins[swapList[0]].icon}
                 onChange={Coins[swapList[0]].onChange}
+                isReadOnly={false}
               />
               <div
                 className="w-8 h-8 my-2 ml-32 cursor-pointer flex justify-center items-center rounded-full bg-[#D8D2E1] hover:bg-[#8C7AA7]"
@@ -106,6 +121,7 @@ const SwapContent = () => {
                 coinValue={Coins[swapList[1]].value}
                 coinIcon={Coins[swapList[1]].icon}
                 onChange={Coins[swapList[1]].onChange}
+                isReadOnly={true}
               />
             </div>
             <div className="mt-16">

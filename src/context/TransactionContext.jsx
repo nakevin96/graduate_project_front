@@ -122,21 +122,44 @@ export const TransactionProvider = ({ children }) => {
         return;
       }
       const cuContract = getCUTokenContract();
-      // const a = await cuContract.allowance(connectedAccount, SwapAddress);
-      // await getCuBalance();
-      // // console.log(a._hex);
-      // // console.log(cuBalance);
-      // await cuContract.approve(
-      //   SwapAddress,
-      //   (cuBalanceRef.current * 1e18).toString(),
-      //   {
-      //     from: connectedAccount,
-      //   },
-      // );
+      const allowance = await cuContract.allowance(
+        connectedAccount,
+        SwapAddress,
+      );
+      const allowanceAmount = parseInt(allowance._hex) / 10 ** 18;
+      if (allowanceAmount <= parseInt(cuAmount)) {
+        alert('토큰 승인을 먼저 진행해주세요');
+        return;
+      }
       const cuSwapAmount = (cuAmount * 1e18).toString();
 
       const swapContract = getSwapContract();
       await swapContract.sell(cuSwapAmount);
+    } catch (error) {
+      console.log(error);
+
+      throw new Error('No ethereum object');
+    }
+  };
+
+  const approveToken = async () => {
+    try {
+      if (!ethereum) {
+        window.open(
+          'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=ko',
+        );
+        return;
+      }
+
+      const cuContract = getCUTokenContract();
+      await getCuBalance();
+      await cuContract.approve(
+        SwapAddress,
+        (cuBalanceRef.current * 1e18).toString(),
+        {
+          from: connectedAccount,
+        },
+      );
     } catch (error) {
       console.log(error);
 
@@ -173,7 +196,9 @@ export const TransactionProvider = ({ children }) => {
         value={{ getEthBalance, getCuBalance, ethBalance, cuBalance }}
       >
         <UnionContext.Provider value={{ unionID, setUnionID }}>
-          <SwapContext.Provider value={{ ethToCuSwap, cuToEthSwap }}>
+          <SwapContext.Provider
+            value={{ ethToCuSwap, cuToEthSwap, approveToken }}
+          >
             {children}
           </SwapContext.Provider>
         </UnionContext.Provider>
