@@ -7,7 +7,7 @@ import CopyIcon from '../../../assets/images/copy.svg?component';
 const MyInfoModal = ({ isOpen, handleModalClose }) => {
   const [isCopied, setIsCopied] = useState(false);
   const walletAddressRef = useRef(null);
-  const { connectedAccount, getEthBalance, ethBalance } =
+  const { connectedAccount, ethBalance, cuBalance } =
     useContext(TransactionContext);
 
   const copyToClipboard = () => {
@@ -57,19 +57,16 @@ const MyInfoModal = ({ isOpen, handleModalClose }) => {
           </div>
           <div className="my-4">
             <div className="flex justify-between">
-              <p
-                onClick={getEthBalance}
-                className="text-[#B6ABD0] text-base font-bold"
-              >
-                ETH 잔액
-              </p>
+              <p className="text-[#B6ABD0] text-base font-bold">ETH 잔액</p>
               <p className="text-white text-end text-base font-bold">
                 {ethBalance}
               </p>
             </div>
             <div className="flex justify-between">
               <p className="text-[#B6ABD0] text-base font-bold">CU 잔액</p>
-              <p className="text-white text-end text-base font-bold">0.0</p>
+              <p className="text-white text-end text-base font-bold">
+                {cuBalance}
+              </p>
             </div>
           </div>
         </div>

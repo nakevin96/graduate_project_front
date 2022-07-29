@@ -65,7 +65,7 @@ const DropdownMenu = ({
 };
 
 const ConnectWalletButton = () => {
-  const { connectedAccount, disconnectWallet, getEthBalance } =
+  const { connectedAccount, disconnectWallet, getEthBalance, getCuBalance } =
     useContext(TransactionContext);
   const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
     useState(false);
@@ -102,7 +102,10 @@ const ConnectWalletButton = () => {
               disconnect={disconnectWallet}
               setDropdown={setIsProfileDropdownOpen}
               handleInfoClick={handleMyInfoButtonClick}
-              getBalance={getEthBalance}
+              getBalance={() => {
+                getEthBalance();
+                getCuBalance();
+              }}
             />
           )}
           <MyInfoModal

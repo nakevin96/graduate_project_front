@@ -11,7 +11,8 @@ import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
 
 const SwapContent = () => {
-  const { connectedAccount } = useContext(TransactionContext);
+  const { connectedAccount, ethToCuSwap, cuToEthSwap, set } =
+    useContext(TransactionContext);
   const [isSwapHover, setIsSwapHover] = useState(false);
   const [ethInput, setEthInput] = useState('');
   const [cuInput, setCuInput] = useState('');
@@ -25,18 +26,25 @@ const SwapContent = () => {
   const handleConnectWalletModalClose = () => {
     setIsConnectWalletModalOpen(false);
   };
+  const handleSwapClick = async () => {
+    if (swapList[0] === 'ETH') {
+      ethToCuSwap(ethInput);
+    } else {
+      cuToEthSwap(cuInput);
+    }
+  };
 
   const Coins = {
     ETH: {
       id: 'eth_amount',
       value: ethInput,
-      onChange: e => setEthInput(String(parseFloat(e.target.value))),
+      onChange: e => setEthInput(String(e.target.value)),
       icon: <EthIcon />,
     },
     CU: {
       id: 'cu_amount',
       value: cuInput,
-      onChange: e => setCuInput(String(parseFloat(e.target.value))),
+      onChange: e => setCuInput(String(e.target.value)),
       icon: <CUIcon />,
     },
   };
@@ -103,10 +111,7 @@ const SwapContent = () => {
             <div className="mt-16">
               {connectedAccount ? (
                 <button
-                  onClick={() => {
-                    console.log('CU: ' + cuInput);
-                    console.log('ETH: ' + ethInput);
-                  }}
+                  onClick={handleSwapClick}
                   className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
                 >
