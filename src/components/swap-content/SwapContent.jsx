@@ -14,12 +14,16 @@ const SwapContent = () => {
   const { connectedAccount } = useWallet();
   const { ethToCuSwap, cuToEthSwap } = useSwap();
   const [isSwapHover, setIsSwapHover] = useState(false);
-  const [ethInput, setEthInput] = useState('');
-  const [cuInput, setCuInput] = useState('');
+  const [ethInput, setEthInput] = useState('0.0');
+  const [cuInput, setCuInput] = useState('0.0');
   const [swapList, setSwapList] = useState(['ETH', 'CU']);
   const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
     useState(false);
 
+  const resetInputFiled = () => {
+    setEthInput('0.0');
+    setCuInput('0.0');
+  };
   const handleConnectWalletButtonClick = () => {
     setIsConnectWalletModalOpen(true);
   };
@@ -27,9 +31,18 @@ const SwapContent = () => {
     setIsConnectWalletModalOpen(false);
   };
   const handleSwapClick = async () => {
+    resetInputFiled();
     if (swapList[0] === 'ETH') {
+      if (parseFloat(ethInput) < 0.00000001) {
+        alert('최소 교환 가능한 이더리움은 0.00000001 eth 입니다.');
+        return;
+      }
       ethToCuSwap(ethInput);
     } else {
+      if (parseFloat(cuInput) < 0.0001) {
+        alert('최소 교환 가능한 CU 토큰은 0.0001 CU 입니다.');
+        return;
+      }
       cuToEthSwap(cuInput);
     }
   };
@@ -74,10 +87,7 @@ const SwapContent = () => {
                 </p>
                 <div
                   className="basis-1/5 cursor-pointer mt-1.5"
-                  onClick={() => {
-                    setEthInput('');
-                    setCuInput('');
-                  }}
+                  onClick={resetInputFiled}
                 >
                   <RefreshIcon className="fill-white hover:fill-[#E6E6E6]" />
                 </div>
