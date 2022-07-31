@@ -21,7 +21,11 @@ const MakeUnionDetailCard = ({ unionNum, canEnter, unionId }) => {
   return (
     <div>
       <div
-        onClick={() => setIsUnionNumberSelectedMModalOpen(true)}
+        onClick={() => {
+          if (canEnter) {
+            setIsUnionNumberSelectedMModalOpen(true);
+          }
+        }}
         className={canEnter ? unionCardTrueStyle : unionCardFalseStyle}
       >
         <div className="w-72 h-96 bg-[#27262C] flex flex-col justify-center items-center rounded-xl">

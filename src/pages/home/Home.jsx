@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="gradient-bg-welcome">
+      <div className="min-h-[80vh] gradient-bg-welcome">
         <Welcome />
       </div>
       <Footer />
