@@ -31,7 +31,7 @@ const DropdownMenu = ({
   approveToken,
 }) => {
   return (
-    <div className="absolute top-[4.5rem] w-40 bg-[#27262C] p-1 border-2 border-[#383241] translate-x-[-50%] rounded-lg overflow-hidden">
+    <div className="absolute top-[4.5rem] z-50 w-40 bg-[#27262C] p-1 border-2 border-[#383241] translate-x-[-50%] rounded-lg overflow-hidden">
       <div className="border-b-2 border-[#383241]">
         <div>
           <button
