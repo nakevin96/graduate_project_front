@@ -6,7 +6,7 @@ import SwitchIcon from '../../assets/images/switch_icon.svg?component';
 import CUIcon from '../../assets/images/coin_logo.svg?component';
 import EthIcon from '../../assets/images/eth_logo.svg?component';
 
-import { CustomInput } from '../custom-input';
+import { CustomInput } from './custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
 
