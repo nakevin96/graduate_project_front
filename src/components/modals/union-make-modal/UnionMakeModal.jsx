@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, Dialog } from '@mui/material';
 import { CustomInput } from './custom-input';
 import CloseIcon from '../../../assets/images/close.svg?component';
@@ -11,17 +11,37 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
   const [newUnionName, setNewUnionName] = useState('');
+  const [newUnionPeopleNum, setNewUnionPeopleNum] = useState('5');
+  const [newUnionCUAmount, setNewUnionCUAmount] = useState('50');
   const [isChecked, setIsChecked] = useState(false);
 
+  const ethDeposit = String(
+    (parseFloat(newUnionPeopleNum) * parseFloat(newUnionCUAmount)) / 10000,
+  );
+
   const canMakeUnion = isChecked && newUnionName !== '';
+
+  const clearState = () => {
+    setNewUnionName('');
+    setIsChecked(false);
+    setNewUnionPeopleNum('5');
+    setNewUnionCUAmount('50');
+  };
+
+  const handlePeopleSelect = e => {
+    setNewUnionPeopleNum(e.target.value);
+  };
+  const handleNewUnionCUAmountChange = e => {
+    setNewUnionCUAmount(e.target.value);
+  };
+
   return (
     <div className="overflow-auto scrollbar-hide">
       <Dialog
         open={isOpen}
         onClose={() => {
           handleModalClose();
-          setNewUnionName('');
-          setIsChecked(false);
+          clearState();
         }}
       >
         <div
@@ -33,8 +53,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
             className="cursor-pointer"
             onClick={() => {
               handleModalClose();
-              setNewUnionName('');
-              setIsChecked(false);
+              clearState();
             }}
           >
             <CloseIcon className="fill-white hover:fill-[#E6E6E6]" />
@@ -51,9 +70,45 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
             />
           </div>
           <div className="my-4 px-8 py-4 bg-[#3c3742] rounded-lg">
-            <p className="text-white">{`총 인원 수:`}</p>
-            <p className="text-white">{`월별 입금량 (CU):`}</p>
-            <p className="text-white">{`보증금 (ETH):`}</p>
+            <div className="flex justify-between items-center">
+              <p className="text-white">{`유니온 인원 수:`}</p>
+
+              <select
+                onChange={handlePeopleSelect}
+                value={newUnionPeopleNum}
+                className="h-9 border-0 text-sm mb-2 rounded-lg "
+              >
+                <option className="text-sm" value="2">
+                  2 명
+                </option>
+                <option className="text-sm" value="3">
+                  3 명
+                </option>
+                <option className="text-sm" value="4">
+                  4 명
+                </option>
+                <option className="text-sm" value="5">
+                  5 명
+                </option>
+              </select>
+            </div>
+            <div className="my-2 flex justify-between items-center">
+              <p className="text-white">{`월별 입금량 (CU):`}</p>
+              <input
+                className="w-32 h-8 border-0 text-sm text-end py-2 px-4 rounded-lg outline-0"
+                type="string"
+                value={newUnionCUAmount}
+                onChange={handleNewUnionCUAmountChange}
+              />
+            </div>
+            <div className="mt-4 flex justify-between items-center">
+              <p className="text-white">{`총 보증금 (ETH):`}</p>
+              <input
+                className="w-32 h-8 border-0 text-sm text-end py-2 px-4 rounded-lg outline-0"
+                value={ethDeposit}
+                readOnly
+              />
+            </div>
           </div>
           <div className="flex justify-end items-center">
             <p className="text-white text-xs">
@@ -65,6 +120,12 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
             />
           </div>
           <button
+            onClick={() => {
+              console.log(newUnionName);
+              console.log(newUnionPeopleNum);
+              console.log(newUnionCUAmount);
+              console.log(ethDeposit);
+            }}
             type="button"
             className={`text-white font-semibold mb-4 mt-2 ${
               canMakeUnion ? buttonAbleStyle : buttonDisableStyle
