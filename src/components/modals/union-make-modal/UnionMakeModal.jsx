@@ -15,8 +15,9 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   const [newUnionCUAmount, setNewUnionCUAmount] = useState('50');
   const [isChecked, setIsChecked] = useState(false);
 
-  const ethDeposit = String(
-    (parseFloat(newUnionPeopleNum) * parseFloat(newUnionCUAmount)) / 10000,
+  const ethDeposit = String(parseFloat(newUnionCUAmount) / 10000);
+  const cuMonthAmount = String(
+    parseFloat(newUnionCUAmount) / parseInt(newUnionPeopleNum),
   );
 
   const canMakeUnion = isChecked && newUnionName !== '';
@@ -76,7 +77,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
               <select
                 onChange={handlePeopleSelect}
                 value={newUnionPeopleNum}
-                className="h-9 border-0 text-sm mb-2 rounded-lg "
+                className="h-9 border-0 text-sm rounded-lg "
               >
                 <option className="text-sm" value="2">
                   2 명
@@ -92,14 +93,19 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
                 </option>
               </select>
             </div>
-            <div className="my-2 flex justify-between items-center">
-              <p className="text-white">{`월별 입금량 (CU):`}</p>
+            <div className="mt-6 mb-2 flex justify-between items-center">
+              <p className="text-white">{`총 입금량 (CU):`}</p>
               <input
                 className="w-32 h-8 border-0 text-sm text-end py-2 px-4 rounded-lg outline-0"
                 type="string"
                 value={newUnionCUAmount}
                 onChange={handleNewUnionCUAmountChange}
               />
+            </div>
+            <div>
+              <p className="text-[#AD93CB] text-xs text-end mr-3">
+                월 입금량: {cuMonthAmount}CU
+              </p>
             </div>
             <div className="mt-4 flex justify-between items-center">
               <p className="text-white">{`총 보증금 (ETH):`}</p>
