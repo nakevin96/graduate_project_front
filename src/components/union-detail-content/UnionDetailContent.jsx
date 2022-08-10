@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
+import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
+import { useLoading } from '../../context';
 
 const UNION_TOTAL_NUM = [1, 2, 3, 4, 5];
 const UnionCanEnter = [false, true, true, false, false];
@@ -56,6 +58,7 @@ const MakeUnionDetailCard = ({ unionNum, canEnter, unionId }) => {
 };
 
 const UnionDetailContent = ({ unionId }) => {
+  const { loadingScreen, setLoadingScreen } = useLoading();
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
       <p className="text-white text-xl py-4">{`[${unionId}] 유니온에서 참여하실 순번을 정해주세요`}</p>
@@ -77,6 +80,10 @@ const UnionDetailContent = ({ unionId }) => {
           })}
         </ul>
       </div>
+      <TransactionProceedingModal
+        isOpen={loadingScreen}
+        handleModalClose={() => setLoadingScreen(false)}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Checkbox, Dialog } from '@mui/material';
 import { CustomInput } from './custom-input';
 import CloseIcon from '../../../assets/images/close.svg?component';

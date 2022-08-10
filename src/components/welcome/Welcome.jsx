@@ -1,7 +1,11 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PersonAnimation from '../person-animation/PersonAnimation';
+import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
+import { useLoading } from '../../context';
 
 const Welcome = () => {
+  const { loadingScreen, setLoadingScreen } = useLoading();
   return (
     <div className="overflow-auto scrollbar-hide flex w-full justify-center items-center">
       <div className="flex flex-col wf:flex-row items-center justify-between md:p-20 py-12 px-4">
@@ -30,6 +34,10 @@ const Welcome = () => {
           <PersonAnimation />
         </div>
       </div>
+      <TransactionProceedingModal
+        isOpen={loadingScreen}
+        handleModalClose={() => setLoadingScreen(false)}
+      />
     </div>
   );
 };

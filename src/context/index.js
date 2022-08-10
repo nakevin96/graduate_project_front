@@ -3,7 +3,15 @@ import {
   useWalletBalance,
   useUnion,
   useSwap,
+  useLoading,
   TransactionProvider,
 } from './TransactionContext';
 
-export { useWallet, useWalletBalance, useUnion, useSwap, TransactionProvider };
+export {
+  useWallet,
+  useWalletBalance,
+  useUnion,
+  useSwap,
+  useLoading,
+  TransactionProvider,
+};

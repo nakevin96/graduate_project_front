@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSwap, useWallet } from '../../context';
+import { useSwap, useWallet, useLoading } from '../../context';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
@@ -9,10 +9,12 @@ import EthIcon from '../../assets/images/eth_logo.svg?component';
 import { CustomInput } from './custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
+import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 
 const SwapContent = () => {
   const { connectedAccount } = useWallet();
   const { ethToCuSwap, cuToEthSwap } = useSwap();
+  const { loadingScreen, setLoadingScreen } = useLoading();
   const [isSwapHover, setIsSwapHover] = useState(false);
   const [ethInput, setEthInput] = useState('0.0');
   const [cuInput, setCuInput] = useState('0.0');
@@ -159,6 +161,10 @@ const SwapContent = () => {
                 </div>
               )}
             </div>
+            <TransactionProceedingModal
+              isOpen={loadingScreen}
+              handleModalClose={() => setLoadingScreen(false)}
+            />
           </div>
         </div>
       </div>

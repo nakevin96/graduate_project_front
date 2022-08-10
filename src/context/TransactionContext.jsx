@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ethers, utils } from 'ethers';
 import {
   CUTokenABI,
@@ -11,6 +17,7 @@ const WalletContext = createContext();
 const WalletBalanceContext = createContext();
 const UnionContext = createContext();
 const SwapContext = createContext();
+const TransactionLoadingContext = createContext();
 
 export function useWallet() {
   return useContext(WalletContext);
@@ -28,6 +35,10 @@ export function useSwap() {
   return useContext(SwapContext);
 }
 
+export function useLoading() {
+  return useContext(TransactionLoadingContext);
+}
+
 const { ethereum } = window;
 
 const getCUTokenContract = () => {
@@ -39,7 +50,7 @@ const getCUTokenContract = () => {
     signer,
   );
 
-  return cuTokenContract;
+  return [cuTokenContract, provider];
 };
 
 const getSwapContract = () => {
@@ -47,7 +58,22 @@ const getSwapContract = () => {
   const signer = provider.getSigner();
   const swapContract = new ethers.Contract(SwapAddress, SwapABI, signer);
 
-  return swapContract;
+  return [swapContract, provider];
+};
+
+const isTransactionMined = async (
+  transactionHash,
+  provider,
+  changeLoadingStatus,
+) => {
+  const txReceipt = await provider.getTransactionReceipt(transactionHash);
+  if (txReceipt && txReceipt.blockNumber) {
+    changeLoadingStatus(false);
+  } else {
+    window.setTimeout(() => {
+      isTransactionMined(transactionHash, provider, changeLoadingStatus);
+    }, 1000);
+  }
 };
 
 export const TransactionProvider = ({ children }) => {
@@ -55,7 +81,17 @@ export const TransactionProvider = ({ children }) => {
   const [ethBalance, setEthBalance] = useState('0.0');
   const [cuBalance, setCuBalance] = useState('0.0');
   const [unionID, setUnionID] = useState(null);
+  const [loadingScreen, setLoadingScreen] = useState(false);
   const cuBalanceRef = useRef(0);
+
+  useEffect(() => {
+    if (loadingScreen) {
+      console.log('loading...');
+    } else {
+      console.log('contract end');
+    }
+  }, [loadingScreen]);
+
   const connectWallet = async () => {
     try {
       if (!ethereum) {
@@ -64,9 +100,16 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
+      const accounts = await ethereum
+        .request({
+          method: 'wallet_requestPermissions',
+          params: [
+            {
+              eth_accounts: {},
+            },
+          ],
+        })
+        .then(() => ethereum.request({ method: 'eth_requestAccounts' }));
 
       setConnectedAccount(accounts[0]);
     } catch (error) {
@@ -84,7 +127,7 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const contract = getCUTokenContract();
+      const [contract, cuTokenProvider] = getCUTokenContract();
       const balanceData = await contract.balanceOf(connectedAccount);
       const CuBalance = parseInt(balanceData._hex) / 10 ** 18;
       cuBalanceRef.current = CuBalance;
@@ -104,8 +147,16 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const contract = getSwapContract();
-      const save = await contract.buy({ value: utils.parseEther(ethAmount) });
+      const [contract, swapProvider] = getSwapContract();
+      const transaction = await contract.buy({
+        value: utils.parseEther(ethAmount),
+      });
+      setLoadingScreen(true);
+      await isTransactionMined(
+        transaction.hash,
+        swapProvider,
+        setLoadingScreen,
+      );
     } catch (error) {
       console.log(error);
 
@@ -121,7 +172,7 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const cuContract = getCUTokenContract();
+      const [cuContract, cuTokenProvider] = getCUTokenContract();
       const allowance = await cuContract.allowance(
         connectedAccount,
         SwapAddress,
@@ -133,8 +184,14 @@ export const TransactionProvider = ({ children }) => {
       }
       const cuSwapAmount = (cuAmount * 1e18).toString();
 
-      const swapContract = getSwapContract();
-      await swapContract.sell(cuSwapAmount);
+      const [swapContract, swapProvider] = getSwapContract();
+      const transaction = await swapContract.sell(cuSwapAmount);
+      setLoadingScreen(true);
+      await isTransactionMined(
+        transaction.hash,
+        swapProvider,
+        setLoadingScreen,
+      );
     } catch (error) {
       console.log(error);
 
@@ -151,14 +208,20 @@ export const TransactionProvider = ({ children }) => {
         return;
       }
 
-      const cuContract = getCUTokenContract();
+      const [cuContract, cuTokenProvider] = getCUTokenContract();
       await getCuBalance();
-      await cuContract.approve(
+      const transaction = await cuContract.approve(
         SwapAddress,
         (cuBalanceRef.current * 1e18).toString(),
         {
           from: connectedAccount,
         },
+      );
+      setLoadingScreen(true);
+      await isTransactionMined(
+        transaction.hash,
+        cuTokenProvider,
+        setLoadingScreen,
       );
     } catch (error) {
       console.log(error);
@@ -170,6 +233,7 @@ export const TransactionProvider = ({ children }) => {
   const disconnectWallet = async () => {
     setConnectedAccount('');
   };
+
   const getEthBalance = async () => {
     try {
       if (!ethereum) {
@@ -199,7 +263,11 @@ export const TransactionProvider = ({ children }) => {
           <SwapContext.Provider
             value={{ ethToCuSwap, cuToEthSwap, approveToken }}
           >
-            {children}
+            <TransactionLoadingContext.Provider
+              value={{ loadingScreen, setLoadingScreen }}
+            >
+              {children}
+            </TransactionLoadingContext.Provider>
           </SwapContext.Provider>
         </UnionContext.Provider>
       </WalletBalanceContext.Provider>
