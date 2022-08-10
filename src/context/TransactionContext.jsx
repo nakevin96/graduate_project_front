@@ -81,7 +81,7 @@ export const TransactionProvider = ({ children }) => {
   const [ethBalance, setEthBalance] = useState('0.0');
   const [cuBalance, setCuBalance] = useState('0.0');
   const [unionID, setUnionID] = useState(null);
-  const [loadingScreen, setLoadingScreen] = useState(true);
+  const [loadingScreen, setLoadingScreen] = useState(false);
   const cuBalanceRef = useRef(0);
 
   const connectWallet = async () => {
