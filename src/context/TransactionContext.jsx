@@ -72,7 +72,7 @@ const isTransactionMined = async (
   } else {
     window.setTimeout(() => {
       isTransactionMined(transactionHash, provider, changeLoadingStatus);
-    }, 1000);
+    }, 2500);
   }
 };
 
@@ -81,16 +81,8 @@ export const TransactionProvider = ({ children }) => {
   const [ethBalance, setEthBalance] = useState('0.0');
   const [cuBalance, setCuBalance] = useState('0.0');
   const [unionID, setUnionID] = useState(null);
-  const [loadingScreen, setLoadingScreen] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const cuBalanceRef = useRef(0);
-
-  useEffect(() => {
-    if (loadingScreen) {
-      console.log('loading...');
-    } else {
-      console.log('contract end');
-    }
-  }, [loadingScreen]);
 
   const connectWallet = async () => {
     try {
