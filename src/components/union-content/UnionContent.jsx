@@ -1,21 +1,62 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UnionCompactCard } from '../card/union-compact-card';
 import CardPlusIcon from '../../assets/images/card_plus.svg?component';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading } from '../../context';
+import { useLoading, useWallet } from '../../context';
 
 const UnionContent = () => {
   const [startCardIdx, setStartCardIdx] = useState(0);
   const [endCardIdx, setEndCardIdx] = useState(8);
   const [isCardEnd, setIsCardEnd] = useState(false);
+  const [isIndividual, setIsIndividual] = useState(false);
+  const { connectedAccount } = useWallet();
   const { loadingScreen, setLoadingScreen } = useLoading();
+
+  useEffect(() => console.log(isIndividual), [isIndividual]);
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
+      <div className="my-4 flex rounded-full bg-[#372F47]">
+        <div
+          onClick={() => setIsIndividual(false)}
+          className={`px-4 py-2 cursor-pointer rounded-full ${
+            !isIndividual && 'bg-[#B8ADD2]'
+          } hover:opacity-50`}
+        >
+          <p
+            className={`${
+              !isIndividual ? 'text-[#372F47]' : 'text-[#B8ADD2]'
+            } font-bold`}
+          >
+            전체 유니온
+          </p>
+        </div>
+        <div
+          onClick={() => {
+            if (connectedAccount === '') {
+              alert('지갑을 먼저 연결해주세요');
+            } else {
+              setIsIndividual(true);
+            }
+          }}
+          className={`px-4 py-2 cursor-pointer rounded-full ${
+            isIndividual && 'bg-[#B8ADD2]'
+          } hover:opacity-50`}
+        >
+          <p
+            className={`${
+              isIndividual ? 'text-[#372F47]' : 'text-[#B8ADD2]'
+            } font-bold`}
+          >
+            내가 참여한 유니온
+          </p>
+        </div>
+      </div>
       <div className="flex justify-center items-center flex-wrap content-center">
         <UnionCompactCard
           callStartIdx={startCardIdx}
           callEndIdx={endCardIdx}
           tellCardEnd={setIsCardEnd}
+          isIndividual={isIndividual}
         />
       </div>
       {!isCardEnd && (

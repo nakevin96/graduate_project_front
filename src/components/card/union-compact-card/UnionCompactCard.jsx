@@ -46,7 +46,12 @@ const testArray = [
   '유니온 이름 27',
 ];
 
-const UnionCompactCard = ({ callStartIdx, callEndIdx, tellCardEnd }) => {
+const UnionCompactCard = ({
+  callStartIdx,
+  callEndIdx,
+  tellCardEnd,
+  isIndividual,
+}) => {
   const [isUnionMakeModalOpen, setIsUnionMakeModalOpen] = useState(false);
   const [renderCardList, setRenderCardList] = useState([]);
   const [cardEndIdx, setCardEndIdx] = useState(26);
