@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { UnionCompactCard } from '../card/union-compact-card';
 import CardPlusIcon from '../../assets/images/card_plus.svg?component';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { useLoading, useWallet } from '../../context';
+import { MakeUnionCompleteModal } from '../modals/make-union-complete-modal';
 
 const UnionContent = () => {
   const [startCardIdx, setStartCardIdx] = useState(0);
@@ -10,9 +11,9 @@ const UnionContent = () => {
   const [isCardEnd, setIsCardEnd] = useState(false);
   const [isIndividual, setIsIndividual] = useState(false);
   const { connectedAccount } = useWallet();
-  const { loadingScreen, setLoadingScreen } = useLoading();
+  const { loadingScreen, setLoadingScreen, makeUnionDone, setMakeUnionDone } =
+    useLoading();
 
-  useEffect(() => console.log(isIndividual), [isIndividual]);
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
       <div className="my-4 flex rounded-full bg-[#372F47]">
@@ -72,6 +73,10 @@ const UnionContent = () => {
       <TransactionProceedingModal
         isOpen={loadingScreen}
         handleModalClose={() => setLoadingScreen(false)}
+      />
+      <MakeUnionCompleteModal
+        isOpen={makeUnionDone}
+        handleModalClose={() => setMakeUnionDone(false)}
       />
     </div>
   );

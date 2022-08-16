@@ -8,7 +8,6 @@ import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
 } from '../../../assets/colors';
-import {TransactionProceedingModal} from "../../modals/transaction-proceeding-modal";
 
 const useDetectOutsideClick = (ref, setDropdown) => {
   useEffect(() => {

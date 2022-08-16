@@ -6,6 +6,7 @@ import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
 } from '../../../assets/colors';
+import { useUnion } from '../../../context';
 
 const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
@@ -14,6 +15,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   const [newUnionPeopleNum, setNewUnionPeopleNum] = useState('5');
   const [newUnionCUAmount, setNewUnionCUAmount] = useState('50');
   const [isChecked, setIsChecked] = useState(false);
+  const { makeNewUnion, getUnionAddressByName } = useUnion();
 
   const ethDeposit = String(parseFloat(newUnionCUAmount) / 10000);
   const cuMonthAmount = String(
@@ -34,6 +36,15 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   };
   const handleNewUnionCUAmountChange = e => {
     setNewUnionCUAmount(e.target.value);
+  };
+  const handleMakeUnionButtonClick = async () => {
+    const newAddress = await makeNewUnion(
+      newUnionPeopleNum,
+      newUnionCUAmount,
+      newUnionName,
+    );
+    clearState();
+    handleModalClose();
   };
 
   return (
@@ -126,12 +137,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
             />
           </div>
           <button
-            onClick={() => {
-              console.log(newUnionName);
-              console.log(newUnionPeopleNum);
-              console.log(newUnionCUAmount);
-              console.log(ethDeposit);
-            }}
+            onClick={handleMakeUnionButtonClick}
             type="button"
             className={`text-white font-semibold mb-4 mt-2 ${
               canMakeUnion ? buttonAbleStyle : buttonDisableStyle

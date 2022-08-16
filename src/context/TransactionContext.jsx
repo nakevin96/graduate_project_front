@@ -1,10 +1,15 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
-import { ethers, utils } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 import {
   CUTokenABI,
   CUTokenAddress,
   SwapABI,
   SwapAddress,
+  UnionFactoryABI,
+  UserParticipationABI,
+  UnionFactoryAddress,
+  UserParticipationAddress,
+  UnionABI,
 } from '../utils/constants';
 
 const WalletContext = createContext();
@@ -55,17 +60,60 @@ const getSwapContract = () => {
   return [swapContract, provider];
 };
 
+const getUnionContract = unionContractAddress => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const unionContract = new ethers.Contract(
+    unionContractAddress,
+    UnionABI,
+    signer,
+  );
+
+  return [unionContract, provider];
+};
+
+const getUnionFactoryContract = () => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const unionFactoryContract = new ethers.Contract(
+    UnionFactoryAddress,
+    UnionFactoryABI,
+    signer,
+  );
+
+  return [unionFactoryContract, provider];
+};
+
+const getUserParticipationContract = () => {
+  const provider = new ethers.providers.Web3Provider(ethereum);
+  const signer = provider.getSigner();
+  const userParticipationContract = new ethers.Contract(
+    UserParticipationAddress,
+    UserParticipationABI,
+    signer,
+  );
+
+  return [userParticipationContract, provider];
+};
+
 const isTransactionMined = async (
   transactionHash,
   provider,
   changeLoadingStatus,
+  makeUnionDoneTrue,
 ) => {
   const txReceipt = await provider.getTransactionReceipt(transactionHash);
   if (txReceipt && txReceipt.blockNumber) {
     changeLoadingStatus(false);
+    makeUnionDoneTrue && makeUnionDoneTrue();
   } else {
     window.setTimeout(() => {
-      isTransactionMined(transactionHash, provider, changeLoadingStatus);
+      isTransactionMined(
+        transactionHash,
+        provider,
+        changeLoadingStatus,
+        makeUnionDoneTrue,
+      );
     }, 2500);
   }
 };
@@ -76,6 +124,7 @@ export const TransactionProvider = ({ children }) => {
   const [cuBalance, setCuBalance] = useState('0.0');
   const [unionID, setUnionID] = useState(null);
   const [loadingScreen, setLoadingScreen] = useState(false);
+  const [makeUnionDone, setMakeUnionDone] = useState(false);
   const cuBalanceRef = useRef(0);
 
   const connectWallet = async () => {
@@ -105,7 +154,11 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
-  const getCuBalance = async () => {
+  const disconnectWallet = async () => {
+    setConnectedAccount('');
+  };
+
+  const getEthBalance = async () => {
     try {
       if (!ethereum) {
         window.open(
@@ -113,18 +166,17 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const [contract, cuTokenProvider] = getCUTokenContract();
-      const balanceData = await contract.balanceOf(connectedAccount);
-      const CuBalance = parseInt(balanceData._hex) / 10 ** 18;
-      cuBalanceRef.current = CuBalance;
-      setCuBalance(CuBalance.toString());
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const balance = await provider.getBalance(connectedAccount);
+      setEthBalance(ethers.utils.formatEther(balance));
     } catch (error) {
       console.log(error);
 
-      throw new Error('No ethereum object');
+      throw new Error('No ethereum object.');
     }
   };
 
+  // about CUToken & CUTokenSwap
   const ethToCuSwap = async ethAmount => {
     try {
       if (!ethereum) {
@@ -142,8 +194,10 @@ export const TransactionProvider = ({ children }) => {
         transaction.hash,
         swapProvider,
         setLoadingScreen,
+        null,
       );
     } catch (error) {
+      setLoadingScreen(false);
       console.log(error);
 
       throw new Error('No ethereum object');
@@ -177,7 +231,29 @@ export const TransactionProvider = ({ children }) => {
         transaction.hash,
         swapProvider,
         setLoadingScreen,
+        null,
       );
+    } catch (error) {
+      setLoadingScreen(false);
+      console.log(error);
+
+      throw new Error('No ethereum object');
+    }
+  };
+
+  const getCuBalance = async () => {
+    try {
+      if (!ethereum) {
+        window.open(
+          'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=ko',
+        );
+        return;
+      }
+      const [contract, cuTokenProvider] = getCUTokenContract();
+      const balanceData = await contract.balanceOf(connectedAccount);
+      const CuBalance = parseInt(balanceData._hex) / 10 ** 18;
+      cuBalanceRef.current = CuBalance;
+      setCuBalance(CuBalance.toString());
     } catch (error) {
       console.log(error);
 
@@ -208,19 +284,18 @@ export const TransactionProvider = ({ children }) => {
         transaction.hash,
         cuTokenProvider,
         setLoadingScreen,
+        null,
       );
     } catch (error) {
+      setLoadingScreen(false);
       console.log(error);
 
       throw new Error('No ethereum object');
     }
   };
 
-  const disconnectWallet = async () => {
-    setConnectedAccount('');
-  };
-
-  const getEthBalance = async () => {
+  //about UnionFactory
+  const makeNewUnion = async (unionPeopleNum, unionTotalAmount, unionName) => {
     try {
       if (!ethereum) {
         window.open(
@@ -228,13 +303,47 @@ export const TransactionProvider = ({ children }) => {
         );
         return;
       }
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const balance = await provider.getBalance(connectedAccount);
-      setEthBalance(ethers.utils.formatEther(balance));
+      const bigNumTokenTotal = BigNumber.from(unionTotalAmount).mul(
+        BigNumber.from(10).pow(18),
+      );
+      const [unionFactoryContract, provider] = getUnionFactoryContract();
+      const newUnionAddress = await unionFactoryContract.createUnion(
+        CUTokenAddress,
+        BigNumber.from(unionPeopleNum),
+        bigNumTokenTotal,
+        unionName,
+      );
+      setLoadingScreen(true);
+      const handleMakeUnionTrue = () => {
+        setMakeUnionDone(true);
+      };
+      await isTransactionMined(
+        newUnionAddress.hash,
+        provider,
+        setLoadingScreen,
+        handleMakeUnionTrue,
+      );
+      setUnionID(unionName);
+      return newUnionAddress;
+    } catch (error) {
+      setLoadingScreen(false);
+      if (error.error.message === 'execution reverted: UNION_EXISTS') {
+        alert(
+          '중복된 이름의 유니온이 존재합니다.\n 다른 유니온 이름을 입력해주세요.',
+        );
+      }
+
+      throw new Error(`makeNewUnion is Failed.. (${error})`);
+    }
+  };
+
+  const getUnionAddressByName = async searchUnionName => {
+    try {
+      const [unionFactoryContract, provider] = getUnionFactoryContract();
+      const unionAddress = await unionFactoryContract.getUnion(searchUnionName);
+      return unionAddress;
     } catch (error) {
       console.log(error);
-
-      throw new Error('No ethereum object.');
     }
   };
 
@@ -245,12 +354,19 @@ export const TransactionProvider = ({ children }) => {
       <WalletBalanceContext.Provider
         value={{ getEthBalance, getCuBalance, ethBalance, cuBalance }}
       >
-        <UnionContext.Provider value={{ unionID, setUnionID }}>
+        <UnionContext.Provider
+          value={{ unionID, setUnionID, makeNewUnion, getUnionAddressByName }}
+        >
           <SwapContext.Provider
             value={{ ethToCuSwap, cuToEthSwap, approveToken }}
           >
             <TransactionLoadingContext.Provider
-              value={{ loadingScreen, setLoadingScreen }}
+              value={{
+                loadingScreen,
+                setLoadingScreen,
+                makeUnionDone,
+                setMakeUnionDone,
+              }}
             >
               {children}
             </TransactionLoadingContext.Provider>
