@@ -17,6 +17,7 @@ const WalletBalanceContext = createContext();
 const UnionContext = createContext();
 const SwapContext = createContext();
 const TransactionLoadingContext = createContext();
+const UnionFactoryContext = createContext();
 
 export function useWallet() {
   return useContext(WalletContext);
@@ -36,6 +37,10 @@ export function useSwap() {
 
 export function useLoading() {
   return useContext(TransactionLoadingContext);
+}
+
+export function useUnionFactory() {
+  return useContext(UnionFactoryContext);
 }
 
 const { ethereum } = window;
@@ -347,6 +352,17 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const getAllUnionAddress = async () => {
+    try {
+      const [unionFactoryContract, provider] = getUnionFactoryContract();
+      const allAddress = await unionFactoryContract.allUnions(0);
+      console.log(allAddress);
+      return allAddress;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <WalletContext.Provider
       value={{ connectWallet, disconnectWallet, connectedAccount }}
@@ -368,7 +384,9 @@ export const TransactionProvider = ({ children }) => {
                 setMakeUnionDone,
               }}
             >
-              {children}
+              <UnionFactoryContext.Provider value={{ getAllUnionAddress }}>
+                {children}
+              </UnionFactoryContext.Provider>
             </TransactionLoadingContext.Provider>
           </SwapContext.Provider>
         </UnionContext.Provider>

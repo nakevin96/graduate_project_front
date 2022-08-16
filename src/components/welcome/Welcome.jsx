@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PersonAnimation from '../person-animation/PersonAnimation';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading } from '../../context';
+import { useLoading, useUnionFactory } from '../../context';
 
 const Welcome = () => {
   const { loadingScreen, setLoadingScreen } = useLoading();
+  const { getAllUnionAddress } = useUnionFactory();
   return (
     <div className="overflow-auto scrollbar-hide flex w-full justify-center items-center">
       <div className="flex flex-col wf:flex-row items-center justify-between md:p-20 py-12 px-4">
@@ -24,7 +25,10 @@ const Welcome = () => {
                     my-5 bg-[#0ea5e9] rounded-full cursor-pointer hover:bg-[#0284c7]"
           >
             <Link to="/union">
-              <p className="px-24 py-3 text-white text-base font-semibold">
+              <p
+                onClick={getAllUnionAddress}
+                className="px-24 py-3 text-white text-base font-semibold"
+              >
                 유니온 시작하기
               </p>
             </Link>

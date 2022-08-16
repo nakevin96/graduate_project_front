@@ -4,6 +4,7 @@ import {
   useUnion,
   useSwap,
   useLoading,
+  useUnionFactory,
   TransactionProvider,
 } from './TransactionContext';
 
@@ -13,5 +14,6 @@ export {
   useUnion,
   useSwap,
   useLoading,
+  useUnionFactory,
   TransactionProvider,
 };
