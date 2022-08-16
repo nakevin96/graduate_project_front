@@ -1,5 +1,10 @@
 import { Routes, Route } from 'react-router';
-import { TransactionProvider } from './context';
+import {
+  TransactionProvider,
+  WalletProvider,
+  SwapProvider,
+  UnionProvider,
+} from './context';
 import { NotFound } from './pages/not-found';
 import { Home } from './pages/home';
 import { Swap } from './pages/swap';
@@ -9,13 +14,19 @@ import { UnionDetail } from './pages/union/union-detail';
 const App = () => {
   return (
     <TransactionProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/swap" element={<Swap />} />
-        <Route path="/union" element={<Union />} />
-        <Route path="/unionDetail" element={<UnionDetail />} />
-      </Routes>
+      <WalletProvider>
+        <SwapProvider>
+          <UnionProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/swap" element={<Swap />} />
+              <Route path="/union" element={<Union />} />
+              <Route path="/unionDetail" element={<UnionDetail />} />
+            </Routes>
+          </UnionProvider>
+        </SwapProvider>
+      </WalletProvider>
     </TransactionProvider>
   );
 };

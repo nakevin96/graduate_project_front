@@ -73,6 +73,7 @@ const UnionContent = () => {
       <TransactionProceedingModal
         isOpen={loadingScreen}
         handleModalClose={() => setLoadingScreen(false)}
+        disableBackdrop={true}
       />
       <MakeUnionCompleteModal
         isOpen={makeUnionDone}

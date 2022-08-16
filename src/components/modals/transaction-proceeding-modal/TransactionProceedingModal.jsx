@@ -1,15 +1,29 @@
 import { Dialog } from '@mui/material';
 
-const TransactionProceedingModal = ({ isOpen, handleModalClose }) => {
+const TransactionProceedingModal = ({
+  isOpen,
+  handleModalClose,
+  disableBackdrop,
+}) => {
   return (
     <div>
-      <Dialog open={isOpen} onClose={handleModalClose}>
+      <Dialog
+        open={isOpen}
+        onClose={(event, reason) => {
+          if (!disableBackdrop || reason !== 'backdropClick') {
+            handleModalClose();
+          }
+        }}
+      >
         <div className="px-12 py-12 bg-[#27262C] flex flex-col justify-center items-center">
           <p className="mb-2 text-white font-bold text-2xl">
             Transaction이 진행중입니다
           </p>
+          <p className="mt-2 mb-1 text-[#AD93CB] text-xs">
+            창이 닫혀도 Transaction은 진행됩니다...
+          </p>
           <p className="mb-4 text-[#AD93CB] text-xs">
-            (거래가 완료될 때까지 창을 닫지 말아주세요!)
+            메타마스크를 통해 거래내용을 확인하세요
           </p>
           <div role="status">
             <svg

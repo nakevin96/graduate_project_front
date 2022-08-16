@@ -1,19 +1,23 @@
+import { useLoading, TransactionProvider } from './TransactionContext';
 import {
-  useWallet,
+  WalletProvider,
   useWalletBalance,
-  useUnion,
-  useSwap,
-  useLoading,
-  useUnionFactory,
-  TransactionProvider,
-} from './TransactionContext';
+  useWallet,
+  useApprove,
+} from './WalletContext';
+import { SwapProvider, useSwap } from './SwapContext';
+import { UnionProvider, useUnionFactory, useUnion } from './UnionContext';
 
 export {
   useWallet,
   useWalletBalance,
-  useUnion,
-  useSwap,
+  useApprove,
   useLoading,
-  useUnionFactory,
   TransactionProvider,
+  WalletProvider,
+  SwapProvider,
+  useSwap,
+  UnionProvider,
+  useUnionFactory,
+  useUnion,
 };
