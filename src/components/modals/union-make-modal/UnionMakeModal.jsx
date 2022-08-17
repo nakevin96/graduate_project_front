@@ -15,7 +15,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
   const [newUnionPeopleNum, setNewUnionPeopleNum] = useState('5');
   const [newUnionCUAmount, setNewUnionCUAmount] = useState('50');
   const [isChecked, setIsChecked] = useState(false);
-  const { makeNewUnion, getUnionAddressByName } = useUnion();
+  const { unionID, makeNewUnion, getUnionAddressByName } = useUnion();
 
   const ethDeposit = String(parseFloat(newUnionCUAmount) / 10000);
   const cuMonthAmount = String(
@@ -38,7 +38,12 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
     setNewUnionCUAmount(e.target.value);
   };
   const handleMakeUnionButtonClick = async () => {
-    await makeNewUnion(newUnionPeopleNum, newUnionCUAmount, newUnionName);
+    makeNewUnion(newUnionPeopleNum, newUnionCUAmount, newUnionName).then(
+      async () => {
+        const address = await getUnionAddressByName(unionID);
+        console.log(address);
+      },
+    );
     clearState();
     handleModalClose();
   };

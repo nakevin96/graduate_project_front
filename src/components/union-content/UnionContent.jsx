@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { UnionCompactCard } from '../card/union-compact-card';
 import CardPlusIcon from '../../assets/images/card_plus.svg?component';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading, useWallet } from '../../context';
+import { useLoading, useUnionFactory, useWallet } from '../../context';
 import { MakeUnionCompleteModal } from '../modals/make-union-complete-modal';
 
 const UnionContent = () => {
   const [startCardIdx, setStartCardIdx] = useState(0);
-  const [endCardIdx, setEndCardIdx] = useState(8);
+  const [endCardIdx, setEndCardIdx] = useState(4);
   const [isCardEnd, setIsCardEnd] = useState(false);
   const [isIndividual, setIsIndividual] = useState(false);
+  const allUnionsRef = useRef(null);
   const { connectedAccount } = useWallet();
   const { loadingScreen, setLoadingScreen, makeUnionDone, setMakeUnionDone } =
     useLoading();
+
 
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
@@ -54,6 +56,7 @@ const UnionContent = () => {
       </div>
       <div className="flex justify-center items-center flex-wrap content-center">
         <UnionCompactCard
+          totalUnionAddressList={allUnionsRef.current}
           callStartIdx={startCardIdx}
           callEndIdx={endCardIdx}
           tellCardEnd={setIsCardEnd}

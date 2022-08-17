@@ -6,7 +6,12 @@ import {
   useApprove,
 } from './WalletContext';
 import { SwapProvider, useSwap } from './SwapContext';
-import { UnionProvider, useUnionFactory, useUnion } from './UnionContext';
+import {
+  UnionProvider,
+  useUnionFactory,
+  useUnion,
+  getUnionName,
+} from './UnionContext';
 
 export {
   useWallet,
@@ -20,4 +25,5 @@ export {
   UnionProvider,
   useUnionFactory,
   useUnion,
+  getUnionName,
 };

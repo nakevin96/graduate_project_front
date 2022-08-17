@@ -60,6 +60,12 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
+export const getUnionName = async unionAddr => {
+  const { unionContract } = getUnionContract();
+  const unionName = await unionContract.name();
+  return unionName;
+};
+
 export const UnionProvider = ({ children }) => {
   const [unionID, setUnionID] = useState(null);
   const { setLoadingScreen, isTransactionMined, setMakeUnionDone } =
@@ -90,6 +96,7 @@ export const UnionProvider = ({ children }) => {
       setLoadingScreen(true);
       const handleMakeUnionTrue = () => {
         setMakeUnionDone(true);
+        setUnionID(unionName);
       };
       await isTransactionMined(
         newUnionAddress.hash,
@@ -97,7 +104,6 @@ export const UnionProvider = ({ children }) => {
         setLoadingScreen,
         handleMakeUnionTrue,
       );
-      setUnionID(unionName);
       return newUnionAddress;
     } catch (error) {
       setLoadingScreen(false);
@@ -123,8 +129,7 @@ export const UnionProvider = ({ children }) => {
   const getAllUnionAddress = async () => {
     try {
       const { unionFactoryContract } = getUnionFactoryContract();
-      const allAddress = await unionFactoryContract.allUnions(0);
-      console.log(allAddress);
+      const allAddress = await unionFactoryContract.getAllUnions();
       return allAddress;
     } catch (error) {
       console.log(error);
