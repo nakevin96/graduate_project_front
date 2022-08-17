@@ -61,7 +61,7 @@ const getUserParticipationContract = () => {
 };
 
 export const getUnionName = async unionAddr => {
-  const { unionContract } = getUnionContract();
+  const { unionContract } = getUnionContract(unionAddr);
   const unionName = await unionContract.name();
   return unionName;
 };

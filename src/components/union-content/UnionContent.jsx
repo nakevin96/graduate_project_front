@@ -7,14 +7,12 @@ import { MakeUnionCompleteModal } from '../modals/make-union-complete-modal';
 
 const UnionContent = () => {
   const [startCardIdx, setStartCardIdx] = useState(0);
-  const [endCardIdx, setEndCardIdx] = useState(4);
+  const [endCardIdx, setEndCardIdx] = useState(2);
   const [isCardEnd, setIsCardEnd] = useState(false);
   const [isIndividual, setIsIndividual] = useState(false);
-  const allUnionsRef = useRef(null);
   const { connectedAccount } = useWallet();
   const { loadingScreen, setLoadingScreen, makeUnionDone, setMakeUnionDone } =
     useLoading();
-
 
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
@@ -56,8 +54,6 @@ const UnionContent = () => {
       </div>
       <div className="flex justify-center items-center flex-wrap content-center">
         <UnionCompactCard
-          totalUnionAddressList={allUnionsRef.current}
-          callStartIdx={startCardIdx}
           callEndIdx={endCardIdx}
           tellCardEnd={setIsCardEnd}
           isIndividual={isIndividual}
@@ -66,8 +62,7 @@ const UnionContent = () => {
       {!isCardEnd && (
         <CardPlusIcon
           onClick={() => {
-            setStartCardIdx(endCardIdx);
-            setEndCardIdx(endCardIdx + 6);
+            setEndCardIdx(endCardIdx + 2);
           }}
           className="m-10 fill-[#27262C] cursor-pointer hover:fill-[#0284c7]
       transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300"

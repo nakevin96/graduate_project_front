@@ -17,35 +17,42 @@ const MakeUnionCard = ({ cardName }) => {
   );
 };
 
-const UnionCompactCard = ({
-  callStartIdx,
-  callEndIdx,
-  tellCardEnd,
-  isIndividual,
-}) => {
+const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
   const [isUnionMakeModalOpen, setIsUnionMakeModalOpen] = useState(false);
-  const [renderCardList, setRenderCardList] = useState([]);
-  const [cardEndIdx, setCardEndIdx] = useState(26);
+  const [renderUnionAddressList, setRenderUnionAddressList] = useState([]);
+  const [renderUnionNameDict, setRenderUnionNameDict] = useState({});
   const [allUnionAddress, setAllUnionAddress] = useState([]);
   const { connectedAccount } = useWallet();
   const { setUnionID } = useUnion();
   const { getAllUnionAddress } = useUnionFactory();
-  const allUnionNames = useRef([]);
+  // const renderUnionNameDictRef = useRef({});
 
   const handleUnionMakeModalClose = () => {
     setIsUnionMakeModalOpen(false);
   };
 
   useEffect(() => {
+    renderUnionAddressList.map(address => {
+      getUnionName(address).then(data => {
+        setRenderUnionNameDict(prevState => {
+          return { ...prevState, [address]: data };
+        });
+      });
+    });
+  }, [renderUnionAddressList]);
+
+  useEffect(() => {
+    setRenderUnionAddressList(allUnionAddress.slice(0, callEndIdx));
+    if (allUnionAddress.length !== 0 && callEndIdx > allUnionAddress.length) {
+      tellCardEnd(true);
+    }
+  }, [allUnionAddress, callEndIdx]);
+
+  useEffect(() => {
     getAllUnionAddress().then(data => {
       setAllUnionAddress(data);
-      const callList = data.slice(callStartIdx, callEndIdx);
-      setRenderCardList([...renderCardList, ...callList]);
-      if (callEndIdx > cardEndIdx) {
-        tellCardEnd(true);
-      }
     });
-  }, [callStartIdx, callEndIdx, cardEndIdx]);
+  }, []);
 
   return (
     <>
@@ -67,21 +74,21 @@ const UnionCompactCard = ({
         isOpen={isUnionMakeModalOpen}
         handleModalClose={handleUnionMakeModalClose}
       />
-      {renderCardList.map((testName, index) => {
+      {renderUnionAddressList.map((unionAddress, index) => {
         return connectedAccount === '' ? (
           <div
             onClick={() => alert('지갑을 먼저 연결해주세요')}
-            key={testName + index}
+            key={unionAddress + index}
           >
-            <MakeUnionCard cardName={testName} />
+            <MakeUnionCard cardName={renderUnionNameDict[unionAddress]} />
           </div>
         ) : (
           <Link
-            onClick={() => setUnionID(testName)}
+            onClick={() => setUnionID(renderUnionNameDict[unionAddress])}
             to="/unionDetail"
-            key={testName + index}
+            key={unionAddress + index}
           >
-            <MakeUnionCard cardName={testName} />
+            <MakeUnionCard cardName={renderUnionNameDict[unionAddress]} />
           </Link>
         );
       })}
