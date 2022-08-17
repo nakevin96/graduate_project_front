@@ -38,11 +38,7 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
     setNewUnionCUAmount(e.target.value);
   };
   const handleMakeUnionButtonClick = async () => {
-    const newAddress = await makeNewUnion(
-      newUnionPeopleNum,
-      newUnionCUAmount,
-      newUnionName,
-    );
+    await makeNewUnion(newUnionPeopleNum, newUnionCUAmount, newUnionName);
     clearState();
     handleModalClose();
   };

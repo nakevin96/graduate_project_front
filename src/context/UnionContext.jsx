@@ -3,6 +3,7 @@ import { useLoading } from './TransactionContext';
 import { BigNumber, ethers } from 'ethers';
 import {
   CUTokenAddress,
+  SwapAddress,
   UnionABI,
   UnionFactoryABI,
   UnionFactoryAddress,
@@ -82,6 +83,9 @@ export const UnionProvider = ({ children }) => {
         BigNumber.from(unionPeopleNum),
         bigNumTokenTotal,
         unionName,
+        SwapAddress,
+        UserParticipationAddress,
+        UnionFactoryAddress,
       );
       setLoadingScreen(true);
       const handleMakeUnionTrue = () => {
