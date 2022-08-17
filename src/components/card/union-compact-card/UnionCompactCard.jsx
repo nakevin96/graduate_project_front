@@ -50,7 +50,7 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
 
   useEffect(() => {
     getAllUnionAddress().then(data => {
-      setAllUnionAddress(data);
+      setAllUnionAddress([...data].reverse());
     });
   }, []);
 

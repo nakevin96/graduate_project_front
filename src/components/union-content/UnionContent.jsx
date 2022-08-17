@@ -7,7 +7,7 @@ import { MakeUnionCompleteModal } from '../modals/make-union-complete-modal';
 
 const UnionContent = () => {
   const [startCardIdx, setStartCardIdx] = useState(0);
-  const [endCardIdx, setEndCardIdx] = useState(2);
+  const [endCardIdx, setEndCardIdx] = useState(6);
   const [isCardEnd, setIsCardEnd] = useState(false);
   const [isIndividual, setIsIndividual] = useState(false);
   const { connectedAccount } = useWallet();
@@ -62,7 +62,7 @@ const UnionContent = () => {
       {!isCardEnd && (
         <CardPlusIcon
           onClick={() => {
-            setEndCardIdx(endCardIdx + 2);
+            setEndCardIdx(endCardIdx + 4);
           }}
           className="m-10 fill-[#27262C] cursor-pointer hover:fill-[#0284c7]
       transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300"
