@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading, useUnion, getUnionInfo } from '../../context';
+import { useLoading, useUnion, getUnionInfo, useWallet } from '../../context';
 import { BigNumber } from 'ethers';
 
 const unionCardTrueStyle =
@@ -10,12 +10,18 @@ const unionCardTrueStyle =
   'transition ease-in-out delay-50 hover:-translate-y-2 hover:scale-105 duration-300';
 const unionCardFalseStyle =
   'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
+const unionCardParticipateStyle =
+  'p-0.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl';
 
 const MakeUnionDetailCard = ({
   unionNum,
   canEnter,
+  isParticipated,
   unionAddress,
   unionInfo,
+  personalInfo,
+  unionInterest,
+  myAddress,
 }) => {
   const [isUnionNumberSelectedModalOpen, setIsUnionNumberSelectedMModalOpen] =
     useState(false);
@@ -28,22 +34,30 @@ const MakeUnionDetailCard = ({
     Object.keys(unionInfo).length === 0
       ? ''
       : unionInfo.periodicPayment.div(BigNumber.from(10).pow(18)).toString();
+  const unionCanParticipate = canEnter.toNumber() === 0;
 
   const handleUnionNumberSelectedModalClose = () => {
     setIsUnionNumberSelectedMModalOpen(false);
   };
+
   return (
     <div>
       <div
         onClick={() => {
-          if (canEnter === 0) {
+          if (unionCanParticipate && !isParticipated) {
             setIsUnionNumberSelectedMModalOpen(true);
           }
         }}
-        className={canEnter === 0 ? unionCardTrueStyle : unionCardFalseStyle}
+        className={
+          unionCanParticipate
+            ? unionCardTrueStyle
+            : personalInfo.joiner.toLowerCase() === myAddress.toLowerCase()
+            ? unionCardParticipateStyle
+            : unionCardFalseStyle
+        }
       >
         <div className="w-72 h-96 bg-[#27262C] flex flex-col justify-center items-center rounded-xl">
-          {canEnter === 0 ? (
+          {unionCanParticipate ? (
             <div className="w-12 h-12 border-2 rounded-full flex justify-center items-center">
               <span className="text-white">{unionNum}</span>
             </div>
@@ -51,8 +65,24 @@ const MakeUnionDetailCard = ({
             <ExistPerson className="w-12" />
           )}
           <div className="flex flex-col px-6 py-4 w-full">
-            <p className="py-2 w-full text-white text-center">{`총 입금량: ${unionAmount} CU`}</p>
-            <p className="py-2 w-full text-white text-center">{`월 입금량: ${unionPeriodPayment} CU`}</p>
+            <div className="flex justify-evenly">
+              <p className="py-2 w-full text-white text-center">{`총 입금액:`}</p>
+              <p className="py-2 w-full text-white text-center">{`${unionAmount} CU`}</p>
+            </div>
+            <div className="flex justify-evenly">
+              <p className="py-2 w-full text-white text-center">{`월 입금액:`}</p>
+              <p className="py-2 w-full text-white text-center">{`${unionPeriodPayment} CU`}</p>
+            </div>
+            <div className="flex justify-evenly">
+              <p className="py-2 w-full text-white text-center">{`이 율:`}</p>
+              <p className="py-2 w-full text-white text-center">{`${unionInterest} %`}</p>
+            </div>
+            <div className="flex justify-evenly">
+              <p className="py-2 w-full text-white text-center">{`실 지급액:`}</p>
+              <p className="py-2 w-full text-white text-center">{`${
+                (parseFloat(unionAmount) * (100 + unionInterest)) / 100
+              } CU`}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -64,6 +94,8 @@ const MakeUnionDetailCard = ({
         unionInfo={{
           totalAmount: unionAmount,
           periodAmount: unionPeriodPayment,
+          interest: unionInterest,
+          payment: (parseFloat(unionAmount) * (100 + unionInterest)) / 100,
         }}
       />
     </div>
@@ -73,23 +105,25 @@ const MakeUnionDetailCard = ({
 const UnionDetailContent = ({ unionId }) => {
   const [unionAddress, setUnionAddress] = useState('');
   const [unionInfo, setUnionInfo] = useState({});
+  const [renderAgain, setRenderAgain] = useState(false);
   const { loadingScreen, setLoadingScreen } = useLoading();
+  const { connectedAccount } = useWallet();
   const { getUnionAddressByName } = useUnion();
 
   const unionDetailArray =
     Object.keys(unionInfo).length === 0
       ? []
       : Array.from({ length: unionInfo.people.toNumber() }, (v, i) => i + 1);
-
-  const unionCanParticipateArray =
+  const interestArray =
     Object.keys(unionInfo).length === 0
       ? []
-      : unionInfo.participantsList.map(participantInfo =>
-          participantInfo.order.toNumber(),
+      : Array.from(
+          { length: unionInfo.people.toNumber() },
+          (v, i) => 2 * (i + 1) - unionInfo.people.toNumber() - 1,
         );
 
   useEffect(() => {
-    getUnionInfo(unionAddress).then(unionInfo => {
+    getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
       setUnionInfo(unionInfo === undefined ? {} : unionInfo);
     });
   }, [unionAddress]);
@@ -127,6 +161,11 @@ const UnionDetailContent = ({ unionId }) => {
             <span className="sr-only">Loading...</span>
           </div>
         </>
+      ) : unionInfo.isParticipate ? (
+        <>
+          <p className="text-white text-xl py-4">{`[${unionId}] 유니온에 참여해주셔서 감사합니다`}</p>
+          <p className="text-white text-xs">(버튼 들어갈 장소)</p>
+        </>
       ) : (
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 유니온에서 참여하실 순번을 정해주세요`}</p>
@@ -143,10 +182,13 @@ const UnionDetailContent = ({ unionId }) => {
               <li className="m-4" key={value + index}>
                 <MakeUnionDetailCard
                   unionNum={value}
-                  canEnter={unionCanParticipateArray[index]}
-                  unionId={unionId}
+                  canEnter={unionInfo.canEnterList[index]}
+                  isParticipated={unionInfo.isParticipate}
                   unionAddress={unionAddress}
                   unionInfo={unionInfo}
+                  personalInfo={unionInfo.participantsList[index]}
+                  unionInterest={interestArray[index]}
+                  myAddress={connectedAccount}
                 />
               </li>
             );
@@ -155,7 +197,9 @@ const UnionDetailContent = ({ unionId }) => {
       </div>
       <TransactionProceedingModal
         isOpen={loadingScreen}
-        handleModalClose={() => setLoadingScreen(false)}
+        handleModalClose={() => {
+          setLoadingScreen(false);
+        }}
       />
     </div>
   );

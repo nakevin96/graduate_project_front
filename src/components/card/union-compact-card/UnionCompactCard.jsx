@@ -102,16 +102,25 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
             />
           </div>
         ) : (
-          <Link
-            onClick={() => setUnionID(renderUnionNameDict[unionAddress])}
-            to="/unionDetail"
+          <div
+            className={`${
+              renderUnionNameDict !== undefined &&
+              Object.keys(renderUnionNameDict).length !== 0
+                ? 'block'
+                : 'hidden'
+            }`}
             key={unionAddress + index}
           >
-            <MakeUnionCard
-              cardName={renderUnionNameDict[unionAddress]}
-              enterList={renderUnionEnterListDict[unionAddress]}
-            />
-          </Link>
+            <Link
+              onClick={() => setUnionID(renderUnionNameDict[unionAddress])}
+              to="/unionDetail"
+            >
+              <MakeUnionCard
+                cardName={renderUnionNameDict[unionAddress]}
+                enterList={renderUnionEnterListDict[unionAddress]}
+              />
+            </Link>
+          </div>
         );
       })}
     </>

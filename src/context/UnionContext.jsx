@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import { useLoading } from './TransactionContext';
+import { useWallet } from './WalletContext';
 import { BigNumber, ethers } from 'ethers';
 import {
   CUTokenAddress,
@@ -67,19 +68,19 @@ export const getUnionSimpleInfo = async unionAddress => {
   return { name: unionName, enterList: unionEnterList };
 };
 
-export const getUnionInfo = async unionAddress => {
+export const getUnionInfo = async (unionAddress, myAddress) => {
   try {
     if (unionAddress === '') return;
     const { unionContract } = getUnionContract(unionAddress);
     const tmpUnionPeople = await unionContract.people();
     const tmpUnionAllAmount = await unionContract.amount();
     const tmpUnionPeriodicPayment = await unionContract.periodicPayment();
-    const tmpIsParticipate = await unionContract.isParticipate(unionAddress);
-    const tmpCanInList = [];
-
+    const tmpIsParticipate = await unionContract.isParticipate(myAddress);
+    const tmpCanEnterList = await unionContract.getUnionOrder();
+    const tmpParticipantsList = [];
     for (let i = 0; i < tmpUnionPeople; i++) {
-      const tmp = await unionContract.participants(i);
-      tmpCanInList.push(tmp);
+      const tmpParticipant = await unionContract.participants(i);
+      tmpParticipantsList.push(tmpParticipant);
     }
 
     return {
@@ -87,7 +88,8 @@ export const getUnionInfo = async unionAddress => {
       amount: tmpUnionAllAmount,
       periodicPayment: tmpUnionPeriodicPayment,
       isParticipate: tmpIsParticipate,
-      participantsList: tmpCanInList,
+      canEnterList: tmpCanEnterList,
+      participantsList: tmpParticipantsList,
     };
   } catch (error) {
     console.log(error);

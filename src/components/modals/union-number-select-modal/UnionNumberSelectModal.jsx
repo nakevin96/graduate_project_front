@@ -51,6 +51,14 @@ const UnionNumberSelectModal = ({
               <p className="text-white">{`월 입금량:`}</p>
               <p className="text-white">{`${unionInfo.periodAmount} CU`}</p>
             </div>
+            <div className="flex justify-between">
+              <p className="text-white">{`이 율:`}</p>
+              <p className="text-white">{`${unionInfo.interest} %`}</p>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-white">{`실 지급액:`}</p>
+              <p className="text-white">{`${unionInfo.payment} CU`}</p>
+            </div>
           </div>
           <div className="flex justify-end items-center">
             <p className="text-white text-xs">위 내용을 확인했습니다.</p>

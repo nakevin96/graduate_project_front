@@ -27,7 +27,7 @@ const UnionContent = () => {
               !isIndividual ? 'text-[#372F47]' : 'text-[#B8ADD2]'
             } font-bold`}
           >
-            전체 유니온
+            참여 가능 유니온
           </p>
         </div>
         <div
@@ -51,7 +51,9 @@ const UnionContent = () => {
           </p>
         </div>
       </div>
-      <div className="flex justify-center items-center flex-wrap content-center">
+      <div
+        className={`flex justify-center items-center flex-wrap content-center`}
+      >
         <UnionCompactCard
           callEndIdx={endCardIdx}
           tellCardEnd={setIsCardEnd}
