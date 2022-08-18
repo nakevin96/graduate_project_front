@@ -76,7 +76,7 @@ export const getUnionInfo = async unionAddress => {
     const tmpIsParticipate = await unionContract.isParticipate(unionAddress);
     const tmpCanInList = [];
 
-    for (let i=0;i<tmpUnionPeople;i++){
+    for (let i = 0; i < tmpUnionPeople; i++) {
       const tmp = await unionContract.participants(i);
       tmpCanInList.push(tmp);
     }
@@ -86,7 +86,7 @@ export const getUnionInfo = async unionAddress => {
       amount: tmpUnionAllAmount,
       periodicPayment: tmpUnionPeriodicPayment,
       isParticipate: tmpIsParticipate,
-      participantsList : tmpCanInList,
+      participantsList: tmpCanInList,
     };
   } catch (error) {
     console.log(error);
@@ -163,9 +163,36 @@ export const UnionProvider = ({ children }) => {
     }
   };
 
+  const participateToUnion = async (unionAddress, order, cuTotalAmount) => {
+    try {
+      if (unionAddress === '') return;
+      const { unionContract, unionProvider } = getUnionContract(unionAddress);
+      const participateTransaction = await unionContract.participate(order, {
+        value: ethers.utils.parseEther(
+          String(parseFloat(cuTotalAmount) / 10 ** 4),
+        ),
+      });
+      setLoadingScreen(true);
+      await isTransactionMined(
+        participateTransaction.hash,
+        unionProvider,
+        setLoadingScreen,
+        null,
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <UnionContext.Provider
-      value={{ unionID, setUnionID, makeNewUnion, getUnionAddressByName }}
+      value={{
+        unionID,
+        setUnionID,
+        makeNewUnion,
+        getUnionAddressByName,
+        participateToUnion,
+      }}
     >
       <UnionFactoryContext.Provider value={{ getAllUnionAddress }}>
         {children}

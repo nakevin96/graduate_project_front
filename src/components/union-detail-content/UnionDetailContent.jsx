@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
@@ -11,7 +11,12 @@ const unionCardTrueStyle =
 const unionCardFalseStyle =
   'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
 
-const MakeUnionDetailCard = ({ unionNum, canEnter, unionId, unionInfo }) => {
+const MakeUnionDetailCard = ({
+  unionNum,
+  canEnter,
+  unionAddress,
+  unionInfo,
+}) => {
   const [isUnionNumberSelectedModalOpen, setIsUnionNumberSelectedMModalOpen] =
     useState(false);
 
@@ -54,8 +59,12 @@ const MakeUnionDetailCard = ({ unionNum, canEnter, unionId, unionInfo }) => {
       <UnionNumberSelectModal
         isOpen={isUnionNumberSelectedModalOpen}
         handleModalClose={handleUnionNumberSelectedModalClose}
-        unionName={unionId}
         unionNumber={unionNum}
+        unionAddress={unionAddress}
+        unionInfo={{
+          totalAmount: unionAmount,
+          periodAmount: unionPeriodPayment,
+        }}
       />
     </div>
   );
@@ -136,6 +145,7 @@ const UnionDetailContent = ({ unionId }) => {
                   unionNum={value}
                   canEnter={unionCanParticipateArray[index]}
                   unionId={unionId}
+                  unionAddress={unionAddress}
                   unionInfo={unionInfo}
                 />
               </li>
