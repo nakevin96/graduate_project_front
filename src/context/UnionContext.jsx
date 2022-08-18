@@ -60,10 +60,31 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
-export const getUnionName = async unionAddr => {
-  const { unionContract } = getUnionContract(unionAddr);
+export const getUnionName = async unionAddress => {
+  const { unionContract } = getUnionContract(unionAddress);
   const unionName = await unionContract.name();
   return unionName;
+};
+
+export const getUnionInfo = async unionAddress => {
+  try {
+    if (unionAddress === '') return;
+    const { unionContract } = getUnionContract(unionAddress);
+    const tmpUnionPeople = await unionContract.people();
+    const tmpUnionAllAmount = await unionContract.amount();
+    const tmpUnionPeriodicPayment = await unionContract.periodicPayment();
+    const tmpIsParticipate = await unionContract.isParticipate(unionAddress);
+    const tmpCanInList = [];
+
+    return {
+      people: tmpUnionPeople,
+      amount: tmpUnionAllAmount,
+      periodicPayment: tmpUnionPeriodicPayment,
+      isParticipate: tmpIsParticipate,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const UnionProvider = ({ children }) => {

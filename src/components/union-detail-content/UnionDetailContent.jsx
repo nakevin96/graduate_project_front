@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading } from '../../context';
+import { useLoading, useUnion, getUnionInfo } from '../../context';
 
 const UNION_TOTAL_NUM = [1, 2, 3, 4, 5];
 const UnionCanEnter = [false, true, true, false, false];
@@ -58,7 +58,27 @@ const MakeUnionDetailCard = ({ unionNum, canEnter, unionId }) => {
 };
 
 const UnionDetailContent = ({ unionId }) => {
+  const [unionAddress, setUnionAddress] = useState('');
+  const [unionInfo, setUnionInfo] = useState({});
   const { loadingScreen, setLoadingScreen } = useLoading();
+  const { getUnionAddressByName } = useUnion();
+
+  const unionDetailArray =
+    unionInfo === undefined || Object.keys(unionInfo).length === 0
+      ? []
+      : Array.from({ length: unionInfo.people.toNumber() }, (v, i) => i + 1);
+
+  useEffect(() => {
+    getUnionInfo(unionAddress).then(unionInfo => {
+      setUnionInfo(unionInfo);
+    });
+  }, [unionAddress]);
+
+  useEffect(() => {
+    getUnionAddressByName(unionId).then(address => {
+      setUnionAddress(() => address);
+    });
+  }, []);
   return (
     <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
       <p className="text-white text-xl py-4">{`[${unionId}] 유니온에서 참여하실 순번을 정해주세요`}</p>
@@ -67,7 +87,7 @@ const UnionDetailContent = ({ unionId }) => {
       </p>
       <div className="px-20 py-16 w-5/6">
         <ul className="flex flex-wrap justify-center items-center">
-          {UNION_TOTAL_NUM.map((value, index) => {
+          {unionDetailArray.map((value, index) => {
             return (
               <li className="m-4" key={value + index}>
                 <MakeUnionDetailCard

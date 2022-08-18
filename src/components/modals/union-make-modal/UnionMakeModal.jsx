@@ -86,17 +86,17 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
                 value={newUnionPeopleNum}
                 className="h-9 border-0 text-sm rounded-lg "
               >
-                <option className="text-sm" value="2">
-                  2 명
-                </option>
                 <option className="text-sm" value="3">
                   3 명
                 </option>
-                <option className="text-sm" value="4">
-                  4 명
-                </option>
                 <option className="text-sm" value="5">
                   5 명
+                </option>
+                <option className="text-sm" value="7">
+                  7 명
+                </option>
+                <option className="text-sm" value="9">
+                  9 명
                 </option>
               </select>
             </div>

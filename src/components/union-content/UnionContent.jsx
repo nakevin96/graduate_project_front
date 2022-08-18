@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { UnionCompactCard } from '../card/union-compact-card';
 import CardPlusIcon from '../../assets/images/card_plus.svg?component';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading, useUnionFactory, useWallet } from '../../context';
+import { useLoading, useWallet } from '../../context';
 import { MakeUnionCompleteModal } from '../modals/make-union-complete-modal';
 
 const UnionContent = () => {
-  const [startCardIdx, setStartCardIdx] = useState(0);
   const [endCardIdx, setEndCardIdx] = useState(6);
   const [isCardEnd, setIsCardEnd] = useState(false);
   const [isIndividual, setIsIndividual] = useState(false);
