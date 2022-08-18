@@ -76,11 +76,17 @@ export const getUnionInfo = async unionAddress => {
     const tmpIsParticipate = await unionContract.isParticipate(unionAddress);
     const tmpCanInList = [];
 
+    for (let i=0;i<tmpUnionPeople;i++){
+      const tmp = await unionContract.participants(i);
+      tmpCanInList.push(tmp);
+    }
+
     return {
       people: tmpUnionPeople,
       amount: tmpUnionAllAmount,
       periodicPayment: tmpUnionPeriodicPayment,
       isParticipate: tmpIsParticipate,
+      participantsList : tmpCanInList,
     };
   } catch (error) {
     console.log(error);
