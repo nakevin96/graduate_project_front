@@ -3,9 +3,7 @@ import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { useLoading, useUnion, getUnionInfo } from '../../context';
-
-const UNION_TOTAL_NUM = [1, 2, 3, 4, 5];
-const UnionCanEnter = [false, true, true, false, false];
+import { BigNumber } from 'ethers';
 
 const unionCardTrueStyle =
   'p-0.5 bg-gradient-to-r from-[#603dbf] via-[#69a2ff] to-[#7f0ee6] rounded-xl cursor-pointer ' +
@@ -13,9 +11,18 @@ const unionCardTrueStyle =
 const unionCardFalseStyle =
   'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
 
-const MakeUnionDetailCard = ({ unionNum, canEnter, unionId, total }) => {
+const MakeUnionDetailCard = ({ unionNum, canEnter, unionId, unionInfo }) => {
   const [isUnionNumberSelectedModalOpen, setIsUnionNumberSelectedMModalOpen] =
     useState(false);
+
+  const unionAmount =
+    Object.keys(unionInfo).length === 0
+      ? ''
+      : unionInfo.amount.div(BigNumber.from(10).pow(18)).toString();
+  const unionPeriodPayment =
+    Object.keys(unionInfo).length === 0
+      ? ''
+      : unionInfo.periodicPayment.div(BigNumber.from(10).pow(18)).toString();
 
   const handleUnionNumberSelectedModalClose = () => {
     setIsUnionNumberSelectedMModalOpen(false);
@@ -39,11 +46,8 @@ const MakeUnionDetailCard = ({ unionNum, canEnter, unionId, total }) => {
             <ExistPerson className="w-12" />
           )}
           <div className="flex flex-col px-6 py-4 w-full">
-            <p className="py-2 w-full text-white test-start">총 입금량:</p>
-            <p className="py-2 w-full text-white test-start">월 입금량:</p>
-            <p className="py-2 w-full text-white test-start">실 지급량:</p>
-            <p className="py-2 w-full text-white test-start">적용 이율:</p>
-            <p className="py-2 w-full text-white test-start">실 이자:</p>
+            <p className="py-2 w-full text-white text-center">{`총 입금량: ${unionAmount} CU`}</p>
+            <p className="py-2 w-full text-white text-center">{`월 입금량: ${unionPeriodPayment} CU`}</p>
           </div>
         </div>
       </div>
@@ -64,12 +68,12 @@ const UnionDetailContent = ({ unionId }) => {
   const { getUnionAddressByName } = useUnion();
 
   const unionDetailArray =
-    unionInfo === undefined || Object.keys(unionInfo).length === 0
+    Object.keys(unionInfo).length === 0
       ? []
       : Array.from({ length: unionInfo.people.toNumber() }, (v, i) => i + 1);
 
   const unionCanParticipateArray =
-    unionInfo === undefined || Object.keys(unionInfo).length === 0
+    Object.keys(unionInfo).length === 0
       ? []
       : unionInfo.participantsList.map(participantInfo =>
           participantInfo.order.toNumber(),
@@ -77,7 +81,7 @@ const UnionDetailContent = ({ unionId }) => {
 
   useEffect(() => {
     getUnionInfo(unionAddress).then(unionInfo => {
-      setUnionInfo(unionInfo);
+      setUnionInfo(unionInfo === undefined ? {} : unionInfo);
     });
   }, [unionAddress]);
 
@@ -87,8 +91,12 @@ const UnionDetailContent = ({ unionId }) => {
     });
   }, []);
   return (
-    <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
-      {unionInfo === undefined || Object.keys(unionInfo).length === 0 ? (
+    <div
+      className={`w-full ${
+        Object.keys(unionInfo).length === 0 ? 'h-screen' : 'h-full'
+      } px-20 py-16 overflow-hidden bg-union flex flex-col items-center`}
+    >
+      {Object.keys(unionInfo).length === 0 ? (
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 세부 정보 로딩중입니다.. 기다려주세요!`}</p>
           <div role="status">
@@ -128,6 +136,7 @@ const UnionDetailContent = ({ unionId }) => {
                   unionNum={value}
                   canEnter={unionCanParticipateArray[index]}
                   unionId={unionId}
+                  unionInfo={unionInfo}
                 />
               </li>
             );

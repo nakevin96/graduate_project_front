@@ -25,7 +25,6 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
   const { connectedAccount } = useWallet();
   const { setUnionID } = useUnion();
   const { getAllUnionAddress } = useUnionFactory();
-  // const renderUnionNameDictRef = useRef({});
 
   const handleUnionMakeModalClose = () => {
     setIsUnionMakeModalOpen(false);
