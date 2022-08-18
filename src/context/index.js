@@ -10,7 +10,7 @@ import {
   UnionProvider,
   useUnionFactory,
   useUnion,
-  getUnionName,
+  getUnionSimpleInfo,
   getUnionInfo,
 } from './UnionContext';
 
@@ -26,6 +26,6 @@ export {
   UnionProvider,
   useUnionFactory,
   useUnion,
-  getUnionName,
+  getUnionSimpleInfo,
   getUnionInfo,
 };

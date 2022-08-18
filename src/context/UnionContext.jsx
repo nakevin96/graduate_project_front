@@ -60,10 +60,11 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
-export const getUnionName = async unionAddress => {
+export const getUnionSimpleInfo = async unionAddress => {
   const { unionContract } = getUnionContract(unionAddress);
   const unionName = await unionContract.name();
-  return unionName;
+  const unionEnterList = await unionContract.getUnionOrder();
+  return { name: unionName, enterList: unionEnterList };
 };
 
 export const getUnionInfo = async unionAddress => {

@@ -1,18 +1,31 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateUnionIcon from '../../../assets/images/make_union_icon.svg?component';
 import { Link } from 'react-router-dom';
 import { useUnion, useUnionFactory, useWallet } from '../../../context';
 import { UnionMakeModal } from '../../modals/union-make-modal';
-import { getUnionName } from '../../../context';
+import { getUnionSimpleInfo } from '../../../context';
 
-const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex justify-center items-center content-center text-center
+const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex flex-col justify-center items-center content-center text-center
 flex-col rounded-xl union-card border-2 border-neutral-300 transition ease-in-out delay-50 hover:-translate-y-1
 hover:scale-105 duration-300`;
 
-const MakeUnionCard = ({ cardName }) => {
+const MakeUnionCard = ({ cardName, enterList }) => {
   return (
     <div className={unionCardStyle}>
       <span className="text-white text-lg font-bold">{cardName}</span>
+      <div className="flex">
+        {enterList &&
+          enterList.map((enterData, index) => {
+            return (
+              <div
+                className={`w-4 h-4 rounded-full mr-1 mt-2 ${
+                  enterData.toNumber() === 0 ? 'bg-[#4AA8D8]' : 'bg-[#DB4455]'
+                }`}
+                key={index}
+              />
+            );
+          })}
+      </div>
     </div>
   );
 };
@@ -21,6 +34,7 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
   const [isUnionMakeModalOpen, setIsUnionMakeModalOpen] = useState(false);
   const [renderUnionAddressList, setRenderUnionAddressList] = useState([]);
   const [renderUnionNameDict, setRenderUnionNameDict] = useState({});
+  const [renderUnionEnterListDict, setRenderUnionEnterListDict] = useState({});
   const [allUnionAddress, setAllUnionAddress] = useState([]);
   const { connectedAccount } = useWallet();
   const { setUnionID } = useUnion();
@@ -32,9 +46,12 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
 
   useEffect(() => {
     renderUnionAddressList.map(address => {
-      getUnionName(address).then(data => {
+      getUnionSimpleInfo(address).then(simpleInfo => {
         setRenderUnionNameDict(prevState => {
-          return { ...prevState, [address]: data };
+          return { ...prevState, [address]: simpleInfo.name };
+        });
+        setRenderUnionEnterListDict(prevState => {
+          return { ...prevState, [address]: simpleInfo.enterList };
         });
       });
     });
@@ -79,7 +96,10 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
             onClick={() => alert('지갑을 먼저 연결해주세요')}
             key={unionAddress + index}
           >
-            <MakeUnionCard cardName={renderUnionNameDict[unionAddress]} />
+            <MakeUnionCard
+              cardName={renderUnionNameDict[unionAddress]}
+              enterList={renderUnionEnterListDict[unionAddress]}
+            />
           </div>
         ) : (
           <Link
@@ -87,7 +107,10 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
             to="/unionDetail"
             key={unionAddress + index}
           >
-            <MakeUnionCard cardName={renderUnionNameDict[unionAddress]} />
+            <MakeUnionCard
+              cardName={renderUnionNameDict[unionAddress]}
+              enterList={renderUnionEnterListDict[unionAddress]}
+            />
           </Link>
         );
       })}
