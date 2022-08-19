@@ -60,6 +60,41 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
+export const cuDeposit = async (
+  unionAddress,
+  setLoadingScreen,
+  isTransactionMined,
+) => {
+  try {
+    const { unionContract, unionProvider } = getUnionContract(unionAddress);
+    const depositTransaction = await unionContract.CUDeposit();
+    setLoadingScreen(true);
+    await isTransactionMined(
+      depositTransaction.hash,
+      unionProvider,
+      setLoadingScreen,
+      null,
+      null,
+    );
+  } catch (error) {
+    setLoadingScreen(false);
+    if (
+      error.error.message === 'execution reverted: Check the token allowance'
+    ) {
+      alert(
+        '유니온에 대해 토큰을 승인해주세요.\n상단의 토큰승인 버튼을 이용하시면 됩니다.',
+      );
+    } else if (
+      error.error.message ===
+      'execution reverted: You already deposit in this round'
+    ) {
+      alert('이미 입금을 완료하셨습니다.');
+    }
+
+    throw new Error(`cuDeposit failed.. (${error})`);
+  }
+};
+
 export const selfCUReceive = async (
   unionAddress,
   setLoadingScreen,
@@ -87,7 +122,7 @@ export const selfCUReceive = async (
         '아직 사용이 불가능합니다.\n 입금 기간이 끝난 후 자동입금이 되지 않았을 때 사용해주세요.',
       );
     }
-    throw new Error(`makeNewUnion is Failed.. (${error})`);
+    throw new Error(`selfCUReceive is Failed.. (${error})`);
   }
 };
 

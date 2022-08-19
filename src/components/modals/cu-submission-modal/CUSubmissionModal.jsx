@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import { Checkbox, Dialog } from '@mui/material';
-import CloseIcon from '../../../assets/images/close.svg?component';
-import { useLoading, selfCUReceive } from '../../../context';
+import { useLoading, cuDeposit } from '../../../context';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
 } from '../../../assets/colors';
+import { Checkbox, Dialog } from '@mui/material';
+import CloseIcon from '../../../assets/images/close.svg?component?';
 
-const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
+const CUSubmissionModal = ({ isOpen, handleModalClose, unionAddress }) => {
   const [isChecked, setIsChecked] = useState(false);
   const { isTransactionMined, setLoadingScreen } = useLoading();
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
 
-  const handleConfirmSelfPaymentButtonClick = async () => {
+  const handleSubmissionButtonClick = async () => {
     setIsChecked(false);
     handleModalClose();
-    await selfCUReceive(unionAddress, setLoadingScreen, isTransactionMined);
+    await cuDeposit(unionAddress, setLoadingScreen, isTransactionMined);
   };
   return (
     <div className="overflow-auto scrollbar-hide">
@@ -39,17 +39,9 @@ const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
         <div className="px-16 py-2 flex flex-col bg-[#27262C]">
           <div className="my-4 px-8 py-4 bg-[#3c3742] rounded-lg">
             <p className="flex-wrap text-white text-sm">
-              기본적으로 CreditUnion은 모든 사람이 기간 내
+              이번 입금 기간은 다음과 같습니다.
             </p>
-            <p className="flex-wrap text-white text-sm">
-              입금을 할 경우 자동으로 입금절차가 진행됩니다.
-            </p>
-            <p className="mt-4 flex-wrap text-white text-sm">
-              연체한 사람이 있을 경우
-            </p>
-            <p className="flex-wrap text-white text-sm">
-              아래 수동지급 버튼을 통해 이번달의 지급금을 수령하실 수 있습니다
-            </p>
+            <p className="flex-wrap text-white text-sm">(기간 입력 공간)</p>
           </div>
           <div className="flex justify-end items-center">
             <p className="text-white text-xs">위 내용을 확인했습니다.</p>
@@ -60,14 +52,14 @@ const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
           </div>
           <button
             onClick={() => {
-              isChecked && handleConfirmSelfPaymentButtonClick();
+              isChecked && handleSubmissionButtonClick();
             }}
             type="button"
             className={`text-white font-semibold mb-4 mt-2 ${
               isChecked ? buttonAbleStyle : buttonDisableStyle
             }`}
           >
-            수동 지급 받기
+            CU 입금하기
           </button>
         </div>
       </Dialog>
@@ -75,4 +67,4 @@ const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
   );
 };
 
-export default SelfPaymentModal;
+export default CUSubmissionModal;

@@ -4,12 +4,14 @@ import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { ParticipateUnionCompleteModal } from '../modals/participate-union-complete-modal';
 import { SelfPaymentModal } from '../modals/self-payment-modal';
+import { CUSubmissionModal } from '../modals/cu-submission-modal';
 import {
   useLoading,
   useUnion,
   getUnionInfo,
   useWallet,
   useParticipation,
+  useApprove,
 } from '../../context';
 import { BigNumber } from 'ethers';
 
@@ -19,7 +21,12 @@ const unionCardTrueStyle =
 const unionCardFalseStyle =
   'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
 const unionCardParticipateStyle =
-  'p-0.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl';
+  'p-0.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl cursor-pointer ' +
+  'transition ease-in-out delay-50 hover:-translate-y-2 hover:scale-105 duration-300';
+const depositCompleteMyCardStyle =
+  'p-0.5 bg-gradient-to-r from-[#38b522] via-[#8cf5a1] to-[#0ee65d] rounded-xl';
+const depositCompleteOthersCardStyle =
+  'p-0.5 bg-gradient-to-r from-[#b5227a] via-[#f0a8d1] to-[#e60e88] rounded-xl';
 
 const MakeUnionDetailCard = ({
   unionNum,
@@ -30,6 +37,7 @@ const MakeUnionDetailCard = ({
   personalInfo,
   unionInterest,
   myAddress,
+  setSubmissionState,
 }) => {
   const [isUnionNumberSelectedModalOpen, setIsUnionNumberSelectedMModalOpen] =
     useState(false);
@@ -43,6 +51,8 @@ const MakeUnionDetailCard = ({
       ? ''
       : unionInfo.periodicPayment.div(BigNumber.from(10).pow(18)).toString();
   const unionCanParticipate = canEnter.toNumber() === 0;
+  const isMyCard =
+    personalInfo.joiner.toLowerCase() === myAddress.toLowerCase();
 
   const handleUnionNumberSelectedModalClose = () => {
     setIsUnionNumberSelectedMModalOpen(false);
@@ -54,14 +64,20 @@ const MakeUnionDetailCard = ({
         onClick={() => {
           if (unionCanParticipate && !isParticipated) {
             setIsUnionNumberSelectedMModalOpen(true);
+          } else if (isMyCard && !personalInfo.isDeposit) {
+            setSubmissionState(true);
           }
         }}
         className={
           unionCanParticipate
             ? unionCardTrueStyle
-            : personalInfo.joiner.toLowerCase() === myAddress.toLowerCase()
-            ? unionCardParticipateStyle
-            : unionCardFalseStyle
+            : !isMyCard
+            ? personalInfo.isDeposit
+              ? depositCompleteOthersCardStyle
+              : unionCardFalseStyle
+            : personalInfo.isDeposit
+            ? depositCompleteMyCardStyle
+            : unionCardParticipateStyle
         }
       >
         <div className="w-72 h-96 bg-[#27262C] flex flex-col justify-center items-center rounded-xl">
@@ -122,6 +138,7 @@ const UnionDetailContent = ({ unionId }) => {
   const { participateDone, setParticipateDone } = useParticipation();
   const { connectedAccount } = useWallet();
   const { getUnionAddressByName } = useUnion();
+  const { approveToken } = useApprove();
 
   const unionDetailArray =
     Object.keys(unionInfo).length === 0
@@ -136,11 +153,11 @@ const UnionDetailContent = ({ unionId }) => {
         );
 
   useEffect(() => {
-    setUnionInfo(prev => {
+    setUnionInfo(() => {
       return {};
     });
     getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
-      setUnionInfo(prev => (unionInfo === undefined ? {} : unionInfo));
+      setUnionInfo(() => (unionInfo === undefined ? {} : unionInfo));
     });
   }, [unionAddress, infoRerender]);
 
@@ -181,13 +198,21 @@ const UnionDetailContent = ({ unionId }) => {
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 유니온에 참여해주셔서 감사합니다`}</p>
           <p className="text-white text-sm">
-            (CU 입금을 원하시면 카드를 클릭해주세요)
+            (CU 입금을 원하시면 본인카드를 클릭해주세요)
           </p>
-          <div
-            onClick={() => setIsSelfPaymentModalOpen(true)}
-            className="px-2 py-1 mt-2 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer"
-          >
-            수동 지급 받기
+          <div className="flex mt-3">
+            <div
+              onClick={() => setIsSelfPaymentModalOpen(true)}
+              className="px-2 py-1 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer"
+            >
+              수동 지급 받기
+            </div>
+            <div
+              onClick={() => approveToken(unionAddress)}
+              className="px-2 py-1 ml-4 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer"
+            >
+              유니온에 대해 토큰 승인
+            </div>
           </div>
         </>
       ) : (
@@ -213,6 +238,7 @@ const UnionDetailContent = ({ unionId }) => {
                   personalInfo={unionInfo.participantsList[index]}
                   unionInterest={interestArray[index]}
                   myAddress={connectedAccount}
+                  setSubmissionState={setIsSubmissionModalOpen}
                 />
               </li>
             );
@@ -238,7 +264,14 @@ const UnionDetailContent = ({ unionId }) => {
         handleModalClose={() => {
           setIsSelfPaymentModalOpen(false);
         }}
-        unionAddress = {unionAddress}
+        unionAddress={unionAddress}
+      />
+      <CUSubmissionModal
+        isOpen={isSubmissionModalOpen}
+        handleModalClose={() => {
+          setIsSubmissionModalOpen(false);
+        }}
+        unionAddress={unionAddress}
       />
     </div>
   );

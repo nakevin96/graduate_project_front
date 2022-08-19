@@ -18,6 +18,7 @@ import {
   getUnionInfo,
   getMyUnionList,
   selfCUReceive,
+  cuDeposit,
 } from './UnionContext';
 
 export {
@@ -37,4 +38,5 @@ export {
   getUnionInfo,
   getMyUnionList,
   selfCUReceive,
+  cuDeposit,
 };

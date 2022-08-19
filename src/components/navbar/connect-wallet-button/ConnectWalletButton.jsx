@@ -8,6 +8,7 @@ import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
 } from '../../../assets/colors';
+import { SwapAddress } from '../../../utils/constants';
 
 const useDetectOutsideClick = (ref, setDropdown) => {
   useEffect(() => {
@@ -47,7 +48,9 @@ const DropdownMenu = ({
         </div>
         <div>
           <button
-            onClick={approveToken}
+            onClick={() => {
+              approveToken(SwapAddress);
+            }}
             className="h-12 w-full p-2 flex items-center rounded-lg text-white cursor-pointer hover:bg-[#353547]"
           >
             토큰 승인

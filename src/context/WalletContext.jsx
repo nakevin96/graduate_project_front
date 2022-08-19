@@ -109,7 +109,7 @@ export const WalletProvider = ({ children }) => {
     }
   };
 
-  const approveToken = async () => {
+  const approveToken = async approveAddress => {
     try {
       if (!ethereum) {
         window.open(
@@ -121,7 +121,7 @@ export const WalletProvider = ({ children }) => {
       const { cuTokenContract, cuTokenProvider } = getCUTokenContract();
       await getCuBalance();
       const transaction = await cuTokenContract.approve(
-        SwapAddress,
+        approveAddress,
         (cuBalanceRef.current * 1e18).toString(),
         {
           from: connectedAccount,
@@ -137,9 +137,8 @@ export const WalletProvider = ({ children }) => {
       );
     } catch (error) {
       setLoadingScreen(false);
-      console.log(error);
 
-      throw new Error('No ethereum object');
+      throw new Error(`approveToken is Failed.. (${error})`);
     }
   };
 
