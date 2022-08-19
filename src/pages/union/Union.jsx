@@ -4,7 +4,7 @@ import { UnionContent } from '../../components/union-content';
 
 const Union = () => {
   return (
-    <div className="min-h-screen">
+    <div>
       <Navbar />
       <UnionContent />
       <Footer />

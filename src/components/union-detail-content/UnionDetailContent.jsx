@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
-import { useLoading, useUnion, getUnionInfo, useWallet } from '../../context';
+import { ParticipateUnionCompleteModal } from '../modals/participate-union-complete-modal';
+import {
+  useLoading,
+  useUnion,
+  getUnionInfo,
+  useWallet,
+  useParticipation,
+} from '../../context';
 import { BigNumber } from 'ethers';
 
 const unionCardTrueStyle =
@@ -104,9 +111,10 @@ const MakeUnionDetailCard = ({
 
 const UnionDetailContent = ({ unionId }) => {
   const [unionAddress, setUnionAddress] = useState('');
+  const [currUnionName, setCurrUnionName] = useState();
   const [unionInfo, setUnionInfo] = useState({});
-  const [renderAgain, setRenderAgain] = useState(false);
   const { loadingScreen, setLoadingScreen } = useLoading();
+  const { participateDone, setParticipateDone } = useParticipation();
   const { connectedAccount } = useWallet();
   const { getUnionAddressByName } = useUnion();
 
@@ -126,13 +134,13 @@ const UnionDetailContent = ({ unionId }) => {
     getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
       setUnionInfo(unionInfo === undefined ? {} : unionInfo);
     });
-  }, [unionAddress]);
+  }, [unionAddress, unionInfo]);
 
   useEffect(() => {
     getUnionAddressByName(unionId).then(address => {
       setUnionAddress(() => address);
     });
-  }, []);
+  }, [unionId]);
   return (
     <div
       className={`w-full ${
@@ -199,6 +207,14 @@ const UnionDetailContent = ({ unionId }) => {
         isOpen={loadingScreen}
         handleModalClose={() => {
           setLoadingScreen(false);
+        }}
+        disableBackdrop={true}
+      />
+      <ParticipateUnionCompleteModal
+        isOpen={participateDone}
+        handleModalClose={() => {
+          setParticipateDone(false);
+          setUnionInfo({});
         }}
       />
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UnionCompactCard } from '../card/union-compact-card';
 import CardPlusIcon from '../../assets/images/card_plus.svg?component';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
@@ -14,7 +14,7 @@ const UnionContent = () => {
     useLoading();
 
   return (
-    <div className="px-20 py-16 overflow-hidden w-full bg-union flex flex-col items-center">
+    <div className="px-20 py-16 overflow-hidden w-full min-h-screen bg-union flex flex-col items-center">
       <div className="my-4 flex rounded-full bg-[#372F47]">
         <div
           onClick={() => setIsIndividual(false)}

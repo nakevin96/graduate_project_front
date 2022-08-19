@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { useLoading } from './TransactionContext';
-import { useWallet } from './WalletContext';
+import { useLoading, useParticipation } from './TransactionContext';
 import { BigNumber, ethers } from 'ethers';
 import {
   CUTokenAddress,
@@ -100,6 +99,7 @@ export const UnionProvider = ({ children }) => {
   const [unionID, setUnionID] = useState(null);
   const { setLoadingScreen, isTransactionMined, setMakeUnionDone } =
     useLoading();
+  const { participateDone, setParticipateDone } = useParticipation();
 
   const makeNewUnion = async (unionPeopleNum, unionTotalAmount, unionName) => {
     try {
@@ -133,6 +133,7 @@ export const UnionProvider = ({ children }) => {
         unionFactoryProvider,
         setLoadingScreen,
         handleMakeUnionTrue,
+        null,
       );
       return newUnionAddress;
     } catch (error) {
@@ -176,11 +177,15 @@ export const UnionProvider = ({ children }) => {
         ),
       });
       setLoadingScreen(true);
+      const handleParticipateUnionTrue = () => {
+        setParticipateDone(true);
+      };
       await isTransactionMined(
         participateTransaction.hash,
         unionProvider,
         setLoadingScreen,
         null,
+        handleParticipateUnionTrue,
       );
     } catch (error) {
       console.log(error);

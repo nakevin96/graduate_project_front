@@ -133,6 +133,7 @@ export const WalletProvider = ({ children }) => {
         cuTokenProvider,
         setLoadingScreen,
         null,
+        null,
       );
     } catch (error) {
       setLoadingScreen(false);

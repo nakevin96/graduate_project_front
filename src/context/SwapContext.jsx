@@ -58,6 +58,7 @@ export const SwapProvider = ({ children }) => {
         swapProvider,
         setLoadingScreen,
         null,
+        null,
       );
     } catch (error) {
       setLoadingScreen(false);
@@ -94,6 +95,7 @@ export const SwapProvider = ({ children }) => {
         transaction.hash,
         swapProvider,
         setLoadingScreen,
+        null,
         null,
       );
     } catch (error) {

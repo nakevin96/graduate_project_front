@@ -1,4 +1,8 @@
-import { useLoading, TransactionProvider } from './TransactionContext';
+import {
+  useLoading,
+  useParticipation,
+  TransactionProvider,
+} from './TransactionContext';
 import {
   WalletProvider,
   useWalletBalance,
@@ -19,6 +23,7 @@ export {
   useWalletBalance,
   useApprove,
   useLoading,
+  useParticipation,
   TransactionProvider,
   WalletProvider,
   SwapProvider,
