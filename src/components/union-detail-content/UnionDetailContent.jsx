@@ -3,6 +3,7 @@ import ExistPerson from '../../assets/images/union_people.svg?component';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { ParticipateUnionCompleteModal } from '../modals/participate-union-complete-modal';
+import { SelfPaymentModal } from '../modals/self-payment-modal';
 import {
   useLoading,
   useUnion,
@@ -110,6 +111,8 @@ const MakeUnionDetailCard = ({
 };
 
 const UnionDetailContent = ({ unionId }) => {
+  const [isSelfPaymentModalOpen, setIsSelfPaymentModalOpen] = useState(false);
+  const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
   const [unionAddress, setUnionAddress] = useState('');
   const [unionInfo, setUnionInfo] = useState({});
   const [infoRerender, setInfoRerender] = useState({
@@ -177,7 +180,15 @@ const UnionDetailContent = ({ unionId }) => {
       ) : unionInfo.isParticipate ? (
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 유니온에 참여해주셔서 감사합니다`}</p>
-          <p className="text-white text-xs">(버튼 들어갈 장소)</p>
+          <p className="text-white text-sm">
+            (CU 입금을 원하시면 카드를 클릭해주세요)
+          </p>
+          <div
+            onClick={() => setIsSelfPaymentModalOpen(true)}
+            className="px-2 py-1 mt-2 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer"
+          >
+            수동 지급 받기
+          </div>
         </>
       ) : (
         <>
@@ -221,6 +232,13 @@ const UnionDetailContent = ({ unionId }) => {
           setParticipateDone(false);
           setInfoRerender({ ...infoRerender });
         }}
+      />
+      <SelfPaymentModal
+        isOpen={isSelfPaymentModalOpen}
+        handleModalClose={() => {
+          setIsSelfPaymentModalOpen(false);
+        }}
+        unionAddress = {unionAddress}
       />
     </div>
   );

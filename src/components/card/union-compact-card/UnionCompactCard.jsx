@@ -102,8 +102,10 @@ const UnionCompactCard = ({
             setIsUnionMakeModalOpen(true);
           }
         }}
-        className="m-4 p-3 w-80 h-[17rem] cursor-pointer flex flex-col justify-center items-center content-center text-center
-      rounded-xl union-make-card transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 border-2 border-gray-300"
+        className={`m-4 p-3 w-80 h-[17rem] cursor-pointer flex flex-col justify-center items-center content-center text-center
+      rounded-xl union-make-card transition ease-in-out delay-100 ${
+        isIndividual && 'hidden'
+      } hover:-translate-y-1 hover:scale-105 duration-300 border-2 border-gray-300`}
       >
         <span className="text-[#27262C] text-lg font-bold">유니온 만들기</span>
         <CreateUnionIcon className="mt-4" />

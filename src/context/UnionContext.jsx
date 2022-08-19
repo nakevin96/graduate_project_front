@@ -60,6 +60,37 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
+export const selfCUReceive = async (
+  unionAddress,
+  setLoadingScreen,
+  isTransactionMined,
+) => {
+  try {
+    const { unionContract, unionProvider } = getUnionContract(unionAddress);
+    const receiveTransaction = await unionContract.CUReceive();
+    setLoadingScreen(true);
+    await isTransactionMined(
+      receiveTransaction.hash,
+      unionProvider,
+      setLoadingScreen,
+      null,
+      null,
+    );
+  } catch (error) {
+    setLoadingScreen(false);
+    if (error.error.message === 'execution reverted: Not your turn') {
+      alert(
+        '수동지급을 이용할 수 없습니다.\n 유니온이 시작된 후 본인의 차례에 사용해주세요.',
+      );
+    } else if (error.error.message === 'execution reverted: Yet receive CU') {
+      alert(
+        '아직 사용이 불가능합니다.\n 입금 기간이 끝난 후 자동입금이 되지 않았을 때 사용해주세요.',
+      );
+    }
+    throw new Error(`makeNewUnion is Failed.. (${error})`);
+  }
+};
+
 export const getMyUnionList = async myAddress => {
   try {
     const { userParticipationContract } = getUserParticipationContract();
@@ -112,7 +143,7 @@ export const UnionProvider = ({ children }) => {
   const [unionID, setUnionID] = useState(null);
   const { setLoadingScreen, isTransactionMined, setMakeUnionDone } =
     useLoading();
-  const { participateDone, setParticipateDone } = useParticipation();
+  const { setParticipateDone } = useParticipation();
 
   const makeNewUnion = async (unionPeopleNum, unionTotalAmount, unionName) => {
     try {
@@ -173,8 +204,7 @@ export const UnionProvider = ({ children }) => {
   const getAllUnionAddress = async () => {
     try {
       const { unionFactoryContract } = getUnionFactoryContract();
-      const allAddress = await unionFactoryContract.getAllUnions();
-      return allAddress;
+      return await unionFactoryContract.getAllUnions();
     } catch (error) {
       console.log(error);
     }
@@ -201,6 +231,7 @@ export const UnionProvider = ({ children }) => {
         handleParticipateUnionTrue,
       );
     } catch (error) {
+      setLoadingScreen(false);
       console.log(error);
     }
   };

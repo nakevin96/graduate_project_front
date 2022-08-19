@@ -1,32 +1,22 @@
 import { useState } from 'react';
-import { useUnion } from '../../../context';
 import { Checkbox, Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component';
+import { useLoading, selfCUReceive } from '../../../context';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
 } from '../../../assets/colors';
 
-const UnionNumberSelectModal = ({
-  isOpen,
-  handleModalClose,
-  unionNumber,
-  unionAddress,
-  unionInfo,
-}) => {
+const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
   const [isChecked, setIsChecked] = useState(false);
-  const { participateToUnion } = useUnion();
+  const { isTransactionMined, setLoadingScreen } = useLoading();
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
 
-  const handleConfirmTransactionButtonClick = async () => {
+  const handleConfirmSelfPaymentButtonClick = async () => {
     setIsChecked(false);
     handleModalClose();
-    await participateToUnion(
-      unionAddress,
-      parseInt(unionNumber),
-      unionInfo.totalAmount,
-    );
+    await selfCUReceive(unionAddress, setLoadingScreen, isTransactionMined);
   };
   return (
     <div className="overflow-auto scrollbar-hide">
@@ -35,30 +25,25 @@ const UnionNumberSelectModal = ({
           className="h-12 px-6 py-3 bg-[#383056] border-b-2 border-[#383241]
           flex justify-between items-center"
         >
-          <p className="text-white font-bold">유니온에 참가할 번호 선택</p>
+          <p className="text-white font-bold">수동 지급</p>
           <div className="cursor-pointer" onClick={handleModalClose}>
             <CloseIcon className="fill-white hover:fill-[#E6E6E6]" />
           </div>
         </div>
         <div className="px-16 py-2 flex flex-col bg-[#27262C]">
-          <p className="pt-4 text-white text-xl font-bold">{`${unionNumber} 순번으로 유니온을 시작합니다.`}</p>
           <div className="my-4 px-8 py-4 bg-[#3c3742] rounded-lg">
-            <div className="flex justify-between">
-              <p className="text-white">{`총 입금량:`}</p>
-              <p className="text-white">{`${unionInfo.totalAmount} CU`}</p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-white">{`월 입금량:`}</p>
-              <p className="text-white">{`${unionInfo.periodAmount} CU`}</p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-white">{`이 율:`}</p>
-              <p className="text-white">{`${unionInfo.interest} %`}</p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-white">{`실 지급액:`}</p>
-              <p className="text-white">{`${unionInfo.payment} CU`}</p>
-            </div>
+            <p className="flex-wrap text-white text-sm">
+              기본적으로 CreditUnion은 모든 사람이 기간 내
+            </p>
+            <p className="flex-wrap text-white text-sm">
+              입금을 할 경우 자동으로 입금절차가 진행됩니다.
+            </p>
+            <p className="mt-4 flex-wrap text-white text-sm">
+              연체한 사람이 있을 경우
+            </p>
+            <p className="flex-wrap text-white text-sm">
+              아래 수동지급 버튼을 통해 이번달의 지급금을 수령하실 수 있습니다
+            </p>
           </div>
           <div className="flex justify-end items-center">
             <p className="text-white text-xs">위 내용을 확인했습니다.</p>
@@ -69,14 +54,14 @@ const UnionNumberSelectModal = ({
           </div>
           <button
             onClick={() => {
-              isChecked && handleConfirmTransactionButtonClick();
+              isChecked && handleConfirmSelfPaymentButtonClick();
             }}
             type="button"
             className={`text-white font-semibold mb-4 mt-2 ${
               isChecked ? buttonAbleStyle : buttonDisableStyle
             }`}
           >
-            거래 결정
+            수동 지급 받기
           </button>
         </div>
       </Dialog>
@@ -84,4 +69,4 @@ const UnionNumberSelectModal = ({
   );
 };
 
-export default UnionNumberSelectModal;
+export default SelfPaymentModal;
