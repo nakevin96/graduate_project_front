@@ -60,11 +60,24 @@ const getUserParticipationContract = () => {
   return { userParticipationContract, userParticipationProvider };
 };
 
+export const getMyUnionList = async myAddress => {
+  try {
+    const { userParticipationContract } = getUserParticipationContract();
+    return await userParticipationContract.get(myAddress);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUnionSimpleInfo = async unionAddress => {
-  const { unionContract } = getUnionContract(unionAddress);
-  const unionName = await unionContract.name();
-  const unionEnterList = await unionContract.getUnionOrder();
-  return { name: unionName, enterList: unionEnterList };
+  try {
+    const { unionContract } = getUnionContract(unionAddress);
+    const unionName = await unionContract.name();
+    const unionEnterList = await unionContract.getUnionOrder();
+    return { name: unionName, enterList: unionEnterList };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getUnionInfo = async (unionAddress, myAddress) => {

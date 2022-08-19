@@ -19,9 +19,9 @@ export const UnionABI = UnionAbi.abi;
 
 // UnionFactory
 export const UnionFactoryABI = UnionFactoryAbi.abi;
-export const UnionFactoryAddress = '0x8198a7d6cB47E11ec54A1e71C6511e58d1Cb1894';
+export const UnionFactoryAddress = '0x312623D8ad14677A4c40E135C14d696D957b4098';
 
 // UserParticipation
 export const UserParticipationABI = UserParticipationAbi.abi;
 export const UserParticipationAddress =
-  '0x6560ABfd03B85bbcdeFECF421a970Aaae25b5f6A';
+  '0x25DbA4Fd420a113deeA228a65b27C686D489f94F';

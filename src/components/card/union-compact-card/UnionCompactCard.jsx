@@ -3,7 +3,7 @@ import CreateUnionIcon from '../../../assets/images/make_union_icon.svg?componen
 import { Link } from 'react-router-dom';
 import { useUnion, useUnionFactory, useWallet } from '../../../context';
 import { UnionMakeModal } from '../../modals/union-make-modal';
-import { getUnionSimpleInfo } from '../../../context';
+import { getUnionSimpleInfo, getMyUnionList } from '../../../context';
 
 const unionCardStyle = `m-4 p-3 w-80 h-[17rem] cursor-pointer flex flex-col justify-center items-center content-center text-center
 flex-col rounded-xl union-card border-2 border-neutral-300 transition ease-in-out delay-50 hover:-translate-y-1
@@ -30,7 +30,12 @@ const MakeUnionCard = ({ cardName, enterList }) => {
   );
 };
 
-const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
+const UnionCompactCard = ({
+  callEndIdx,
+  resetCallEndIdx,
+  tellCardEnd,
+  isIndividual,
+}) => {
   const [isUnionMakeModalOpen, setIsUnionMakeModalOpen] = useState(false);
   const [renderUnionAddressList, setRenderUnionAddressList] = useState([]);
   const [renderUnionNameDict, setRenderUnionNameDict] = useState({});
@@ -65,10 +70,27 @@ const UnionCompactCard = ({ callEndIdx, tellCardEnd, isIndividual }) => {
   }, [allUnionAddress, callEndIdx]);
 
   useEffect(() => {
-    getAllUnionAddress().then(data => {
-      setAllUnionAddress([...data].reverse());
+    setRenderUnionAddressList(() => {
+      return [];
     });
-  }, []);
+    setRenderUnionNameDict(() => {
+      return {};
+    });
+    setRenderUnionEnterListDict(() => {
+      return {};
+    });
+    resetCallEndIdx();
+    tellCardEnd(false);
+    if (isIndividual) {
+      getMyUnionList(connectedAccount).then(data => {
+        setAllUnionAddress([...data].reverse());
+      });
+    } else {
+      getAllUnionAddress().then(data => {
+        setAllUnionAddress([...data].reverse());
+      });
+    }
+  }, [isIndividual]);
 
   return (
     <>

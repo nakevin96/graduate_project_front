@@ -56,6 +56,9 @@ const UnionContent = () => {
       >
         <UnionCompactCard
           callEndIdx={endCardIdx}
+          resetCallEndIdx={() => {
+            setEndCardIdx(6);
+          }}
           tellCardEnd={setIsCardEnd}
           isIndividual={isIndividual}
         />
