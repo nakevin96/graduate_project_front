@@ -111,8 +111,10 @@ const MakeUnionDetailCard = ({
 
 const UnionDetailContent = ({ unionId }) => {
   const [unionAddress, setUnionAddress] = useState('');
-  const [currUnionName, setCurrUnionName] = useState();
   const [unionInfo, setUnionInfo] = useState({});
+  const [infoRerender, setInfoRerender] = useState({
+    projectName: 'graduateFront',
+  });
   const { loadingScreen, setLoadingScreen } = useLoading();
   const { participateDone, setParticipateDone } = useParticipation();
   const { connectedAccount } = useWallet();
@@ -131,16 +133,19 @@ const UnionDetailContent = ({ unionId }) => {
         );
 
   useEffect(() => {
-    getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
-      setUnionInfo(unionInfo === undefined ? {} : unionInfo);
+    setUnionInfo(prev => {
+      return {};
     });
-  }, [unionAddress, unionInfo]);
+    getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
+      setUnionInfo(prev => (unionInfo === undefined ? {} : unionInfo));
+    });
+  }, [unionAddress, infoRerender]);
 
   useEffect(() => {
     getUnionAddressByName(unionId).then(address => {
       setUnionAddress(() => address);
     });
-  }, [unionId]);
+  }, []);
   return (
     <div
       className={`w-full ${
@@ -214,7 +219,7 @@ const UnionDetailContent = ({ unionId }) => {
         isOpen={participateDone}
         handleModalClose={() => {
           setParticipateDone(false);
-          setUnionInfo({});
+          setInfoRerender({ ...infoRerender });
         }}
       />
     </div>
