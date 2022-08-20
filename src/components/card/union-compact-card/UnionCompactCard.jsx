@@ -42,7 +42,7 @@ const UnionCompactCard = ({
   const [renderUnionEnterListDict, setRenderUnionEnterListDict] = useState({});
   const [allUnionAddress, setAllUnionAddress] = useState([]);
   const { connectedAccount } = useWallet();
-  const { setUnionID } = useUnion();
+  const { setUnionID, setUnionAddressG } = useUnion();
   const { getAllUnionAddress } = useUnionFactory();
 
   const handleUnionMakeModalClose = () => {
@@ -136,7 +136,10 @@ const UnionCompactCard = ({
             key={unionAddress + index}
           >
             <Link
-              onClick={() => setUnionID(renderUnionNameDict[unionAddress])}
+              onClick={() => {
+                setUnionID(renderUnionNameDict[unionAddress]);
+                setUnionAddressG(unionAddress);
+              }}
               to="/unionDetail"
             >
               <MakeUnionCard

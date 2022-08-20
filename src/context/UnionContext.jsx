@@ -148,7 +148,7 @@ export const getUnionSimpleInfo = async unionAddress => {
 
 export const getUnionInfo = async (unionAddress, myAddress) => {
   try {
-    if (unionAddress === '') return;
+    if (unionAddress === '' || unionAddress === undefined) return;
     const { unionContract } = getUnionContract(unionAddress);
     const tmpUnionAllAmount = await unionContract.amount();
     const tmpUnionPeriodicPayment = await unionContract.periodicPayment();
@@ -157,7 +157,7 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
     const tmpUnionPeople = await unionContract.people();
     const tmpInitDate = await unionContract.initDate();
     const tmpDueDate = await unionContract.dueDate();
-    const tmpRound = await unionContract.round();
+    const tmpIsActivate = await unionContract.isActivate();
     const tmpParticipantsList = [];
     for (let i = 0; i < tmpUnionPeople; i++) {
       const tmpParticipant = await unionContract.participants(i);
@@ -173,7 +173,7 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
       participantsList: tmpParticipantsList,
       initDate: tmpInitDate,
       dueDate: tmpDueDate,
-      round: tmpRound,
+      isActivate: tmpIsActivate,
     };
   } catch (error) {
     console.log(error);
@@ -182,6 +182,7 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
 
 export const UnionProvider = ({ children }) => {
   const [unionID, setUnionID] = useState(null);
+  const [unionAddressG, setUnionAddressG] = useState('');
   const { setLoadingScreen, isTransactionMined, setMakeUnionDone } =
     useLoading();
   const { setParticipateDone } = useParticipation();
@@ -212,6 +213,7 @@ export const UnionProvider = ({ children }) => {
       const handleMakeUnionTrue = () => {
         setMakeUnionDone(true);
         setUnionID(unionName);
+        setUnionAddressG('');
       };
       await isTransactionMined(
         newUnionAddress.hash,
@@ -285,6 +287,8 @@ export const UnionProvider = ({ children }) => {
         makeNewUnion,
         getUnionAddressByName,
         participateToUnion,
+        unionAddressG,
+        setUnionAddressG,
       }}
     >
       <UnionFactoryContext.Provider value={{ getAllUnionAddress }}>

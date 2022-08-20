@@ -64,7 +64,11 @@ const MakeUnionDetailCard = ({
         onClick={() => {
           if (unionCanParticipate && !isParticipated) {
             setIsUnionNumberSelectedMModalOpen(true);
-          } else if (isMyCard && !personalInfo.isDeposit) {
+          } else if (
+            isMyCard &&
+            !personalInfo.isDeposit &&
+            unionInfo.isActivate
+          ) {
             setSubmissionState(true);
           }
         }}
@@ -126,10 +130,10 @@ const MakeUnionDetailCard = ({
   );
 };
 
-const UnionDetailContent = ({ unionId }) => {
+const UnionDetailContent = ({ unionId, unionAddress }) => {
   const [isSelfPaymentModalOpen, setIsSelfPaymentModalOpen] = useState(false);
   const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
-  const [unionAddress, setUnionAddress] = useState('');
+  const [unionAddressD, setUnionAddressD] = useState('');
   const [unionInfo, setUnionInfo] = useState({});
   const [infoRerender, setInfoRerender] = useState({
     projectName: 'graduateFront',
@@ -153,24 +157,24 @@ const UnionDetailContent = ({ unionId }) => {
         );
 
   useEffect(() => {
-    console.log(unionInfo);
-    console.log(unionAddress);
-  }, [unionInfo]);
-
-  useEffect(() => {
     setUnionInfo(() => {
       return {};
     });
-    getUnionInfo(unionAddress, connectedAccount).then(unionInfo => {
+    getUnionInfo(unionAddressD, connectedAccount).then(unionInfo => {
       setUnionInfo(() => (unionInfo === undefined ? {} : unionInfo));
     });
-  }, [unionAddress, infoRerender]);
+  }, [unionAddressD, infoRerender]);
 
   useEffect(() => {
-    getUnionAddressByName(unionId).then(address => {
-      setUnionAddress(() => address);
-    });
+    if (unionAddress === '') {
+      getUnionAddressByName(unionId).then(address => {
+        setUnionAddressD(() => address);
+      });
+    } else {
+      setUnionAddressD(() => unionAddress);
+    }
   }, []);
+
   return (
     <div
       className={`w-full ${
@@ -200,26 +204,32 @@ const UnionDetailContent = ({ unionId }) => {
           </div>
         </>
       ) : unionInfo.isParticipate ? (
-        <>
-          <p className="text-white text-xl py-4">{`[${unionId}] 유니온에 참여해주셔서 감사합니다`}</p>
-          <p className="text-white text-sm">
-            (CU 입금을 원하시면 본인카드를 클릭해주세요)
-          </p>
-          <div className="flex mt-3">
-            <div
-              onClick={() => setIsSelfPaymentModalOpen(true)}
-              className="px-2 py-1 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
-            >
-              수동 지급 받기
+        unionInfo.isActivate ? (
+          <>
+            <p className="text-white text-xl py-4">{`[${unionId}] 유니온에 참여해주셔서 감사합니다`}</p>
+            <p className="text-white text-sm">
+              (CU 입금을 원하시면 본인카드를 클릭해주세요)
+            </p>
+            <div className="flex mt-3">
+              <div
+                onClick={() => setIsSelfPaymentModalOpen(true)}
+                className="px-2 py-1 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
+              >
+                수동 지급 받기
+              </div>
+              <div
+                onClick={() => approveToken(unionAddressD)}
+                className="px-2 py-1 ml-4 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
+              >
+                유니온에 대해 토큰 승인
+              </div>
             </div>
-            <div
-              onClick={() => approveToken(unionAddress)}
-              className="px-2 py-1 ml-4 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
-            >
-              유니온에 대해 토큰 승인
-            </div>
-          </div>
-        </>
+          </>
+        ) : (
+          <>
+            <p className="text-white text-xl py-4">{`[${unionId}] 종료된 유니온입니다.`}</p>
+          </>
+        )
       ) : (
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 유니온에서 참여하실 순번을 정해주세요`}</p>
@@ -238,7 +248,7 @@ const UnionDetailContent = ({ unionId }) => {
                   unionNum={value}
                   canEnter={unionInfo.canEnterList[index]}
                   isParticipated={unionInfo.isParticipate}
-                  unionAddress={unionAddress}
+                  unionAddress={unionAddressD}
                   unionInfo={unionInfo}
                   personalInfo={unionInfo.participantsList[index]}
                   unionInterest={interestArray[index]}
@@ -269,14 +279,14 @@ const UnionDetailContent = ({ unionId }) => {
         handleModalClose={() => {
           setIsSelfPaymentModalOpen(false);
         }}
-        unionAddress={unionAddress}
+        unionAddress={unionAddressD}
       />
       <CUSubmissionModal
         isOpen={isSubmissionModalOpen}
         handleModalClose={() => {
           setIsSubmissionModalOpen(false);
         }}
-        unionAddress={unionAddress}
+        unionAddress={unionAddressD}
         unionInfo={unionInfo}
       />
     </div>
