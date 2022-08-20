@@ -88,6 +88,10 @@ export const cuDeposit = async (
       'execution reverted: You already deposit in this round'
     ) {
       alert('이미 입금을 완료하셨습니다.');
+    } else if (
+      error.error.message === 'execution reverted: You can deposit exact period'
+    ) {
+      alert('아직 입금 기간이 아닙니다.')
     }
 
     throw new Error(`cuDeposit failed.. (${error})`);

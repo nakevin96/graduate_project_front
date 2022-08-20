@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLoading, cuDeposit } from '../../../context';
 import {
   THEME_MAIN_COLOR,
@@ -6,7 +6,6 @@ import {
 } from '../../../assets/colors';
 import { Checkbox, Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component?';
-import { BigNumber } from 'ethers';
 
 const CUSubmissionModal = ({
   isOpen,
@@ -22,7 +21,12 @@ const CUSubmissionModal = ({
   const convertedInitDate = new Date(
     unionInfo.initDate * 1000,
   ).toLocaleString();
-  const convertedDueDate = new Date(unionInfo.dueDate * 1000).toLocaleString();
+  const convertedDueDateStart = new Date(
+    (unionInfo.dueDate - 120) * 1000,
+  ).toLocaleString();
+  const convertedDueDateEnd = new Date(
+    unionInfo.dueDate * 1000,
+  ).toLocaleString();
 
   const handleSubmissionButtonClick = async () => {
     setIsChecked(false);
@@ -70,8 +74,9 @@ const CUSubmissionModal = ({
               <p className="flex-wrap text-white text-sm text-center">
                 이번 입금 기간은 다음과 같습니다.
               </p>
-              <p className="mt-2 flex-wrap text-white text-sm text-center">{`입금 시작일 : ${convertedInitDate}`}</p>
-              <p className="flex-wrap text-white text-sm text-center">{`입금 종료일 : ${convertedDueDate}`}</p>
+              <p className="mt-2 flex-wrap text-white text-sm text-center">{`라운드 시작시간 : ${convertedInitDate}`}</p>
+              <p className="flex-wrap text-white text-sm text-center">{`입금 시작시간 : ${convertedDueDateStart}`}</p>
+              <p className="flex-wrap text-white text-sm text-center">{`입금 종료시간 : ${convertedDueDateEnd}`}</p>
 
               <p className="mt-2 flex-wrap text-white text-center text-xs text-[#ff0044]">
                 ※입금 종료일이 지난 후에는 보증금이 차감됩니다※
