@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSwap, useWallet, useLoading } from '../../context';
+import { useEffect, useState } from 'react';
+import { useSwap, useWallet, useLoading, useApprove } from '../../context';
 import RefreshIcon from '../../assets/images/refresh.svg?component';
 import ArrowDownIcon from '../../assets/images/arrow_down_icon.svg?component';
 import SwitchIcon from '../../assets/images/switch_icon.svg?component';
@@ -10,17 +10,19 @@ import { CustomInput } from './custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
+import { SwapAddress } from '../../utils/constants';
 
 const SwapContent = () => {
-  const { connectedAccount } = useWallet();
-  const { ethToCuSwap, cuToEthSwap } = useSwap();
-  const { loadingScreen, setLoadingScreen } = useLoading();
   const [isSwapHover, setIsSwapHover] = useState(false);
   const [ethInput, setEthInput] = useState('0.0');
   const [cuInput, setCuInput] = useState('0.0');
   const [swapList, setSwapList] = useState(['ETH', 'CU']);
   const [isConnectWalletModalOpen, setIsConnectWalletModalOpen] =
     useState(false);
+  const { connectedAccount } = useWallet();
+  const { ethToCuSwap, cuToEthSwap } = useSwap();
+  const { loadingScreen, setLoadingScreen } = useLoading();
+  const { approveToken } = useApprove();
 
   const resetInputFiled = () => {
     setEthInput('0.0');
@@ -136,15 +138,24 @@ const SwapContent = () => {
                 isReadOnly={true}
               />
             </div>
-            <div className="mt-16">
+            <div className="mt-12">
               {connectedAccount ? (
-                <button
-                  onClick={handleSwapClick}
-                  className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
+                <>
+                  <button
+                    onClick={() => approveToken(SwapAddress)}
+                    className={`w-full text-[#372F47] font-semibold bg-[#B8ADD2] py-2 mb-2 rounded-lg
+          cursor-pointer hover:opacity-50`}
+                  >
+                    토큰 승인
+                  </button>
+                  <button
+                    onClick={handleSwapClick}
+                    className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
-                >
-                  스왑하기
-                </button>
+                  >
+                    스왑하기
+                  </button>
+                </>
               ) : (
                 <div>
                   <button
