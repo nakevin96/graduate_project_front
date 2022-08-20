@@ -150,11 +150,14 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
   try {
     if (unionAddress === '') return;
     const { unionContract } = getUnionContract(unionAddress);
-    const tmpUnionPeople = await unionContract.people();
     const tmpUnionAllAmount = await unionContract.amount();
     const tmpUnionPeriodicPayment = await unionContract.periodicPayment();
     const tmpIsParticipate = await unionContract.isParticipate(myAddress);
     const tmpCanEnterList = await unionContract.getUnionOrder();
+    const tmpUnionPeople = await unionContract.people();
+    const tmpInitDate = await unionContract.initDate();
+    const tmpDueDate = await unionContract.dueDate();
+    const tmpRound = await unionContract.round();
     const tmpParticipantsList = [];
     for (let i = 0; i < tmpUnionPeople; i++) {
       const tmpParticipant = await unionContract.participants(i);
@@ -168,6 +171,9 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
       isParticipate: tmpIsParticipate,
       canEnterList: tmpCanEnterList,
       participantsList: tmpParticipantsList,
+      initDate: tmpInitDate,
+      dueDate: tmpDueDate,
+      round: tmpRound,
     };
   } catch (error) {
     console.log(error);
