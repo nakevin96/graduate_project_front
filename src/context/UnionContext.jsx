@@ -74,7 +74,6 @@ export const cuDeposit = async (
       unionProvider,
       setLoadingScreen,
       null,
-      null,
     );
   } catch (error) {
     setLoadingScreen(false);
@@ -109,7 +108,6 @@ export const selfCUReceive = async (
       unionProvider,
       setLoadingScreen,
       null,
-      null,
     );
   } catch (error) {
     setLoadingScreen(false);
@@ -121,6 +119,10 @@ export const selfCUReceive = async (
       alert(
         '아직 사용이 불가능합니다.\n 입금 기간이 끝난 후 자동입금이 되지 않았을 때 사용해주세요.',
       );
+    } else if (
+      error.error.message === 'execution reverted: Not initiate union'
+    ) {
+      alert('아직 유니온이 시작되지 않았습니다.');
     }
     throw new Error(`selfCUReceive is Failed.. (${error})`);
   }
@@ -220,7 +222,6 @@ export const UnionProvider = ({ children }) => {
         unionFactoryProvider,
         setLoadingScreen,
         handleMakeUnionTrue,
-        null,
       );
       return newUnionAddress;
     } catch (error) {
@@ -262,19 +263,42 @@ export const UnionProvider = ({ children }) => {
           String(parseFloat(cuTotalAmount) / 10 ** 4),
         ),
       });
-      setLoadingScreen(true);
       const handleParticipateUnionTrue = () => {
         setParticipateDone(true);
       };
+      setLoadingScreen(true);
       await isTransactionMined(
         participateTransaction.hash,
         unionProvider,
         setLoadingScreen,
-        null,
         handleParticipateUnionTrue,
       );
     } catch (error) {
       setLoadingScreen(false);
+      console.log(error);
+    }
+  };
+
+  const exitFromUnion = async (unionAddress, myWalletAddress) => {
+    try {
+      const { unionContract, unionProvider } = getUnionContract(unionAddress);
+      const order = await unionContract.getOrder(myWalletAddress);
+      const unionExitTransaction = await unionContract.exit(order);
+      const handleExitUnionTrue = () => {
+        const replacedPath = location.href.replace(location.pathname, '/');
+        setUnionID('');
+        setUnionAddressG('');
+        window.open(replacedPath, '_self');
+      };
+
+      setLoadingScreen(true);
+      await isTransactionMined(
+        unionExitTransaction.hash,
+        unionProvider,
+        setLoadingScreen,
+        handleExitUnionTrue,
+      );
+    } catch (error) {
       console.log(error);
     }
   };
@@ -287,6 +311,7 @@ export const UnionProvider = ({ children }) => {
         makeNewUnion,
         getUnionAddressByName,
         participateToUnion,
+        exitFromUnion,
         unionAddressG,
         setUnionAddressG,
       }}

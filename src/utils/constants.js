@@ -15,13 +15,13 @@ export const SwapABI = SwapAbi.abi;
 export const SwapAddress = '0x0e3E900b7ABB2Ccd555E4aDA96A33090dD9b5517';
 
 // Union
-export const UnionABI = UnionAbi.abi;
+export const UnionABI = UnionAbi.output.abi;
 
 // UnionFactory
-export const UnionFactoryABI = UnionFactoryAbi.abi;
-export const UnionFactoryAddress = '0x312623D8ad14677A4c40E135C14d696D957b4098';
+export const UnionFactoryABI = UnionFactoryAbi.output.abi;
+export const UnionFactoryAddress = '0xe21e6A94b8d199d2B36a7395f508d1AFde677F06';
 
 // UserParticipation
 export const UserParticipationABI = UserParticipationAbi.abi;
 export const UserParticipationAddress =
-  '0x25DbA4Fd420a113deeA228a65b27C686D489f94F';
+  '0x596BeC0eb5adc4ee891b650be168D7c4aCe62E62';

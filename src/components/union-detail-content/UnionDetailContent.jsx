@@ -141,7 +141,7 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
   const { loadingScreen, setLoadingScreen } = useLoading();
   const { participateDone, setParticipateDone } = useParticipation();
   const { connectedAccount } = useWallet();
-  const { getUnionAddressByName } = useUnion();
+  const { getUnionAddressByName, exitFromUnion } = useUnion();
   const { approveToken } = useApprove();
 
   const unionDetailArray =
@@ -222,6 +222,12 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
                 className="px-2 py-1 ml-4 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
               >
                 유니온에 대해 토큰 승인
+              </div>
+              <div
+                onClick={() => exitFromUnion(unionAddressD, connectedAccount)}
+                className="px-2 py-1 ml-4 rounded-lg bg-[#CD5C5C] text-white font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
+              >
+                유니온 나가기
               </div>
             </div>
           </>

@@ -15,22 +15,19 @@ const isTransactionMined = async (
   transactionHash,
   provider,
   changeLoadingStatus,
-  makeUnionDoneTrue,
-  participateUnionDoneTrue,
+  setTransactionSuccessModalTrue,
 ) => {
   const txReceipt = await provider.getTransactionReceipt(transactionHash);
   if (txReceipt && txReceipt.blockNumber) {
     changeLoadingStatus(false);
-    makeUnionDoneTrue && makeUnionDoneTrue();
-    participateUnionDoneTrue && participateUnionDoneTrue();
+    setTransactionSuccessModalTrue && setTransactionSuccessModalTrue();
   } else {
     window.setTimeout(() => {
       isTransactionMined(
         transactionHash,
         provider,
         changeLoadingStatus,
-        makeUnionDoneTrue,
-        participateUnionDoneTrue,
+        setTransactionSuccessModalTrue,
       );
     }, 2500);
   }
