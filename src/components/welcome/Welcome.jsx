@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import PersonAnimation from '../person-animation/PersonAnimation';
+import { PersonAnimation } from '../animation';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { useLoading, useUnionFactory } from '../../context';
 

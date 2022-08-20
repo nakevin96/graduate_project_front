@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import lottie from 'lottie-web';
-import personAnimation from '../../assets/animations/main_people.json';
+import personAnimation from '../../../assets/animations/main_people.json';
 
 const PersonAnimation = () => {
   const anime = useRef(null);
