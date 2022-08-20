@@ -15,10 +15,10 @@ export const SwapABI = SwapAbi.abi;
 export const SwapAddress = '0x0e3E900b7ABB2Ccd555E4aDA96A33090dD9b5517';
 
 // Union
-export const UnionABI = UnionAbi.output.abi;
+export const UnionABI = UnionAbi.abi;
 
 // UnionFactory
-export const UnionFactoryABI = UnionFactoryAbi.output.abi;
+export const UnionFactoryABI = UnionFactoryAbi.abi;
 export const UnionFactoryAddress = '0xe21e6A94b8d199d2B36a7395f508d1AFde677F06';
 
 // UserParticipation
