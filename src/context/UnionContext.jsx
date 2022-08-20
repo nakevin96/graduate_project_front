@@ -64,6 +64,7 @@ export const cuDeposit = async (
   unionAddress,
   setLoadingScreen,
   isTransactionMined,
+  handleDepositDone,
 ) => {
   try {
     const { unionContract, unionProvider } = getUnionContract(unionAddress);
@@ -73,7 +74,7 @@ export const cuDeposit = async (
       depositTransaction.hash,
       unionProvider,
       setLoadingScreen,
-      null,
+      handleDepositDone,
     );
   } catch (error) {
     setLoadingScreen(false);
@@ -91,7 +92,7 @@ export const cuDeposit = async (
     } else if (
       error.error.message === 'execution reverted: You can deposit exact period'
     ) {
-      alert('아직 입금 기간이 아닙니다.')
+      alert('아직 입금 기간이 아닙니다.');
     }
 
     throw new Error(`cuDeposit failed.. (${error})`);
@@ -102,6 +103,7 @@ export const selfCUReceive = async (
   unionAddress,
   setLoadingScreen,
   isTransactionMined,
+  selfReceiveDone,
 ) => {
   try {
     const { unionContract, unionProvider } = getUnionContract(unionAddress);
@@ -111,7 +113,7 @@ export const selfCUReceive = async (
       receiveTransaction.hash,
       unionProvider,
       setLoadingScreen,
-      null,
+      selfReceiveDone,
     );
   } catch (error) {
     setLoadingScreen(false);
@@ -289,10 +291,7 @@ export const UnionProvider = ({ children }) => {
       const order = await unionContract.getOrder(myWalletAddress);
       const unionExitTransaction = await unionContract.exit(order);
       const handleExitUnionTrue = () => {
-        const replacedPath = location.href.replace(location.pathname, '/');
-        setUnionID('');
-        setUnionAddressG('');
-        window.open(replacedPath, '_self');
+        setParticipateDone(true);
       };
 
       setLoadingScreen(true);

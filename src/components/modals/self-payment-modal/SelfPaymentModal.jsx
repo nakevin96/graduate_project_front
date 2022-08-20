@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Checkbox, Dialog } from '@mui/material';
 import CloseIcon from '../../../assets/images/close.svg?component';
-import { useLoading, selfCUReceive } from '../../../context';
+import { useLoading, selfCUReceive, useParticipation } from '../../../context';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
@@ -10,13 +10,20 @@ import {
 const SelfPaymentModal = ({ isOpen, handleModalClose, unionAddress }) => {
   const [isChecked, setIsChecked] = useState(false);
   const { isTransactionMined, setLoadingScreen } = useLoading();
+  const { setParticipateDone } = useParticipation();
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
 
+  const handleSelfParticipateDone = () => setParticipateDone(true);
   const handleConfirmSelfPaymentButtonClick = async () => {
     setIsChecked(false);
     handleModalClose();
-    await selfCUReceive(unionAddress, setLoadingScreen, isTransactionMined);
+    await selfCUReceive(
+      unionAddress,
+      setLoadingScreen,
+      isTransactionMined,
+      handleSelfParticipateDone,
+    );
   };
   return (
     <div className="overflow-auto scrollbar-hide">

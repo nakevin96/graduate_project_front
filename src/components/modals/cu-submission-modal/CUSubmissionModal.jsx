@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoading, cuDeposit } from '../../../context';
+import { useLoading, cuDeposit, useParticipation } from '../../../context';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
@@ -14,6 +14,7 @@ const CUSubmissionModal = ({
   unionInfo,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const { setParticipateDone } = useParticipation();
   const { isTransactionMined, setLoadingScreen } = useLoading();
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
@@ -28,10 +29,17 @@ const CUSubmissionModal = ({
     unionInfo.dueDate * 1000,
   ).toLocaleString();
 
+  const handleDepositDone = () => setParticipateDone(true);
+
   const handleSubmissionButtonClick = async () => {
     setIsChecked(false);
     handleModalClose();
-    await cuDeposit(unionAddress, setLoadingScreen, isTransactionMined);
+    await cuDeposit(
+      unionAddress,
+      setLoadingScreen,
+      isTransactionMined,
+      handleDepositDone,
+    );
   };
 
   return (

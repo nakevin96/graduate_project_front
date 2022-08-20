@@ -10,7 +10,7 @@ const ParticipateUnionCompleteModal = ({ isOpen, handleModalClose }) => {
       <Dialog open={isOpen} onClose={handleModalClose}>
         <div className="px-12 py-12 bg-[#27262C] flex flex-col justify-center items-center">
           <p className="mb-2 text-white font-bold text-2xl">
-            유니온 참여에 성공했습니다!
+            유니온과의 거래에 성공했습니다!
           </p>
           <div
             onClick={handleModalClose}
