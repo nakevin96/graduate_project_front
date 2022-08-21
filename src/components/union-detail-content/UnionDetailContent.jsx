@@ -22,17 +22,17 @@ import { BigNumber } from 'ethers';
 import { TokenApproveModal } from '../modals/token-approve-modal';
 
 const unionCardTrueStyle =
-  'p-0.5 bg-gradient-to-r from-[#603dbf] via-[#69a2ff] to-[#7f0ee6] rounded-xl cursor-pointer ' +
+  'p-1.5 bg-gradient-to-r from-[#603dbf] via-[#69a2ff] to-[#7f0ee6] rounded-xl cursor-pointer ' +
   'transition ease-in-out delay-50 hover:-translate-y-2 hover:scale-105 duration-300';
 const unionCardFalseStyle =
-  'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
+  'p-1.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl';
 const unionCardParticipateStyle =
-  'p-0.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl cursor-pointer ' +
+  'p-1.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl cursor-pointer ' +
   'transition ease-in-out delay-50 hover:-translate-y-2 hover:scale-105 duration-300';
 const depositCompleteMyCardStyle =
-  'p-0.5 bg-gradient-to-r from-[#38b522] via-[#8cf5a1] to-[#0ee65d] rounded-xl';
+  'p-1.5 bg-gradient-to-r from-[#38b522] via-[#8cf5a1] to-[#0ee65d] rounded-xl';
 const depositCompleteOthersCardStyle =
-  'p-0.5 bg-gradient-to-r from-[#b5227a] via-[#f0a8d1] to-[#e60e88] rounded-xl';
+  'p-1.5 bg-gradient-to-r from-[#b5227a] via-[#f0a8d1] to-[#e60e88] rounded-xl';
 
 const MakeUnionDetailCard = ({
   unionNum,

@@ -15,6 +15,7 @@ const MakeUnionCard = ({ unionInfo, isIndividual }) => {
   const singleUnionIsActive = unionInfo?.isActive;
   const singleUnionRound = unionInfo?.round;
   const singleUnionOrder = unionInfo?.order;
+  const singleUnionDeposit = unionInfo?.myDeposit ? '입금 완료' : '미입금';
 
   return (
     <div className={unionCardStyle}>
@@ -46,6 +47,12 @@ const MakeUnionCard = ({ unionInfo, isIndividual }) => {
             <p className="text-white text-sm">{`내 참여순번:`}</p>
             <p className="text-white text-sm">{`${singleUnionOrder} 번`}</p>
           </div>
+          {singleUnionIsActive && (
+            <div className="flex justify-between mt-2">
+              <p className="text-white text-sm">{`라운드 입금:`}</p>
+              <p className="text-white text-sm">{`${singleUnionDeposit}`}</p>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -82,6 +89,7 @@ const UnionCompactCard = ({
                 isActive: simpleInfo?.isActivate,
                 round: simpleInfo?.round,
                 order: simpleInfo?.order,
+                myDeposit: simpleInfo?.myDeposit,
               },
             };
           });

@@ -156,12 +156,14 @@ export const getUnionSimpleInfo = async (
       const unionActivate = await unionContract.isActivate();
       const unionRound = await unionContract.round();
       const myOrder = await unionContract.getOrder(myWalletAddress);
+      const myInfo = await unionContract.participants(myOrder - 1);
       return {
         name: unionName,
         enterList: unionEnterList,
         isActivate: unionActivate,
         round: unionRound,
         order: myOrder,
+        myDeposit: myInfo.isDeposit,
       };
     } else {
       const unionName = await unionContract.name();
@@ -172,6 +174,7 @@ export const getUnionSimpleInfo = async (
         isActivate: null,
         round: null,
         order: null,
+        myDeposit: null,
       };
     }
   } catch (error) {

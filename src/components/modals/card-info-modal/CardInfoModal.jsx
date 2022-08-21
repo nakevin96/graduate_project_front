@@ -8,25 +8,25 @@ import MoveForwardIcon from '../../../assets/images/moveRightCard.svg?component'
 const cardInfoDict = {
   YELLOW: {
     borderStyle:
-      'p-0.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl',
+      'p-1.5 bg-gradient-to-r from-[#b5b522] via-[#ffff69] to-[#e6e20e] rounded-xl',
     info: '내가 참여한 순번을 의미하며,',
     info2: '이번 라운드에 아직 CU를 입금하지 않은 상태입니다.',
   },
   GREEN: {
     borderStyle:
-      'p-0.5 bg-gradient-to-r from-[#38b522] via-[#8cf5a1] to-[#0ee65d] rounded-xl',
+      'p-1.5 bg-gradient-to-r from-[#38b522] via-[#8cf5a1] to-[#0ee65d] rounded-xl',
     info: '내가 참여한 순번을 의미하며,',
     info2: '이번 라운드에 CU 입금을 마친 상태입니다.',
   },
   RED: {
     borderStyle:
-      'p-0.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl',
+      'p-1.5 bg-gradient-to-r from-[#b52f22] via-[#ff698c] to-[#e60e56] rounded-xl',
     info: '타인이 참여한 순번을 의미하며,',
     info2: '이번 라운드에 아직 CU를 입금하지 않은 상태입니다.',
   },
   PINK: {
     borderStyle:
-      'p-0.5 bg-gradient-to-r from-[#b5227a] via-[#f0a8d1] to-[#e60e88] rounded-xl',
+      'p-1.5 bg-gradient-to-r from-[#b5227a] via-[#f0a8d1] to-[#e60e88] rounded-xl',
     info: '타인이 참여한 순번을 의미하며,',
     info2: '이번 라운드에 CU 입금을 마친 상태입니다.',
   },
