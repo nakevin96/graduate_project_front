@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
-import { PersonAnimation } from '../animation';
+import {
+  animationNameList,
+  LottieAnimation,
+} from '../animation/lottie-animation';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { useLoading, useUnionFactory } from '../../context';
 
@@ -34,7 +37,10 @@ const Welcome = () => {
           </button>
         </div>
         <div className="w-[28rem]">
-          <PersonAnimation />
+          <LottieAnimation
+            animationName={animationNameList.personMain}
+            loopBool={false}
+          />
         </div>
       </div>
       <TransactionProceedingModal

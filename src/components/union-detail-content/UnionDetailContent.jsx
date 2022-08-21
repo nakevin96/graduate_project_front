@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import ExistPerson from '../../assets/images/union_people.svg?component';
-import { DetailLoadingAnimation } from '../animation';
+import {
+  animationNameList,
+  LottieAnimation,
+} from '../animation/lottie-animation';
 import { UnionNumberSelectModal } from '../modals/union-number-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
 import { ParticipateUnionCompleteModal } from '../modals/participate-union-complete-modal';
@@ -42,6 +45,7 @@ const MakeUnionDetailCard = ({
 }) => {
   const [isUnionNumberSelectedModalOpen, setIsUnionNumberSelectedMModalOpen] =
     useState(false);
+  const [isMouseOverCard, setIsMouseOverCard] = useState(false);
 
   const unionAmount =
     Object.keys(unionInfo).length === 0
@@ -60,7 +64,10 @@ const MakeUnionDetailCard = ({
   };
 
   return (
-    <div>
+    <div
+      onMouseEnter={() => setIsMouseOverCard(true)}
+      onMouseLeave={() => setIsMouseOverCard(false)}
+    >
       <div
         onClick={() => {
           if (unionCanParticipate && !isParticipated) {
@@ -87,9 +94,18 @@ const MakeUnionDetailCard = ({
       >
         <div className="w-72 h-96 bg-[#27262C] flex flex-col justify-center items-center rounded-xl">
           {unionCanParticipate ? (
-            <div className="w-12 h-12 border-2 rounded-full flex justify-center items-center">
-              <span className="text-white">{unionNum}</span>
-            </div>
+            isMouseOverCard ? (
+              <div className="w-20">
+                <LottieAnimation
+                  animationName={animationNameList.addProfile}
+                  loopBool={false}
+                />
+              </div>
+            ) : (
+              <div className="w-12 h-12 border-2 rounded-full flex justify-center items-center">
+                <span className="text-white">{unionNum}</span>
+              </div>
+            )
           ) : (
             <ExistPerson className="w-12" />
           )}
@@ -186,7 +202,10 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
         <>
           <p className="text-white text-xl py-4">{`[${unionId}] 세부 정보 로딩중입니다.. 기다려주세요!`}</p>
           <div className="w-[32rem]">
-            <DetailLoadingAnimation />
+            <LottieAnimation
+              animationName={animationNameList.detailLoading}
+              loopBool={true}
+            />
           </div>
         </>
       ) : unionInfo.isParticipate ? (

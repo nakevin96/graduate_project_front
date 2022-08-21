@@ -1,5 +1,8 @@
 import { Dialog } from '@mui/material';
-import { MiningLoadingAnimation } from '../../animation';
+import {
+  animationNameList,
+  LottieAnimation,
+} from '../../animation/lottie-animation';
 
 const TransactionProceedingModal = ({
   isOpen,
@@ -27,7 +30,10 @@ const TransactionProceedingModal = ({
             메타마스크를 통해 거래내용을 확인하세요
           </p>
           <div className="w-[19rem]">
-            <MiningLoadingAnimation />
+            <LottieAnimation
+              animationName={animationNameList.miningLoading}
+              loopBool={true}
+            />
           </div>
         </div>
       </Dialog>
