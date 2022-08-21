@@ -37,6 +37,7 @@ export const WalletProvider = ({ children }) => {
   const [connectedAccount, setConnectedAccount] = useState('');
   const [ethBalance, setEthBalance] = useState('0.0');
   const [cuBalance, setCuBalance] = useState('0.0');
+  const [approveModalOpen, setApproveModalOpen] = useState(false);
   const cuBalanceRef = useRef(0);
   const { setLoadingScreen, isTransactionMined } = useLoading();
 
@@ -149,7 +150,9 @@ export const WalletProvider = ({ children }) => {
       <WalletBalanceContext.Provider
         value={{ ethBalance, getEthBalance, cuBalance, getCuBalance }}
       >
-        <TokenApproveContext.Provider value={{ approveToken }}>
+        <TokenApproveContext.Provider
+          value={{ approveToken, approveModalOpen, setApproveModalOpen }}
+        >
           {children}
         </TokenApproveContext.Provider>
       </WalletBalanceContext.Provider>

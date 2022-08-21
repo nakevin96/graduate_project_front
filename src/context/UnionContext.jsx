@@ -65,6 +65,7 @@ export const cuDeposit = async (
   setLoadingScreen,
   isTransactionMined,
   handleDepositDone,
+  approveModalOpen,
 ) => {
   try {
     const { unionContract, unionProvider } = getUnionContract(unionAddress);
@@ -81,9 +82,8 @@ export const cuDeposit = async (
     if (
       error.error.message === 'execution reverted: Check the token allowance'
     ) {
-      alert(
-        '유니온에 대해 토큰을 승인해주세요.\n상단의 토큰승인 버튼을 이용하시면 됩니다.',
-      );
+      approveModalOpen();
+      return;
     } else if (
       error.error.message ===
       'execution reverted: You already deposit in this round'

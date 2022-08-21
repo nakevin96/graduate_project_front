@@ -18,6 +18,8 @@ import {
   useApprove,
 } from '../../context';
 import { BigNumber } from 'ethers';
+import { SwapAddress } from '../../utils/constants';
+import { TokenApproveModal } from '../modals/token-approve-modal';
 
 const unionCardTrueStyle =
   'p-0.5 bg-gradient-to-r from-[#603dbf] via-[#69a2ff] to-[#7f0ee6] rounded-xl cursor-pointer ' +
@@ -159,7 +161,7 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
   const { participateDone, setParticipateDone } = useParticipation();
   const { connectedAccount } = useWallet();
   const { getUnionAddressByName, exitFromUnion } = useUnion();
-  const { approveToken } = useApprove();
+  const { approveModalOpen, setApproveModalOpen } = useApprove();
 
   const unionDetailArray =
     Object.keys(unionInfo).length === 0
@@ -217,16 +219,16 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
             </p>
             <div className="flex mt-3">
               <div
-                onClick={() => setIsSelfPaymentModalOpen(true)}
-                className="px-2 py-1 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
+                onClick={() => {}}
+                className="px-2 py-1 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
               >
-                수동 지급 받기
+                카드 색상 정보
               </div>
               <div
-                onClick={() => approveToken(unionAddressD)}
-                className="px-2 py-1 ml-4 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
+                onClick={() => setIsSelfPaymentModalOpen(true)}
+                className="px-2 py-1 ml-4 rounded-lg bg-[#EBFF82] text-[#27262C] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
               >
-                유니온에 대해 토큰 승인
+                수동 지급 받기
               </div>
               <div
                 onClick={() => exitFromUnion(unionAddressD, connectedAccount)}
@@ -299,6 +301,12 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
         }}
         unionAddress={unionAddressD}
         unionInfo={unionInfo}
+      />
+      <TokenApproveModal
+        isOpen={approveModalOpen}
+        handleModalClose={() => setApproveModalOpen(false)}
+        targetMessage={'유니온에 입금을 하기 위해서는'}
+        contractAddress={unionAddressD}
       />
     </div>
   );

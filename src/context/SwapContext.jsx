@@ -7,7 +7,7 @@ import {
   SwapAddress,
 } from '../utils/constants';
 import { useLoading } from './TransactionContext';
-import { useWallet } from './WalletContext';
+import { useWallet, useApprove } from './WalletContext';
 
 const SwapContext = createContext('');
 const { ethereum } = window;
@@ -38,6 +38,7 @@ export function useSwap() {
 
 export const SwapProvider = ({ children }) => {
   const { setLoadingScreen, isTransactionMined } = useLoading();
+  const { setApproveModalOpen } = useApprove();
   const { connectedAccount } = useWallet();
 
   const ethToCuSwap = async ethAmount => {
@@ -82,7 +83,7 @@ export const SwapProvider = ({ children }) => {
       );
       const allowanceAmount = parseInt(allowance._hex) / 10 ** 18;
       if (allowanceAmount <= parseInt(cuAmount)) {
-        alert('토큰 승인을 먼저 진행해주세요');
+        setApproveModalOpen(true);
         return;
       }
       const cuSwapAmount = (cuAmount * 1e18).toString();

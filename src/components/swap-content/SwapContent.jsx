@@ -10,6 +10,7 @@ import { CustomInput } from './custom-input';
 import { THEME_MAIN_COLOR, THEME_MAIN_COLOR_HOVER } from '../../assets/colors';
 import { WalletSelectModal } from '../modals/wallet-select-modal';
 import { TransactionProceedingModal } from '../modals/transaction-proceeding-modal';
+import { TokenApproveModal } from '../modals/token-approve-modal';
 import { SwapAddress } from '../../utils/constants';
 
 const SwapContent = () => {
@@ -22,7 +23,7 @@ const SwapContent = () => {
   const { connectedAccount } = useWallet();
   const { ethToCuSwap, cuToEthSwap } = useSwap();
   const { loadingScreen, setLoadingScreen } = useLoading();
-  const { approveToken } = useApprove();
+  const { approveModalOpen, setApproveModalOpen } = useApprove();
 
   const resetInputFiled = () => {
     setEthInput('0.0');
@@ -142,13 +143,6 @@ const SwapContent = () => {
               {connectedAccount ? (
                 <>
                   <button
-                    onClick={() => approveToken(SwapAddress)}
-                    className={`w-full text-[#372F47] font-semibold bg-[#B8ADD2] py-2 mb-2 rounded-lg
-          cursor-pointer hover:opacity-50`}
-                  >
-                    토큰 승인
-                  </button>
-                  <button
                     onClick={handleSwapClick}
                     className={`w-full text-white font-semibold bg-[${THEME_MAIN_COLOR}] py-2 mb-2 rounded-lg
           cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`}
@@ -175,6 +169,12 @@ const SwapContent = () => {
             <TransactionProceedingModal
               isOpen={loadingScreen}
               handleModalClose={() => setLoadingScreen(false)}
+            />
+            <TokenApproveModal
+              isOpen={approveModalOpen}
+              handleModalClose={() => setApproveModalOpen(false)}
+              targetMessage={'스왑을 진행하기 위해서는'}
+              contractAddress={SwapAddress}
             />
           </div>
         </div>

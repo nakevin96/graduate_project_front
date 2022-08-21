@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { useLoading, cuDeposit, useParticipation } from '../../../context';
+import {
+  useLoading,
+  cuDeposit,
+  useParticipation,
+  useApprove,
+} from '../../../context';
 import {
   THEME_MAIN_COLOR,
   THEME_MAIN_COLOR_HOVER,
@@ -16,6 +21,7 @@ const CUSubmissionModal = ({
   const [isChecked, setIsChecked] = useState(false);
   const { setParticipateDone } = useParticipation();
   const { isTransactionMined, setLoadingScreen } = useLoading();
+  const { setApproveModalOpen } = useApprove();
   const buttonAbleStyle = `bg-[${THEME_MAIN_COLOR}] py-2 px-12 mx-4 rounded-lg cursor-pointer hover:bg-[${THEME_MAIN_COLOR_HOVER}]`;
   const buttonDisableStyle = `bg-[#d8d8d8] py-2 px-12 mx-4 rounded-lg cursor-not-allowed`;
 
@@ -30,6 +36,7 @@ const CUSubmissionModal = ({
   ).toLocaleString();
 
   const handleDepositDone = () => setParticipateDone(true);
+  const handleApproveModalOpen = () => setApproveModalOpen(true);
 
   const handleSubmissionButtonClick = async () => {
     setIsChecked(false);
@@ -39,6 +46,7 @@ const CUSubmissionModal = ({
       setLoadingScreen,
       isTransactionMined,
       handleDepositDone,
+      handleApproveModalOpen,
     );
   };
 
