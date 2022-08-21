@@ -143,12 +143,37 @@ export const getMyUnionList = async myAddress => {
   }
 };
 
-export const getUnionSimpleInfo = async unionAddress => {
+export const getUnionSimpleInfo = async (
+  unionAddress,
+  isIndividual,
+  myWalletAddress,
+) => {
   try {
     const { unionContract } = getUnionContract(unionAddress);
-    const unionName = await unionContract.name();
-    const unionEnterList = await unionContract.getUnionOrder();
-    return { name: unionName, enterList: unionEnterList };
+    if (isIndividual) {
+      const unionName = await unionContract.name();
+      const unionEnterList = await unionContract.getUnionOrder();
+      const unionActivate = await unionContract.isActivate();
+      const unionRound = await unionContract.round();
+      const myOrder = await unionContract.getOrder(myWalletAddress);
+      return {
+        name: unionName,
+        enterList: unionEnterList,
+        isActivate: unionActivate,
+        round: unionRound,
+        order: myOrder,
+      };
+    } else {
+      const unionName = await unionContract.name();
+      const unionEnterList = await unionContract.getUnionOrder();
+      return {
+        name: unionName,
+        enterList: unionEnterList,
+        isActivate: null,
+        round: null,
+        order: null,
+      };
+    }
   } catch (error) {
     console.log(error);
   }
