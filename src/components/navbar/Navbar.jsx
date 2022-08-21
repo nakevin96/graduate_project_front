@@ -8,7 +8,7 @@ import { ConnectWalletButton } from './connect-wallet-button';
 
 const MENU_LIST = ['스왑', '유니온'];
 const MENU_LINK = { 스왑: '/swap', 유니온: '/union' };
-const selectedStyle = `text-[#0ea5e9] font-bold underline underline-offset-4`;
+const selectedStyle = `text-[#B8ADD2] font-bold underline underline-offset-8`;
 const NavbarItem = ({ title, classProps }) => {
   return (
     <li
