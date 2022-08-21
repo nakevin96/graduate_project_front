@@ -9,6 +9,7 @@ import { TransactionProceedingModal } from '../modals/transaction-proceeding-mod
 import { ParticipateUnionCompleteModal } from '../modals/participate-union-complete-modal';
 import { SelfPaymentModal } from '../modals/self-payment-modal';
 import { CUSubmissionModal } from '../modals/cu-submission-modal';
+import { CardInfoModal } from '../modals/card-info-modal';
 import {
   useLoading,
   useUnion,
@@ -18,7 +19,6 @@ import {
   useApprove,
 } from '../../context';
 import { BigNumber } from 'ethers';
-import { SwapAddress } from '../../utils/constants';
 import { TokenApproveModal } from '../modals/token-approve-modal';
 
 const unionCardTrueStyle =
@@ -152,6 +152,7 @@ const MakeUnionDetailCard = ({
 const UnionDetailContent = ({ unionId, unionAddress }) => {
   const [isSelfPaymentModalOpen, setIsSelfPaymentModalOpen] = useState(false);
   const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
+  const [cardInfoModalOpen, setCardInfoModalOpen] = useState(false);
   const [unionAddressD, setUnionAddressD] = useState('');
   const [unionInfo, setUnionInfo] = useState({});
   const [infoRerender, setInfoRerender] = useState({
@@ -219,7 +220,7 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
             </p>
             <div className="flex mt-3">
               <div
-                onClick={() => {}}
+                onClick={() => setCardInfoModalOpen(true)}
                 className="px-2 py-1 rounded-lg bg-[#B8ADD2] text-[#372F47] font-bold cursor-pointer transition ease-in-out delay-10 hover:-translate-y-0.5 hover:scale-105 duration-300"
               >
                 카드 색상 정보
@@ -307,6 +308,10 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
         handleModalClose={() => setApproveModalOpen(false)}
         targetMessage={'유니온에 입금을 하기 위해서는'}
         contractAddress={unionAddressD}
+      />
+      <CardInfoModal
+        isOpen={cardInfoModalOpen}
+        handleModalClose={() => setCardInfoModalOpen(false)}
       />
     </div>
   );
