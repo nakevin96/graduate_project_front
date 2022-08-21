@@ -199,7 +199,7 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
     <div
       className={`w-full ${
         Object.keys(unionInfo).length === 0 ? 'h-screen' : 'h-full'
-      } px-20 py-16 overflow-hidden bg-union flex flex-col items-center`}
+      } px-16 py-16 overflow-hidden bg-union flex flex-col items-center`}
     >
       {Object.keys(unionInfo).length === 0 ? (
         <>
