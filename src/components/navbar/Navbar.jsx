@@ -14,7 +14,7 @@ const NavbarItem = ({ title, classProps }) => {
     <li
       className={`py-4 px-6 cursor-pointer rounded-lg ${classProps} ${
         MENU_LINK[title] === window.location.pathname ? selectedStyle : null
-      } hover:bg-[#353547] transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
+      } transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
     >
       {title}
     </li>
@@ -33,9 +33,23 @@ const Navbar = () => {
         </div>
       </div>
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
+        <li
+          onClick={() =>
+            window.open(
+              'https://whiteflower7742.notion.site/CreditUnion-e598b61bf2de40cf8251c5ba3bb73d69',
+            )
+          }
+          className={`py-4 px-6 cursor-pointer rounded-lg hover:bg-[#353547] transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
+        >
+          가이드
+        </li>
         {MENU_LIST.map((item, index) => (
           <Link key={item + index + 'link'} to={MENU_LINK[item]}>
-            <NavbarItem key={item + index} title={item} />
+            <NavbarItem
+              key={item + index}
+              title={item}
+              classProps="hover:bg-[#353547]"
+            />
           </Link>
         ))}
       </ul>
@@ -64,6 +78,16 @@ const Navbar = () => {
                 className="cursor-pointer"
                 onClick={() => setToggleMenu(false)}
               />
+            </li>
+            <li
+              onClick={() =>
+                window.open(
+                  'https://whiteflower7742.notion.site/CreditUnion-e598b61bf2de40cf8251c5ba3bb73d69',
+                )
+              }
+              className={`py-4 px-6 cursor-pointer rounded-lg transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
+            >
+              가이드
             </li>
             {MENU_LIST.map((item, index) => (
               <Link key={item + index + 'link'} to={MENU_LINK[item]}>
