@@ -19,8 +19,7 @@ start the development server
 npm run dev
 ```  
 
-## Guide
+## [Guide](https://yoon-1.gitbook.io/creditunion/)
 
 ***
-notion에 Credit Union에 대한 간단한 사용법을
-작성하였습니다 &nbsp; &nbsp; [[이동]](https://whiteflower7742.notion.site/CreditUnion-Guide-e598b61bf2de40cf8251c5ba3bb73d69)
+Credit Union에 대한 간단한 사용법입니다.

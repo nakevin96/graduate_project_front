@@ -34,11 +34,7 @@ const Navbar = () => {
       </div>
       <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
         <li
-          onClick={() =>
-            window.open(
-              'https://whiteflower7742.notion.site/CreditUnion-e598b61bf2de40cf8251c5ba3bb73d69',
-            )
-          }
+          onClick={() => window.open('https://yoon-1.gitbook.io/creditunion/')}
           className={`py-4 px-6 cursor-pointer rounded-lg hover:bg-[#353547] transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
         >
           가이드
@@ -81,9 +77,7 @@ const Navbar = () => {
             </li>
             <li
               onClick={() =>
-                window.open(
-                  'https://whiteflower7742.notion.site/CreditUnion-e598b61bf2de40cf8251c5ba3bb73d69',
-                )
+                window.open('https://yoon-1.gitbook.io/creditunion/')
               }
               className={`py-4 px-6 cursor-pointer rounded-lg transition ease-in-out delay-100 hover:-translate-y-[-0.125rem] hover:scale-105 duration-150`}
             >

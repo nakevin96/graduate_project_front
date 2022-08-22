@@ -194,6 +194,7 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
     const tmpInitDate = await unionContract.initDate();
     const tmpDueDate = await unionContract.dueDate();
     const tmpIsActivate = await unionContract.isActivate();
+    const tmpRound = await unionContract.round();
     const tmpParticipantsList = [];
     for (let i = 0; i < tmpUnionPeople; i++) {
       const tmpParticipant = await unionContract.participants(i);
@@ -210,6 +211,7 @@ export const getUnionInfo = async (unionAddress, myAddress) => {
       initDate: tmpInitDate,
       dueDate: tmpDueDate,
       isActivate: tmpIsActivate,
+      round: tmpRound,
     };
   } catch (error) {
     console.log(error);

@@ -38,9 +38,11 @@ const UnionMakeModal = ({ isOpen, handleModalClose }) => {
     setNewUnionCUAmount(e.target.value);
   };
   const handleMakeUnionButtonClick = async () => {
-    await makeNewUnion(newUnionPeopleNum, newUnionCUAmount, newUnionName);
-    clearState();
-    handleModalClose();
+    if (isChecked) {
+      await makeNewUnion(newUnionPeopleNum, newUnionCUAmount, newUnionName);
+      clearState();
+      handleModalClose();
+    }
   };
 
   return (

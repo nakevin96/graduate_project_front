@@ -164,6 +164,13 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
   const { getUnionAddressByName, exitFromUnion } = useUnion();
   const { approveModalOpen, setApproveModalOpen } = useApprove();
 
+  const convertedDueDateStart = new Date(
+    (unionInfo.dueDate - 120) * 1000,
+  ).toLocaleString();
+  const convertedDueDateEnd = new Date(
+    unionInfo.dueDate * 1000,
+  ).toLocaleString();
+
   const unionDetailArray =
     Object.keys(unionInfo).length === 0
       ? []
@@ -218,6 +225,14 @@ const UnionDetailContent = ({ unionId, unionAddress }) => {
             <p className="text-white text-sm">
               (CU 입금을 원하시면 본인카드를 클릭해주세요)
             </p>
+            <p className="mt-2 text-[#B8ADD2] text-xs">
+              {`현재 라운드: ${unionInfo.round} round`}
+            </p>
+            {unionInfo.round > 1 && (
+              <p className="text-[#B8ADD2] text-xs">
+                {`입금 기간: ${convertedDueDateStart} ~ ${convertedDueDateEnd}`}
+              </p>
+            )}
             <div className="flex mt-3">
               <div
                 onClick={() => setCardInfoModalOpen(true)}
