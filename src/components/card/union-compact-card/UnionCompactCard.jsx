@@ -65,6 +65,7 @@ const UnionCompactCard = ({
   isIndividual,
 }) => {
   const [isUnionMakeModalOpen, setIsUnionMakeModalOpen] = useState(false);
+  const [isListLoading, setIsListLoading] = useState(true);
   const [renderUnionAddressList, setRenderUnionAddressList] = useState([]);
   const [renderUnionInfoDict, setRenderUnionInfoDict] = useState({});
   const [allUnionAddress, setAllUnionAddress] = useState([]);
@@ -93,6 +94,7 @@ const UnionCompactCard = ({
               },
             };
           });
+          setIsListLoading(false);
         },
       );
     });
@@ -106,6 +108,7 @@ const UnionCompactCard = ({
   }, [allUnionAddress, callEndIdx]);
 
   useEffect(() => {
+    setIsListLoading(true);
     setRenderUnionAddressList(() => {
       return [];
     });
@@ -147,42 +150,51 @@ const UnionCompactCard = ({
         isOpen={isUnionMakeModalOpen}
         handleModalClose={handleUnionMakeModalClose}
       />
-      {renderUnionAddressList.map((unionAddress, index) => {
-        return connectedAccount === '' ? (
-          <div
-            onClick={() => alert('지갑을 먼저 연결해주세요')}
-            key={unionAddress + index}
-          >
-            <MakeUnionCard
-              unionInfo={renderUnionInfoDict[unionAddress]}
-              isIndividual={isIndividual}
-            />
-          </div>
-        ) : (
-          <div
-            className={`${
-              renderUnionInfoDict !== undefined &&
-              Object.keys(renderUnionInfoDict).length !== 0
-                ? 'block'
-                : 'hidden'
-            }`}
-            key={unionAddress + index}
-          >
-            <Link
-              onClick={() => {
-                setUnionID(renderUnionInfoDict[unionAddress]?.name);
-                setUnionAddressG(unionAddress);
-              }}
-              to="/unionDetail"
-            >
-              <MakeUnionCard
-                unionInfo={renderUnionInfoDict[unionAddress]}
-                isIndividual={isIndividual}
+      {isListLoading
+        ? Array.from({ length: 6 }, (v, i) => i).map(id => {
+            return (
+              <div
+                className={`m-4 p-3 w-80 h-[17rem] rounded-xl union-card border-2 border-neutral-300 animate-pulse`}
+                key={id}
               />
-            </Link>
-          </div>
-        );
-      })}
+            );
+          })
+        : renderUnionAddressList.map((unionAddress, index) => {
+            return connectedAccount === '' ? (
+              <div
+                onClick={() => alert('지갑을 먼저 연결해주세요')}
+                key={unionAddress + index}
+              >
+                <MakeUnionCard
+                  unionInfo={renderUnionInfoDict[unionAddress]}
+                  isIndividual={isIndividual}
+                />
+              </div>
+            ) : (
+              <div
+                className={`${
+                  renderUnionInfoDict !== undefined &&
+                  Object.keys(renderUnionInfoDict).length !== 0
+                    ? 'block'
+                    : 'hidden'
+                }`}
+                key={unionAddress + index}
+              >
+                <Link
+                  onClick={() => {
+                    setUnionID(renderUnionInfoDict[unionAddress]?.name);
+                    setUnionAddressG(unionAddress);
+                  }}
+                  to="/unionDetail"
+                >
+                  <MakeUnionCard
+                    unionInfo={renderUnionInfoDict[unionAddress]}
+                    isIndividual={isIndividual}
+                  />
+                </Link>
+              </div>
+            );
+          })}
     </>
   );
 };
